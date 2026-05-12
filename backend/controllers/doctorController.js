@@ -1,6 +1,15 @@
 import DoctorProfile from '../models/DoctorProfile.js';
 import Appointment from '../models/Appointment.js';
 
+export const getAllDoctors = async (req, res) => {
+  try {
+    const doctors = await DoctorProfile.find().populate('user', 'name profileImage');
+    res.json(doctors);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const getDoctorProfile = async (req, res) => {
   try {
     const profile = await DoctorProfile.findOne({ user: req.user._id });

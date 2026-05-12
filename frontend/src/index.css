@@ -1,8 +1,58 @@
 @import "tailwindcss";
 
+:root, .theme-black {
+  --bg-gradient-from: #0f172a; /* slate-900 */
+  --bg-gradient-to: #020617; /* slate-950 */
+  --text-main: #ffffff;
+  --text-muted: #94a3b8;
+  --primary: #3b82f6; /* blue-500 */
+  --primary-hover: #2563eb;
+  --panel-bg: rgba(30, 41, 59, 0.6); /* slate-800/60 */
+  --panel-border: rgba(51, 65, 85, 0.5); /* slate-700/50 */
+}
+
+.theme-brown {
+  --bg-gradient-from: #2c1e16; /* warm dark brown */
+  --bg-gradient-to: #1a100c; 
+  --text-main: #fef3c7;
+  --text-muted: #d6d3d1;
+  --primary: #d97706; /* amber-600 */
+  --primary-hover: #b45309;
+  --panel-bg: rgba(74, 51, 37, 0.6);
+  --panel-border: rgba(120, 80, 60, 0.5);
+}
+
+.theme-blonde {
+  --bg-gradient-from: #fefce8; /* light warm yellow */
+  --bg-gradient-to: #fef08a;
+  --text-main: #422006;
+  --text-muted: #78350f;
+  --primary: #ca8a04; /* yellow-600 */
+  --primary-hover: #a16207;
+  --panel-bg: rgba(254, 249, 195, 0.8);
+  --panel-border: rgba(253, 224, 71, 0.8);
+}
+
+.theme-grey {
+  --bg-gradient-from: #18181b; /* zinc-900 */
+  --bg-gradient-to: #09090b;
+  --text-main: #fafafa;
+  --text-muted: #a1a1aa;
+  --primary: #71717a; /* zinc-500 */
+  --primary-hover: #52525b;
+  --panel-bg: rgba(39, 39, 42, 0.6);
+  --panel-border: rgba(63, 63, 70, 0.5);
+}
+
 @theme {
-  --color-primary: #3b82f6;
-  --color-secondary: #10b981;
+  --color-theme-from: var(--bg-gradient-from);
+  --color-theme-to: var(--bg-gradient-to);
+  --color-theme-text: var(--text-main);
+  --color-theme-muted: var(--text-muted);
+  --color-theme-primary: var(--primary);
+  --color-theme-primary-hover: var(--primary-hover);
+  --color-theme-panel: var(--panel-bg);
+  --color-theme-border: var(--panel-border);
 }
 
 body {
@@ -12,6 +62,15 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f8fafc;
-  color: #0f172a;
+  background: linear-gradient(to bottom right, var(--bg-gradient-from), var(--bg-gradient-to));
+  background-attachment: fixed;
+  color: var(--text-main);
+  min-height: 100vh;
+}
+
+/* Glassmorphism utilities */
+.glass-panel {
+  background-color: var(--panel-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--panel-border);
 }

@@ -7,6 +7,7 @@ import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import consultationRoutes from './routes/consultationRoutes.js';
 import doctorRoutes from './routes/doctorRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 
 // Load environment variables
 dotenv.config();
@@ -31,6 +32,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/consultations', consultationRoutes);
 app.use('/api/doctors', doctorRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Socket.IO Logic
 const onlineDoctors = new Map(); // doctorId -> socketId

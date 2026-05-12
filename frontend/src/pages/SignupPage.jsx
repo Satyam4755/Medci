@@ -17,8 +17,8 @@ const SignupPage = () => {
     try {
       const data = await register(name, email, password, role);
       toast.success('Account created successfully');
-      if (data.role === 'Doctor') navigate('/doctor/dashboard');
-      else if (data.role === 'Patient') navigate('/patient/dashboard');
+      if (data.role === 'Doctor') navigate('/doctor');
+      else if (data.role === 'Patient') navigate('/patient');
       else navigate('/');
     } catch (error) {
       toast.error(error);
@@ -27,7 +27,7 @@ const SignupPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-900 text-white p-6">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md bg-slate-800 p-8 rounded-2xl border border-slate-700 shadow-xl"
@@ -36,8 +36,8 @@ const SignupPage = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-slate-400 mb-1">Full Name</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -47,8 +47,8 @@ const SignupPage = () => {
           </div>
           <div>
             <label className="block text-slate-400 mb-1">Email</label>
-            <input 
-              type="email" 
+            <input
+              type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -58,8 +58,8 @@ const SignupPage = () => {
           </div>
           <div>
             <label className="block text-slate-400 mb-1">Password</label>
-            <input 
-              type="password" 
+            <input
+              type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -69,7 +69,7 @@ const SignupPage = () => {
           </div>
           <div>
             <label className="block text-slate-400 mb-1">I am a...</label>
-            <select 
+            <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
               className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:border-emerald-500"
@@ -78,7 +78,7 @@ const SignupPage = () => {
               <option value="Doctor">Doctor</option>
             </select>
           </div>
-          <button 
+          <button
             type="submit"
             className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg transition mt-4"
           >

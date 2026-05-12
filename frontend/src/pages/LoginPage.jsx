@@ -15,8 +15,8 @@ const LoginPage = () => {
     try {
       const data = await login(email, password);
       toast.success('Logged in successfully');
-      if (data.role === 'Doctor') navigate('/doctor/dashboard');
-      else if (data.role === 'Patient') navigate('/patient/dashboard');
+      if (data.role === 'Doctor') navigate('/doctor');
+      else if (data.role === 'Patient') navigate('/patient');
       else navigate('/');
     } catch (error) {
       toast.error(error);
@@ -25,7 +25,7 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-900 text-white p-6">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md bg-slate-800 p-8 rounded-2xl border border-slate-700 shadow-xl"
@@ -34,8 +34,8 @@ const LoginPage = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-slate-400 mb-1">Email</label>
-            <input 
-              type="email" 
+            <input
+              type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -45,8 +45,8 @@ const LoginPage = () => {
           </div>
           <div>
             <label className="block text-slate-400 mb-1">Password</label>
-            <input 
-              type="password" 
+            <input
+              type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -54,7 +54,7 @@ const LoginPage = () => {
               placeholder="Enter your password"
             />
           </div>
-          <button 
+          <button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition"
           >
