@@ -1,51 +1,39 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const appointmentSchema = new mongoose.Schema({
-  request: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'ConsultationRequest',
-    required: true
-  },
   patient: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Patient',
-    required: true
+    ref: 'User',
+    required: true,
   },
   doctor: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Doctor',
-    required: true
+    ref: 'User',
+    required: true,
   },
-  scheduledTime: {
-    type: Date,
-    required: true
+  consultationRequest: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ConsultationRequest',
+    required: true,
   },
-  mode: {
+  meetingTiming: {
     type: String,
-    enum: ['online', 'offline'],
-    required: true
-  },
-  meetingLink: {
-    type: String, // For online consultations
-    default: ''
+    required: true,
   },
   status: {
     type: String,
     enum: ['scheduled', 'completed', 'cancelled'],
-    default: 'scheduled'
+    default: 'scheduled',
   },
-  prescription: {
+  mode: {
     type: String,
-    default: ''
+    enum: ['online', 'offline'],
+    required: true,
   },
-  medicinesPrescribed: [{
-    medicine: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Medicine'
-    },
-    dosage: String,
-    duration: String
-  }]
+  price: {
+    type: Number,
+  },
 }, { timestamps: true });
 
-module.exports = mongoose.model('Appointment', appointmentSchema);
+const Appointment = mongoose.model('Appointment', appointmentSchema);
+export default Appointment;

@@ -1,50 +1,57 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const requestSchema = new mongoose.Schema({
+const consultationRequestSchema = new mongoose.Schema({
   patient: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Patient',
-    required: true
+    ref: 'User',
+    required: true,
   },
   problemDescription: {
     type: String,
-    required: true
+    required: true,
   },
   images: [{
-    type: String // Cloudinary URLs
+    type: String,
   }],
+  budgetRange: {
+    min: { type: Number },
+    max: { type: Number },
+  },
   preferredTiming: {
-    type: Date,
-    required: true
+    type: String,
   },
   mode: {
     type: String,
     enum: ['online', 'offline'],
-    required: true
+    required: true,
   },
-  budget: {
-    type: Number,
-    required: true
+  distancePreference: {
+    type: Number, // Radius in km. Use 0 or large number for 'Any'
+    default: 0,
   },
-  locationPreference: {
-    type: String,
-    enum: ['any', 'radius'],
-    default: 'any'
-  },
-  radiusInKm: {
-    type: Number,
-    default: 0
+  location: { // Patient's location when making the request
+    type: {
+      type: String,
+      enum: ['Point'],
+      default: 'Point',
+    },
+    coordinates: {
+      type: [Number], // [longitude, latitude]
+      default: [0, 0]
+    },
   },
   status: {
     type: String,
     enum: ['pending', 'accepted', 'completed', 'cancelled'],
-    default: 'pending'
+    default: 'pending',
   },
   acceptedBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Doctor',
-    default: null
-  }
+    ref: 'User',
+  },
 }, { timestamps: true });
 
-module.exports = mongoose.model('ConsultationRequest', requestSchema);
+consultationRequestSchema.index({ location: '2dsphere' });
+
+const ConsultationRequest = mongoose.model('ConsultationRequest', consultationRequestSchema);
+export default ConsultationRequest;

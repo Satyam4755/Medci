@@ -1,0 +1,45 @@
+import mongoose from 'mongoose';
+
+const doctorProfileSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+  qualification: {
+    type: String,
+    required: true,
+  },
+  experience: {
+    type: Number, // Years of experience
+    required: true,
+  },
+  feeRange: {
+    min: { type: Number, required: true },
+    max: { type: Number, required: true },
+  },
+  availabilityTimings: [{
+    day: { type: String },
+    startTime: { type: String }, // e.g. "09:00 AM"
+    endTime: { type: String },   // e.g. "05:00 PM"
+  }],
+  clinicLocation: {
+    type: String,
+    required: true,
+  },
+  location: {
+    type: {
+      type: String,
+      enum: ['Point'],
+      default: 'Point',
+    },
+    coordinates: {
+      type: [Number], // [longitude, latitude]
+      index: '2dsphere',
+      default: [0, 0]
+    },
+  },
+}, { timestamps: true });
+
+const DoctorProfile = mongoose.model('DoctorProfile', doctorProfileSchema);
+export default DoctorProfile;

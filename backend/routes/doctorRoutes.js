@@ -1,10 +1,13 @@
-const express = require('express');
+import express from 'express';
+import { getDoctorProfile, updateDoctorProfile, getDoctorAppointments } from '../controllers/doctorController.js';
+import { protect } from '../middleware/authMiddleware.js';
+
 const router = express.Router();
-const { protect, authorize } = require('../middleware/authMiddleware');
 
-// Get all doctors (for patient listing)
-router.get('/', async (req, res) => {
-  res.json([]); // Placeholder
-});
+router.route('/profile')
+  .get(protect, getDoctorProfile)
+  .put(protect, updateDoctorProfile);
 
-module.exports = router;
+router.get('/appointments', protect, getDoctorAppointments);
+
+export default router;

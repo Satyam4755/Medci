@@ -1,40 +1,60 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const cors = require('cors');
-const http = require('http');
-const { Server } = require('socket.io');
-const connectDB = require('./config/db');
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import connectDB from './config/db.js';
+import authRoutes from './routes/authRoutes.js';
+import consultationRoutes from './routes/consultationRoutes.js';
+import doctorRoutes from './routes/doctorRoutes.js';
 
-// Load env vars
+// Load environment variables
 dotenv.config();
 
-// Connect to database
-// connectDB(); // Uncomment after setting MONGO_URI
+// Connect to Database
+connectDB();
 
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server, {
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
   cors: {
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE']
-  }
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    methods: ['GET', 'POST'],
+  },
 });
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// Socket.io integration
-require('./socket/index')(io);
-
 // Routes
-app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/doctors', require('./routes/doctorRoutes'));
-app.use('/api/patients', require('./routes/patientRoutes'));
-app.use('/api/requests', require('./routes/requestRoutes'));
+app.use('/api/auth', authRoutes);
+app.use('/api/consultations', consultationRoutes);
+app.use('/api/doctors', doctorRoutes);
 
-const PORT = process.env.PORT || 5000;
+// Socket.IO Logic
+const onlineDoctors = new Map(); // doctorId -> socketId
+app.set('io', io);
+app.set('onlineDoctors', onlineDoctors);
 
-server.listen(PORT, () => {
+io.on('connection', (socket) => {
+  const { userId, role } = socket.handshake.query;
+  console.log('A user connected:', socket.id, 'Role:', role);
+
+  if (role === 'Doctor' && userId) {
+    onlineDoctors.set(userId, socket.id);
+  }
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+    if (role === 'Doctor' && userId) {
+      onlineDoctors.delete(userId);
+    }
+  });
+});
+
+const PORT = process.env.PORT || 5007;
+
+httpServer.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

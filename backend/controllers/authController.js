@@ -1,15 +1,18 @@
-const User = require('../models/User');
-const Doctor = require('../models/Doctor');
-const Patient = require('../models/Patient');
-const generateToken = require('../utils/generateToken');
+import User from '../models/User.js';
+import PatientProfile from '../models/PatientProfile.js';
+import DoctorProfile from '../models/DoctorProfile.js';
+import jwt from 'jsonwebtoken';
 
-// @desc    Register a new user
-// @route   POST /api/auth/register
-// @access  Public
-const registerUser = async (req, res) => {
-  const { name, email, password, role, ...otherData } = req.body;
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: '30d',
+  });
+};
 
+export const registerUser = async (req, res) => {
   try {
+    const { name, email, password, role } = req.body;
+
     const userExists = await User.findOne({ email });
 
     if (userExists) {
@@ -20,23 +23,20 @@ const registerUser = async (req, res) => {
       name,
       email,
       password,
-      role
+      role,
     });
 
     if (user) {
-      if (role === 'doctor') {
-        await Doctor.create({
+      if (role === 'Patient') {
+        await PatientProfile.create({ user: user._id });
+      } else if (role === 'Doctor') {
+        // Will need to update these later with actual info
+        await DoctorProfile.create({ 
           user: user._id,
-          specialization: otherData.specialization,
-          qualification: otherData.qualification,
-          experience: otherData.experience,
-          consultationFee: otherData.consultationFee
-        });
-      } else if (role === 'patient') {
-        await Patient.create({
-          user: user._id,
-          age: otherData.age,
-          gender: otherData.gender
+          qualification: 'Not specified',
+          experience: 0,
+          feeRange: { min: 0, max: 0 },
+          clinicLocation: 'Not specified',
         });
       }
 
@@ -45,7 +45,7 @@ const registerUser = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        token: generateToken(user._id)
+        token: generateToken(user._id),
       });
     } else {
       res.status(400).json({ message: 'Invalid user data' });
@@ -55,13 +55,10 @@ const registerUser = async (req, res) => {
   }
 };
 
-// @desc    Auth user & get token
-// @route   POST /api/auth/login
-// @access  Public
-const loginUser = async (req, res) => {
-  const { email, password } = req.body;
-
+export const authUser = async (req, res) => {
   try {
+    const { email, password } = req.body;
+
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
@@ -70,7 +67,8 @@ const loginUser = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        token: generateToken(user._id)
+        profileImage: user.profileImage,
+        token: generateToken(user._id),
       });
     } else {
       res.status(401).json({ message: 'Invalid email or password' });
@@ -80,4 +78,15 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+export const getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
