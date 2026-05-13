@@ -6,16 +6,19 @@ import App from './App.jsx'
 import { AuthProvider } from './context/AuthContext'
 import { SocketProvider } from './context/SocketContext'
 import { ThemeProvider } from './context/ThemeContext'
+import { GlobalLoadingProvider } from './context/GlobalLoadingContext'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <ThemeProvider>
-        <AuthProvider>
-          <SocketProvider>
-            <App />
-          </SocketProvider>
-        </AuthProvider>
+        <GlobalLoadingProvider>
+          <AuthProvider>
+            <SocketProvider>
+              <App />
+            </SocketProvider>
+          </AuthProvider>
+        </GlobalLoadingProvider>
       </ThemeProvider>
     </BrowserRouter>
   </StrictMode>,

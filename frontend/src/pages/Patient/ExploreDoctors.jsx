@@ -1,27 +1,37 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
+import { useGlobalLoading } from '../../context/GlobalLoadingContext';
 import { toast } from 'react-toastify';
+import { DoctorCardSkeleton } from '../../components/SkeletonLoaders';
 
 const ExploreDoctors = () => {
   const { user } = useContext(AuthContext);
+  const { startLoading, stopLoading } = useGlobalLoading();
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
+        setError(null);
+        startLoading('Finding doctors...');
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
         const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/doctors`, config);
         setDoctors(data);
-      } catch (error) {
-        toast.error('Failed to load doctors');
-      } finally {
         setLoading(false);
+        stopLoading();
+      } catch (error) {
+        console.error(error);
+        setError('Failed to load doctors. Please try again.');
+        setLoading(false);
+        stopLoading();
+        toast.error('Failed to load doctors');
       }
     };
     fetchDoctors();
-  }, [user]);
+  }, [user.token]); // Only depend on user.token
 
   return (
     <div className="space-y-6">
@@ -41,7 +51,21 @@ const ExploreDoctors = () => {
 
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1,2,3].map(i => <div key={i} className="h-64 glass-panel rounded-2xl animate-pulse"></div>)}
+          <DoctorCardSkeleton />
+          <DoctorCardSkeleton />
+          <DoctorCardSkeleton />
+        </div>
+      ) : error ? (
+        <div className="glass-panel p-16 rounded-2xl text-center flex flex-col items-center justify-center border-dashed border-2 border-[var(--color-theme-border)]">
+          <div className="w-16 h-16 rounded-full bg-[var(--color-theme-panel)] flex items-center justify-center mb-4 text-2xl">⚠️</div>
+          <h3 className="text-xl font-semibold text-[var(--color-theme-text)]">Error Loading Doctors</h3>
+          <p className="text-[var(--color-theme-muted)] mt-2 max-w-md">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 px-4 py-2 bg-[var(--color-theme-primary)] text-white rounded-lg"
+          >
+            Retry
+          </button>
         </div>
       ) : doctors.length === 0 ? (
         <div className="glass-panel p-16 rounded-2xl text-center flex flex-col items-center justify-center border-dashed border-2 border-[var(--color-theme-border)]">
