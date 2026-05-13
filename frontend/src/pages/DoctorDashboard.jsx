@@ -38,7 +38,7 @@ const DoctorDashboard = () => {
   const fetchInitialRequests = async () => {
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      const { data } = await axios.get('http://localhost:5007/api/consultations/live', config);
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/consultations/live`, config);
       setLiveRequests(data);
     } catch (error) {
       console.error(error);
@@ -48,7 +48,7 @@ const DoctorDashboard = () => {
   const handleAccept = async (id) => {
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.post(`http://localhost:5007/api/consultations/${id}/accept`, {}, config);
+      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/consultations/${id}/accept`, {}, config);
       toast.success('Request accepted successfully!');
       setLiveRequests(prev => prev.filter(r => r._id !== id));
       // Switch to appointments tab (to be implemented)
@@ -73,7 +73,7 @@ const DoctorDashboard = () => {
       {/* Main Content */}
       <div className="flex-1 p-8">
         <h1 className="text-3xl font-bold mb-6">Welcome, Dr. {user.name}</h1>
-        
+
         {activeTab === 'live' && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold mb-4 text-slate-300 flex items-center">
@@ -83,7 +83,7 @@ const DoctorDashboard = () => {
               </span>
               Incoming Live Requests
             </h2>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {liveRequests.map(req => (
                 <div key={req._id} className="bg-slate-800 p-6 rounded-xl border border-blue-500/30 shadow-lg shadow-blue-500/10">
@@ -98,7 +98,7 @@ const DoctorDashboard = () => {
                     <p>Timing: {req.preferredTiming}</p>
                     <p>Budget: ${req.budgetRange?.min} - ${req.budgetRange?.max}</p>
                   </div>
-                  <button 
+                  <button
                     onClick={() => handleAccept(req._id)}
                     className="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-lg font-semibold transition"
                   >

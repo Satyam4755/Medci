@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 const PatientDashboard = () => {
   const { user } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState('create');
-  
+
   // Form State
   const [problemDescription, setProblemDescription] = useState('');
   const [budgetMin, setBudgetMin] = useState('');
@@ -26,7 +26,7 @@ const PatientDashboard = () => {
   const fetchMyRequests = async () => {
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      const { data } = await axios.get('http://localhost:5007/api/consultations/myrequests', config);
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/consultations/myrequests`, config);
       setRequests(data);
     } catch (error) {
       toast.error('Failed to load requests');
@@ -46,8 +46,8 @@ const PatientDashboard = () => {
         longitude: 77.2090, // mock location
         latitude: 28.6139   // mock location
       };
-      
-      await axios.post('http://localhost:5007/api/consultations', payload, config);
+
+      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/consultations`, payload, config);
       toast.success('Consultation request sent!');
       setActiveTab('requests');
       setProblemDescription('');
@@ -70,14 +70,14 @@ const PatientDashboard = () => {
       {/* Main Content */}
       <div className="flex-1 p-8">
         <h1 className="text-3xl font-bold mb-6">Welcome, {user.name}</h1>
-        
+
         {activeTab === 'create' && (
           <div className="max-w-2xl bg-slate-800 p-6 rounded-xl border border-slate-700">
             <h2 className="text-xl font-semibold mb-4">Create Consultation Request</h2>
             <form onSubmit={submitRequest} className="space-y-4">
               <div>
                 <label className="block text-sm text-slate-400 mb-1">Problem Description</label>
-                <textarea 
+                <textarea
                   required value={problemDescription} onChange={(e) => setProblemDescription(e.target.value)}
                   className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2" rows="3"
                 ></textarea>
