@@ -7,7 +7,7 @@ import Layout from './components/Layout';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// Patient Pages
+
 import PatientHome from './pages/Patient/PatientHome';
 import ExploreDoctors from './pages/Patient/ExploreDoctors';
 import RaiseRequest from './pages/Patient/RaiseRequest';
@@ -16,7 +16,7 @@ import Appointments from './pages/Patient/Appointments';
 // Doctor Pages
 import DoctorHome from './pages/Doctor/DoctorHome';
 import LiveRequests from './pages/Doctor/LiveRequests';
-
+ 
 // Admin Pages
 const AdminHome = () => <Layout><div className="text-white text-2xl">Admin Dashboard Coming Soon</div></Layout>;
 
