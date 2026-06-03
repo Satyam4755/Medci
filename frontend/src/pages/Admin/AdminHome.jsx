@@ -71,11 +71,11 @@ const AdminHome = () => {
           <div className="space-y-4">
             <div className="flex justify-between items-center p-4 bg-[var(--color-theme-panel)] rounded-xl">
               <span className="text-[var(--color-theme-muted)]">Socket.IO Real-time Engine</span>
-              <span className="text-emerald-400 font-semibold px-3 py-1 bg-emerald-400/10 rounded-full">Online</span>
+              <span className="text-white font-semibold px-3 py-1 bg-white/10 rounded-full">Online</span>
             </div>
             <div className="flex justify-between items-center p-4 bg-[var(--color-theme-panel)] rounded-xl">
               <span className="text-[var(--color-theme-muted)]">MongoDB Database</span>
-              <span className="text-emerald-400 font-semibold px-3 py-1 bg-emerald-400/10 rounded-full">Connected</span>
+              <span className="text-white font-semibold px-3 py-1 bg-white/10 rounded-full">Connected</span>
             </div>
           </div>
         </div>

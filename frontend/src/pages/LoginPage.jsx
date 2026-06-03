@@ -35,57 +35,75 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-900 text-white p-6">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white p-6 relative">
+      {/* Medci Logo Header */}
+      <div className="absolute top-6 left-6 md:top-10 md:left-12">
+        <Link to="/">
+          <motion.div 
+            whileHover={{ scale: 1.05 }} 
+            whileTap={{ scale: 0.95 }}
+            className="text-3xl font-bold text-white tracking-tight cursor-pointer"
+          >
+            Medci
+          </motion.div>
+        </Link>
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md bg-slate-800 p-8 rounded-2xl border border-slate-700 shadow-xl"
+        className="w-full max-w-md bg-neutral-900 p-8 rounded-2xl border border-neutral-800 shadow-xl z-10"
       >
-        <h2 className="text-3xl font-bold mb-6 text-center text-blue-400">Welcome Back</h2>
+        <h2 className="text-3xl font-bold mb-6 text-center text-white">Welcome Back</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-slate-400 mb-1">Email</label>
+            <label className="block text-neutral-400 mb-1">Email</label>
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={isSubmitting}
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-black border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-white disabled:opacity-50 disabled:cursor-not-allowed"
               placeholder="Enter your email"
             />
           </div>
           <div>
-            <label className="block text-slate-400 mb-1">Password</label>
+            <label className="block text-neutral-400 mb-1">Password</label>
             <input
               type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={isSubmitting}
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-black border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-white disabled:opacity-50 disabled:cursor-not-allowed"
               placeholder="Enter your password"
             />
           </div>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition flex items-center justify-center"
+            className="w-full bg-white hover:bg-gray-200 disabled:bg-gray-400 disabled:cursor-not-allowed text-black font-semibold py-3 rounded-lg transition flex items-center justify-center shadow-sm"
           >
             {isSubmitting ? (
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+                className="w-5 h-5 border-2 border-black border-t-transparent rounded-full"
               />
             ) : (
               'Log In'
             )}
           </button>
         </form>
-        <p className="mt-6 text-center text-slate-400">
-          Don't have an account? <Link to="/signup" className="text-blue-400 hover:underline">Sign up</Link>
+        <p className="mt-6 text-center text-neutral-400">
+          Don't have an account? <Link to="/signup" className="text-white font-medium hover:underline">Sign up</Link>
         </p>
+        <div className="mt-6 text-center">
+          <Link to="/" className="text-sm text-neutral-500 hover:text-white transition flex items-center justify-center gap-2">
+            <span>←</span> Back to Home
+          </Link>
+        </div>
       </motion.div>
     </div>
   );

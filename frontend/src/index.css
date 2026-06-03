@@ -2,15 +2,15 @@
 
 :root, .theme-black {
   --bg-gradient-from: #000000; /* Pure black */
-  --bg-gradient-to: #050505; /* Near black */
-  --text-main: #ffffff; /* White */
+  --bg-gradient-to: #0A0A0A; /* Near black */
+  --text-main: #ffffff; /* Pure White */
   --text-muted: #a1a1aa; /* Light gray */
-  --primary: #3b82f6; /* Blue accent */
-  --primary-hover: #2563eb;
-  --panel-bg: rgba(17, 17, 17, 0.85); /* Charcoal */
-  --panel-border: rgba(39, 39, 42, 0.7); /* Subtle gray */
+  --primary: #ffffff; /* White buttons/accents */
+  --primary-hover: #e5e5e5; /* Soft gray hover */
+  --panel-bg: rgba(17, 17, 17, 0.95); /* Charcoal */
+  --panel-border: rgba(39, 39, 42, 0.8); /* Subtle gray border */
   --input-bg: rgba(24, 24, 27, 0.9);
-  --dropdown-bg: #111111; /* Solid for dropdowns */
+  --dropdown-bg: #111111;
 }
 
 .theme-brown {

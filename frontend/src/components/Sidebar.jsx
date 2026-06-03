@@ -80,7 +80,7 @@ const Sidebar = ({ onClose }) => {
           onChange={(e) => changeTheme(e.target.value)}
           className="w-full bg-[var(--color-theme-panel)] border border-[var(--color-theme-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-theme-primary)] mb-6 text-white"
         >
-          {themes.map(t => <option key={t.id} value={t.id} className="bg-slate-800">{t.name}</option>)}
+          {themes.map(t => <option key={t.id} value={t.id} className="bg-neutral-900">{t.name}</option>)}
         </select>
         <button 
           onClick={handleLogout}
