@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+import React from 'react';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
@@ -7,6 +8,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
 import GlobalLoader from './components/GlobalLoader';
 import PageTransition from './components/PageTransition';
+import { useGlobalLoading } from './context/GlobalLoadingContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -25,10 +27,13 @@ const AdminHome = () => <Layout><div className="text-white text-2xl">Admin Dashb
 
 function App() {
   const location = useLocation();
+  const { isLoading, loadingMessage } = useGlobalLoading();
 
   return (
     <div className="min-h-screen flex flex-col font-sans transition-colors duration-300">
-      <GlobalLoader />
+      <AnimatePresence>
+        {isLoading && <GlobalLoader message={loadingMessage} />}
+      </AnimatePresence>
       <ToastContainer position="top-right" autoClose={3000} theme="dark" />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>

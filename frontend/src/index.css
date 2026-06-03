@@ -1,47 +1,56 @@
 @import "tailwindcss";
 
 :root, .theme-black {
-  --bg-gradient-from: #0f172a; /* slate-900 */
-  --bg-gradient-to: #020617; /* slate-950 */
-  --text-main: #ffffff;
-  --text-muted: #94a3b8;
-  --primary: #3b82f6; /* blue-500 */
+  --bg-gradient-from: #000000; /* Pure black */
+  --bg-gradient-to: #050505; /* Near black */
+  --text-main: #ffffff; /* White */
+  --text-muted: #a1a1aa; /* Light gray */
+  --primary: #3b82f6; /* Blue accent */
   --primary-hover: #2563eb;
-  --panel-bg: rgba(30, 41, 59, 0.6); /* slate-800/60 */
-  --panel-border: rgba(51, 65, 85, 0.5); /* slate-700/50 */
+  --panel-bg: rgba(17, 17, 17, 0.85); /* Charcoal */
+  --panel-border: rgba(39, 39, 42, 0.7); /* Subtle gray */
+  --input-bg: rgba(24, 24, 27, 0.9);
+  --dropdown-bg: #111111; /* Solid for dropdowns */
 }
 
 .theme-brown {
-  --bg-gradient-from: #2c1e16; /* warm dark brown */
+  --bg-gradient-from: #2c1e16;
   --bg-gradient-to: #1a100c; 
-  --text-main: #fef3c7;
+  --text-main: #fdfbf7;
   --text-muted: #d6d3d1;
-  --primary: #d97706; /* amber-600 */
+  --primary: #d97706; 
   --primary-hover: #b45309;
-  --panel-bg: rgba(74, 51, 37, 0.6);
+  --panel-bg: rgba(74, 51, 37, 0.75);
   --panel-border: rgba(120, 80, 60, 0.5);
+  --input-bg: rgba(60, 40, 25, 0.9);
+  --dropdown-bg: #3a251a;
 }
 
 .theme-blonde {
-  --bg-gradient-from: #fefce8; /* light warm yellow */
-  --bg-gradient-to: #fef08a;
-  --text-main: #422006;
-  --text-muted: #78350f;
-  --primary: #ca8a04; /* yellow-600 */
-  --primary-hover: #a16207;
-  --panel-bg: rgba(254, 249, 195, 0.8);
-  --panel-border: rgba(253, 224, 71, 0.8);
+  /* High contrast light theme */
+  --bg-gradient-from: #fdfbf7; /* Warm cream */
+  --bg-gradient-to: #fef08a; /* Soft golden */
+  --text-main: #1c1917; /* Very dark stone for perfect contrast */
+  --text-muted: #57534e; /* Dark gray for secondary */
+  --primary: #b45309; /* Dark amber for buttons */
+  --primary-hover: #92400e;
+  --panel-bg: rgba(255, 255, 255, 0.85); /* White panel for max contrast */
+  --panel-border: rgba(214, 187, 114, 0.5);
+  --input-bg: rgba(255, 255, 255, 0.95);
+  --dropdown-bg: #ffffff;
 }
 
 .theme-grey {
-  --bg-gradient-from: #18181b; /* zinc-900 */
+  --bg-gradient-from: #18181b; 
   --bg-gradient-to: #09090b;
   --text-main: #fafafa;
   --text-muted: #a1a1aa;
-  --primary: #71717a; /* zinc-500 */
-  --primary-hover: #52525b;
-  --panel-bg: rgba(39, 39, 42, 0.6);
-  --panel-border: rgba(63, 63, 70, 0.5);
+  --primary: #52525b; 
+  --primary-hover: #3f3f46;
+  --panel-bg: rgba(39, 39, 42, 0.75);
+  --panel-border: rgba(63, 63, 70, 0.6);
+  --input-bg: rgba(24, 24, 27, 0.9);
+  --dropdown-bg: #18181b;
 }
 
 @theme {
@@ -53,13 +62,14 @@
   --color-theme-primary-hover: var(--primary-hover);
   --color-theme-panel: var(--panel-bg);
   --color-theme-border: var(--panel-border);
+  --color-theme-input: var(--input-bg);
+  --color-theme-dropdown: var(--dropdown-bg);
 }
 
 body {
   margin: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: linear-gradient(to bottom right, var(--bg-gradient-from), var(--bg-gradient-to));
@@ -68,23 +78,29 @@ body {
   min-height: 100vh;
 }
 
-/* Glassmorphism utilities */
+/* Base Glassmorphism utilities */
 .glass-panel {
   background-color: var(--panel-bg);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--panel-border);
+  color: var(--text-main);
 }
 
-/* Shimmer animation for skeletons */
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
+/* Inputs and Selects styling */
+input, select, textarea {
+  color: var(--text-main) !important;
+  background-color: var(--input-bg) !important;
+  border-color: var(--panel-border) !important;
 }
 
-.animate-shimmer {
-  animation: shimmer 1.5s ease-in-out infinite;
+input::placeholder, textarea::placeholder {
+  color: var(--text-muted) !important;
+  opacity: 0.7;
+}
+
+/* Override select option dropdown color for visibility */
+option {
+  background-color: var(--dropdown-bg) !important;
+  color: var(--text-main) !important;
 }

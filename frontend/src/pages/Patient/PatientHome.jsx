@@ -3,7 +3,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { useGlobalLoading } from '../../context/GlobalLoadingContext';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { DashboardCardSkeleton } from '../../components/SkeletonLoaders';
+import SkeletonLoader from '../../components/SkeletonLoader';
 
 const PatientHome = () => {
   const { user } = useContext(AuthContext);
@@ -21,17 +21,16 @@ const PatientHome = () => {
         const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/consultations/myrequests`, config);
         const active = data.filter(r => r.status === 'pending').length;
         setStats({ activeRequests: active, appointments: data.length - active });
-        setLoading(false);
-        stopLoading();
       } catch (error) {
         console.error(error);
         setError('Failed to load dashboard data. Please try refreshing the page.');
+      } finally {
         setLoading(false);
         stopLoading();
       }
     };
     fetchStats();
-  }, [user.token]); // Only depend on user.token
+  }, [user.token]);
 
   return (
     <div className="space-y-8">
@@ -57,9 +56,9 @@ const PatientHome = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {loading ? (
           <>
-            <DashboardCardSkeleton />
-            <DashboardCardSkeleton />
-            <DashboardCardSkeleton />
+            <SkeletonLoader type="dashboard-stat" />
+            <SkeletonLoader type="dashboard-stat" />
+            <SkeletonLoader type="dashboard-stat" />
           </>
         ) : error ? (
           <div className="col-span-full glass-panel p-6 rounded-2xl text-center">

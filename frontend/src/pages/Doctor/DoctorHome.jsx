@@ -2,10 +2,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import SkeletonLoader from '../../components/SkeletonLoader';
 
 const DoctorHome = () => {
   const { user } = useContext(AuthContext);
   const [stats, setStats] = useState({ requests: 0, appointments: 0, earnings: 0 });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Mock stats based on live requests for now
@@ -16,6 +18,8 @@ const DoctorHome = () => {
         setStats({ requests: data.length, appointments: 0, earnings: 0 });
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchStats();
@@ -51,18 +55,28 @@ const DoctorHome = () => {
 
       {/* Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="glass-panel p-6 rounded-2xl flex flex-col justify-between">
-          <h3 className="text-[var(--color-theme-muted)] font-medium">Pending Requests</h3>
-          <p className="text-4xl font-bold mt-4 text-[var(--color-theme-text)]">{stats.requests}</p>
-        </div>
-        <div className="glass-panel p-6 rounded-2xl flex flex-col justify-between">
-          <h3 className="text-[var(--color-theme-muted)] font-medium">Today's Appointments</h3>
-          <p className="text-4xl font-bold mt-4 text-[var(--color-theme-primary)]">{stats.appointments}</p>
-        </div>
-        <div className="glass-panel p-6 rounded-2xl flex flex-col justify-between">
-          <h3 className="text-[var(--color-theme-muted)] font-medium">Total Earnings</h3>
-          <p className="text-4xl font-bold mt-4 text-[var(--color-theme-text)]">₹ {stats.earnings}</p>
-        </div>
+        {loading ? (
+          <>
+            <SkeletonLoader type="dashboard-stat" />
+            <SkeletonLoader type="dashboard-stat" />
+            <SkeletonLoader type="dashboard-stat" />
+          </>
+        ) : (
+          <>
+            <div className="glass-panel p-6 rounded-2xl flex flex-col justify-between">
+              <h3 className="text-[var(--color-theme-muted)] font-medium">Pending Requests</h3>
+              <p className="text-4xl font-bold mt-4 text-[var(--color-theme-text)]">{stats.requests}</p>
+            </div>
+            <div className="glass-panel p-6 rounded-2xl flex flex-col justify-between">
+              <h3 className="text-[var(--color-theme-muted)] font-medium">Today's Appointments</h3>
+              <p className="text-4xl font-bold mt-4 text-[var(--color-theme-primary)]">{stats.appointments}</p>
+            </div>
+            <div className="glass-panel p-6 rounded-2xl flex flex-col justify-between">
+              <h3 className="text-[var(--color-theme-muted)] font-medium">Total Earnings</h3>
+              <p className="text-4xl font-bold mt-4 text-[var(--color-theme-text)]">₹ {stats.earnings}</p>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
 import { useGlobalLoading } from '../../context/GlobalLoadingContext';
 import { toast } from 'react-toastify';
-import { DoctorCardSkeleton } from '../../components/SkeletonLoaders';
+import SkeletonLoader from '../../components/SkeletonLoader';
 
 const ExploreDoctors = () => {
   const { user } = useContext(AuthContext);
@@ -51,9 +51,7 @@ const ExploreDoctors = () => {
 
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <DoctorCardSkeleton />
-          <DoctorCardSkeleton />
-          <DoctorCardSkeleton />
+          {[1,2,3,4,5,6].map(i => <SkeletonLoader key={i} type="card" />)}
         </div>
       ) : error ? (
         <div className="glass-panel p-16 rounded-2xl text-center flex flex-col items-center justify-center border-dashed border-2 border-[var(--color-theme-border)]">
