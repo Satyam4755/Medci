@@ -47,10 +47,10 @@ const DoctorHome = () => {
           </div>
         </div>
         <div className="mt-6 flex gap-4 flex-wrap">
-          <Link to="/doctor/requests" className="px-6 py-3 bg-[var(--color-theme-primary)] text-white rounded-xl font-semibold hover:bg-[var(--color-theme-primary-hover)] transition shadow-lg flex items-center gap-2">
+          <Link to="/doctor/requests" className="px-6 py-3 bg-[var(--color-theme-primary)] text-[var(--color-theme-button-text)] rounded-xl font-semibold hover:bg-[var(--color-theme-primary-hover)] transition shadow-lg flex items-center gap-2">
             View Live Requests <span className="bg-white/20 px-2 py-0.5 rounded text-sm">{stats.requests}</span>
           </Link>
-        </div>
+        </div> 
       </div>
 
       {/* Overview Cards */}

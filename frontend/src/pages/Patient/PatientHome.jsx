@@ -43,7 +43,7 @@ const PatientHome = () => {
           Manage your hair treatment journey and upcoming consultations from here.
         </p>
         <div className="mt-6 flex gap-4 flex-wrap">
-          <Link to="/patient/explore" className="px-6 py-3 bg-[var(--color-theme-primary)] text-white rounded-xl font-semibold hover:bg-[var(--color-theme-primary-hover)] transition shadow-lg">
+          <Link to="/patient/explore" className="px-6 py-3 bg-[var(--color-theme-primary)] text-black rounded-xl font-semibold hover:bg-[var(--color-theme-primary-hover)] transition shadow-lg">
             Find Doctors
           </Link>
           <Link to="/patient/request" className="px-6 py-3 glass-panel text-[var(--color-theme-text)] rounded-xl font-semibold hover:bg-[var(--color-theme-primary)] hover:bg-opacity-20 transition">
@@ -65,7 +65,7 @@ const PatientHome = () => {
             <p className="text-red-400">{error}</p>
             <button
               onClick={() => window.location.reload()}
-              className="mt-4 px-4 py-2 bg-[var(--color-theme-primary)] text-white rounded-lg"
+              className="mt-4 px-4 py-2 bg-[var(--color-theme-primary)] text-[var(--color-theme-text)] rounded-lg"
             >
               Retry
             </button>

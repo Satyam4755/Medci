@@ -60,7 +60,7 @@ const ExploreDoctors = () => {
           <p className="text-[var(--color-theme-muted)] mt-2 max-w-md">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="mt-4 px-4 py-2 bg-[var(--color-theme-primary)] text-white rounded-lg"
+            className="mt-4 px-4 py-2 bg-[var(--color-theme-primary)] text-[var(--color-theme-text)] rounded-lg"
           >
             Retry
           </button>
@@ -87,7 +87,7 @@ const ExploreDoctors = () => {
                 <p>⭐ {doc.experience} Years Exp.</p>
                 <p>💰 ₹{doc.feeRange?.min} - ₹{doc.feeRange?.max} / visit</p>
               </div>
-              <button className="w-full py-2 bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-white rounded-lg font-medium transition">
+              <button className="w-full py-2 bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-[var(--color-theme-text)] rounded-lg font-medium transition">
                 View Profile
               </button>
             </div>

@@ -64,7 +64,7 @@ const Sidebar = ({ onClose }) => {
               key={link.name} 
               to={link.path}
               onClick={() => { if (onClose) onClose(); }}
-              className={({ isActive }) => `px-4 py-3 rounded-lg transition-all font-medium ${isActive ? 'bg-[var(--color-theme-primary)] text-white shadow-lg' : 'hover:bg-[var(--color-theme-primary)] hover:bg-opacity-20 hover:text-white'}`}
+              className={({ isActive }) => `px-4 py-3 rounded-lg transition-all font-medium ${isActive ? 'bg-[var(--color-theme-primary)] text-[var(--color-theme-active-nav-text)] shadow-lg' : 'hover:bg-[var(--color-theme-primary)] hover:bg-opacity-20 hover:text-[var(--color-theme-text)]'}`}
               style={({ isActive }) => isActive ? {} : { color: 'var(--color-theme-muted)' }}
             >
               {link.name}
@@ -78,9 +78,9 @@ const Sidebar = ({ onClose }) => {
         <select 
           value={theme} 
           onChange={(e) => changeTheme(e.target.value)}
-          className="w-full bg-[var(--color-theme-panel)] border border-[var(--color-theme-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-theme-primary)] mb-6 text-white"
+          className="w-full bg-[var(--color-theme-panel)] border border-[var(--color-theme-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-theme-primary)] mb-6 text-[var(--color-theme-text)]"
         >
-          {themes.map(t => <option key={t.id} value={t.id} className="bg-neutral-900">{t.name}</option>)}
+          {themes.map(t => <option key={t.id} value={t.id} className="bg-[var(--color-theme-panel)]">{t.name}</option>)}
         </select>
         <button 
           onClick={handleLogout}

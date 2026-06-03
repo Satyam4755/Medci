@@ -83,7 +83,7 @@ const LiveRequests = () => {
                 </div>
                 <span className="px-3 py-1 bg-[var(--color-theme-panel)] border border-[var(--color-theme-border)] rounded-lg text-sm text-[var(--color-theme-primary)] capitalize">{req.mode}</span>
               </div>
-              <div className="grid grid-cols-2 gap-4 text-sm text-[var(--color-theme-muted)] mb-6 mt-4 p-4 bg-black/10 rounded-xl">
+              <div className="grid grid-cols-2 gap-4 text-sm text-[var(--color-theme-muted)] mb-6 mt-4 p-4 bg-[var(--color-theme-from)]/10 rounded-xl">
                 <div>
                   <span className="block opacity-70 mb-1">Timing</span>
                   <span className="font-medium text-[var(--color-theme-text)]">{req.preferredTiming}</span>
@@ -95,7 +95,7 @@ const LiveRequests = () => {
               </div>
               <button 
                 onClick={() => handleAccept(req._id)}
-                className="w-full bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-white py-3 rounded-xl font-bold transition shadow-lg shadow-[var(--color-theme-primary)]/20"
+                className="w-full bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-[var(--color-theme-text)] py-3 rounded-xl font-bold transition shadow-lg shadow-[var(--color-theme-primary)]/20"
               >
                 Accept Patient
               </button>

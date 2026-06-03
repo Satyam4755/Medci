@@ -7,6 +7,8 @@
   --text-muted: #a1a1aa; /* Light gray */
   --primary: #ffffff; /* White buttons/accents */
   --primary-hover: #e5e5e5; /* Soft gray hover */
+  --button-text: #000000; /* Dark text on white button */
+  --active-nav-text: #000000;
   --panel-bg: rgba(17, 17, 17, 0.95); /* Charcoal */
   --panel-border: rgba(39, 39, 42, 0.8); /* Subtle gray border */
   --input-bg: rgba(24, 24, 27, 0.9);
@@ -20,6 +22,8 @@
   --text-muted: #d6d3d1;
   --primary: #d97706; 
   --primary-hover: #b45309;
+  --button-text: #ffffff;
+  --active-nav-text: #ffffff;
   --panel-bg: rgba(74, 51, 37, 0.75);
   --panel-border: rgba(120, 80, 60, 0.5);
   --input-bg: rgba(60, 40, 25, 0.9);
@@ -34,6 +38,8 @@
   --text-muted: #57534e; /* Dark gray for secondary */
   --primary: #b45309; /* Dark amber for buttons */
   --primary-hover: #92400e;
+  --button-text: #ffffff;
+  --active-nav-text: #ffffff;
   --panel-bg: rgba(255, 255, 255, 0.85); /* White panel for max contrast */
   --panel-border: rgba(214, 187, 114, 0.5);
   --input-bg: rgba(255, 255, 255, 0.95);
@@ -47,12 +53,14 @@
   --text-muted: #a1a1aa;
   --primary: #52525b; 
   --primary-hover: #3f3f46;
+  --button-text: #ffffff;
+  --active-nav-text: #ffffff;
   --panel-bg: rgba(39, 39, 42, 0.75);
   --panel-border: rgba(63, 63, 70, 0.6);
   --input-bg: rgba(24, 24, 27, 0.9);
   --dropdown-bg: #18181b;
 }
-
+ 
 @theme {
   --color-theme-from: var(--bg-gradient-from);
   --color-theme-to: var(--bg-gradient-to);
@@ -60,6 +68,8 @@
   --color-theme-muted: var(--text-muted);
   --color-theme-primary: var(--primary);
   --color-theme-primary-hover: var(--primary-hover);
+  --color-theme-button-text: var(--button-text);
+  --color-theme-active-nav-text: var(--active-nav-text);
   --color-theme-panel: var(--panel-bg);
   --color-theme-border: var(--panel-border);
   --color-theme-input: var(--input-bg);

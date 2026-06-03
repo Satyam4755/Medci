@@ -142,7 +142,7 @@ const RaiseRequest = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] disabled:bg-[var(--color-theme-primary)] disabled:opacity-50 disabled:cursor-not-allowed text-white py-4 rounded-xl font-bold text-lg transition mt-8 shadow-lg flex items-center justify-center"
+            className="w-full bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] disabled:bg-[var(--color-theme-primary)] disabled:opacity-50 disabled:cursor-not-allowed text-[var(--color-theme-text)] py-4 rounded-xl font-bold text-lg transition mt-8 shadow-lg flex items-center justify-center"
           >
             {isSubmitting ? (
               <motion.div
