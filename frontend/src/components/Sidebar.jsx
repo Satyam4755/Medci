@@ -21,6 +21,7 @@ const Sidebar = ({ onClose }) => {
     { name: 'Appointments', path: '/patient/appointments' },
     { name: 'Prescriptions', path: '/patient/prescriptions' },
     { name: 'Notifications', path: '/patient/notifications' },
+    { name: 'Profile Settings', path: '/patient/profile' },
   ];
 
   const doctorLinks = [

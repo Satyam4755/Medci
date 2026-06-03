@@ -16,6 +16,21 @@ const patientProfileSchema = new mongoose.Schema({
   contactNumber: {
     type: String,
   },
+  hairConcerns: {
+    type: [String],
+    default: [],
+  },
+  preferredMode: {
+    type: String,
+    enum: ['Video', 'Audio', 'Chat', 'In-Person'],
+    default: 'Video',
+  },
+  emergencyContact: {
+    type: String,
+  },
+  address: {
+    type: String,
+  },
 }, { timestamps: true });
 
 const PatientProfile = mongoose.model('PatientProfile', patientProfileSchema);

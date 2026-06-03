@@ -23,6 +23,17 @@ const doctorProfileSchema = new mongoose.Schema({
     startTime: { type: String }, // e.g. "09:00 AM"
     endTime: { type: String },   // e.g. "05:00 PM"
   }],
+  clinicName: {
+    type: String,
+  },
+  consultationMode: {
+    type: [String],
+    enum: ['Video', 'Audio', 'Chat', 'In-Person'],
+    default: ['Video'],
+  },
+  medicalRegistrationNumber: {
+    type: String,
+  },
   clinicLocation: {
     type: String,
     required: true,
