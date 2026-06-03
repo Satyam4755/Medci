@@ -11,9 +11,9 @@ const LandingPage = () => {
         <div className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">
           Medci
         </div>
-        <div className="space-x-4">
-          <button onClick={() => navigate('/login')} className="px-4 py-2 rounded-lg text-slate-300 hover:text-white transition">Login</button>
-          <button onClick={() => navigate('/signup')} className="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition font-medium">Get Started</button>
+        <div className="flex items-center gap-2 md:gap-4">
+          <button onClick={() => navigate('/login')} className="px-2 py-2 md:px-4 md:py-2 text-sm md:text-base rounded-lg text-slate-300 hover:text-white transition whitespace-nowrap">Login</button>
+          <button onClick={() => navigate('/signup')} className="px-3 py-2 md:px-5 md:py-2 text-sm md:text-base rounded-lg bg-blue-600 hover:bg-blue-700 transition font-medium whitespace-nowrap">Get Started</button>
         </div>
       </nav>
 

@@ -5,6 +5,7 @@ import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import PublicRoute from './components/PublicRoute';
 import Layout from './components/Layout';
 import GlobalLoader from './components/GlobalLoader';
 import PageTransition from './components/PageTransition';
@@ -37,9 +38,9 @@ function App() {
       <ToastContainer position="top-right" autoClose={3000} theme="dark" />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<PageTransition><LandingPage /></PageTransition>} />
-          <Route path="/login" element={<PageTransition><LoginPage /></PageTransition>} />
-          <Route path="/signup" element={<PageTransition><SignupPage /></PageTransition>} />
+          <Route path="/" element={<PublicRoute><PageTransition><LandingPage /></PageTransition></PublicRoute>} />
+          <Route path="/login" element={<PublicRoute><PageTransition><LoginPage /></PageTransition></PublicRoute>} />
+          <Route path="/signup" element={<PublicRoute><PageTransition><SignupPage /></PageTransition></PublicRoute>} />
           
           {/* Patient Routes */}
           <Route path="/patient" element={<ProtectedRoute allowedRoles={['Patient']}><Navigate to="/patient/home" replace /></ProtectedRoute>} />

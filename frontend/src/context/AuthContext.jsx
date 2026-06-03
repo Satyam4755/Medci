@@ -10,11 +10,24 @@ export const AuthProvider = ({ children }) => {
   const { startLoading, stopLoading } = useGlobalLoading();
 
   useEffect(() => {
-    const userInfo = localStorage.getItem('userInfo');
-    if (userInfo) {
-      setUser(JSON.parse(userInfo));
-    }
-    setLoading(false);
+    const validateToken = async () => {
+      const userInfo = localStorage.getItem('userInfo');
+      if (userInfo) {
+        const parsedUser = JSON.parse(userInfo);
+        try {
+          const config = { headers: { Authorization: `Bearer ${parsedUser.token}` } };
+          const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/auth/me`, config);
+          // Keep token from localStorage since /me might not return it
+          setUser({ ...data, token: parsedUser.token });
+        } catch (error) {
+          console.error("Token validation failed:", error);
+          localStorage.removeItem('userInfo');
+          setUser(null);
+        }
+      }
+      setLoading(false);
+    };
+    validateToken();
   }, []);
 
   const login = async (email, password) => {
