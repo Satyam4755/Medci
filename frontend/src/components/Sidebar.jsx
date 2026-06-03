@@ -4,7 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
 import { motion } from 'framer-motion';
 
-const Sidebar = () => {
+const Sidebar = ({ onClose }) => {
   const { user, logout } = useContext(AuthContext);
   const { theme, changeTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
@@ -52,7 +52,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="w-64 min-h-screen glass-panel flex flex-col justify-between hidden md:flex border-r-0 border-r border-[var(--color-theme-border)]">
+    <div className="w-64 h-full glass-panel flex flex-col justify-between border-r border-[var(--color-theme-border)]">
       <div>
         <div className="p-6">
           <h2 className="text-2xl font-bold" style={{ color: 'var(--color-theme-primary)' }}>Medci</h2>
@@ -63,6 +63,7 @@ const Sidebar = () => {
             <NavLink 
               key={link.name} 
               to={link.path}
+              onClick={() => { if (onClose) onClose(); }}
               className={({ isActive }) => `px-4 py-3 rounded-lg transition-all font-medium ${isActive ? 'bg-[var(--color-theme-primary)] text-white shadow-lg' : 'hover:bg-[var(--color-theme-primary)] hover:bg-opacity-20 hover:text-white'}`}
               style={({ isActive }) => isActive ? {} : { color: 'var(--color-theme-muted)' }}
             >

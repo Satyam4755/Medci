@@ -35,16 +35,16 @@ const ExploreDoctors = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-end">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-4">
         <div>
           <h1 className="text-3xl font-bold text-[var(--color-theme-text)]">Explore Doctors</h1>
           <p className="text-[var(--color-theme-muted)] mt-2">Find the best hair treatment specialists for you.</p>
         </div>
-        <div className="flex gap-2">
-           <select className="glass-panel text-sm px-3 py-2 rounded-lg text-[var(--color-theme-text)] outline-none">
-              <option value="all" className="bg-slate-800">All Specialties</option>
-              <option value="transplant" className="bg-slate-800">Hair Transplant</option>
-              <option value="prp" className="bg-slate-800">PRP Therapy</option>
+        <div className="flex w-full md:w-auto">
+           <select className="glass-panel text-sm px-3 py-3 w-full md:w-auto rounded-lg text-[var(--color-theme-text)] outline-none">
+              <option value="all" className="bg-[var(--color-theme-dropdown)] text-[var(--color-theme-text)]">All Specialties</option>
+              <option value="transplant" className="bg-[var(--color-theme-dropdown)] text-[var(--color-theme-text)]">Hair Transplant</option>
+              <option value="prp" className="bg-[var(--color-theme-dropdown)] text-[var(--color-theme-text)]">PRP Therapy</option>
            </select>
         </div>
       </div>

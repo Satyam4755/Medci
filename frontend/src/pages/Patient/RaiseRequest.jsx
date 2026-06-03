@@ -118,8 +118,8 @@ const RaiseRequest = () => {
                 disabled={isSubmitting}
                 className="w-full bg-[var(--color-theme-panel)] border border-[var(--color-theme-border)] text-[var(--color-theme-text)] rounded-xl px-4 py-3 focus:outline-none focus:border-[var(--color-theme-primary)] transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <option value="online" className="bg-slate-800">Online</option>
-                <option value="offline" className="bg-slate-800">Offline (Clinic Visit)</option>
+                <option value="online" className="bg-[var(--color-theme-dropdown)] text-[var(--color-theme-text)]">Online</option>
+                <option value="offline" className="bg-[var(--color-theme-dropdown)] text-[var(--color-theme-text)]">Offline (Clinic Visit)</option>
               </select>
             </div>
             <div>
@@ -130,11 +130,11 @@ const RaiseRequest = () => {
                 disabled={isSubmitting}
                 className="w-full bg-[var(--color-theme-panel)] border border-[var(--color-theme-border)] text-[var(--color-theme-text)] rounded-xl px-4 py-3 focus:outline-none focus:border-[var(--color-theme-primary)] transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <option value={0} className="bg-slate-800">Any Location</option>
-                <option value={10} className="bg-slate-800">Within 10 km</option>
-                <option value={25} className="bg-slate-800">Within 25 km</option>
-                <option value={50} className="bg-slate-800">Within 50 km</option>
-                <option value={100} className="bg-slate-800">Within 100 km</option>
+                <option value={0} className="bg-[var(--color-theme-dropdown)] text-[var(--color-theme-text)]">Any Location</option>
+                <option value={10} className="bg-[var(--color-theme-dropdown)] text-[var(--color-theme-text)]">Within 10 km</option>
+                <option value={25} className="bg-[var(--color-theme-dropdown)] text-[var(--color-theme-text)]">Within 25 km</option>
+                <option value={50} className="bg-[var(--color-theme-dropdown)] text-[var(--color-theme-text)]">Within 50 km</option>
+                <option value={100} className="bg-[var(--color-theme-dropdown)] text-[var(--color-theme-text)]">Within 100 km</option>
               </select>
             </div>
           </div>
