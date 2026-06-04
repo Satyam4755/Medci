@@ -39,8 +39,10 @@ const PatientProfileSettings = () => {
   const fetchProfile = async () => {
     try {
       startLoading('Loading profile...');
-      const token = localStorage.getItem('token');
-      const { data } = await axios.get('/api/profile', {
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+const token = userInfo?.token;
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5007';
+      const { data } = await axios.get(`${API_URL}/api/profile`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -75,7 +77,8 @@ const PatientProfileSettings = () => {
     e.preventDefault();
     try {
       startLoading('Saving changes...');
-      const token = localStorage.getItem('token');
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+const token = userInfo?.token;
       
       const form = new FormData();
       form.append('name', formData.name);
@@ -94,7 +97,8 @@ const PatientProfileSettings = () => {
         form.append('profileImage', selectedFile);
       }
 
-      const { data } = await axios.put('/api/profile', form, {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5007';
+      const { data } = await axios.put(`${API_URL}/api/profile`, form, {
         headers: { 
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
@@ -117,8 +121,10 @@ const PatientProfileSettings = () => {
     }
     try {
       startLoading('Updating password...');
-      const token = localStorage.getItem('token');
-      await axios.put('/api/profile/password', {
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+const token = userInfo?.token;
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5007';
+      await axios.put(`${API_URL}/api/profile/password`, {
         oldPassword: passwordData.oldPassword,
         newPassword: passwordData.newPassword
       }, {
