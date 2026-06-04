@@ -7,7 +7,15 @@ const router = express.Router();
 
 router.route('/')
   .get(protect, getProfile)
-  .put(protect, upload.single('profileImage'), updateProfile);
+  .put(protect, (req, res, next) => {
+    upload.single('profileImage')(req, res, function (err) {
+      if (err) {
+        console.error('MULTER/CLOUDINARY ERROR:', err);
+        return res.status(500).json({ success: false, message: err.message, stack: err.stack });
+      }
+      next();
+    });
+  }, updateProfile);
 
 router.put('/password', protect, changePassword);
 
