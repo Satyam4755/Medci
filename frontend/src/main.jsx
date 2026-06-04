@@ -7,10 +7,10 @@ import { AuthProvider } from './context/AuthContext'
 import { SocketProvider } from './context/SocketContext'
 import { ThemeProvider } from './context/ThemeContext'
 import { GlobalLoadingProvider } from './context/GlobalLoadingContext'
-
+import { HashRouter } from 'react-router-dom';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <ThemeProvider>
         <GlobalLoadingProvider>
           <AuthProvider>
@@ -20,6 +20,6 @@ createRoot(document.getElementById('root')).render(
           </AuthProvider>
         </GlobalLoadingProvider>
       </ThemeProvider>
-    </BrowserRouter>
+    </HashRouter>
   </StrictMode>,
 )
