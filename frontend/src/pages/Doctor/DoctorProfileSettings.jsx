@@ -57,7 +57,7 @@ const token = userInfo?.token;
         clinicName: data.profile?.clinicName || '',
         clinicLocation: data.profile?.clinicLocation || '',
         medicalRegistrationNumber: data.profile?.medicalRegistrationNumber || '',
-        consultationMode: data.profile?.consultationMode || ['Video']
+        consultationMode: Array.isArray(data.profile?.consultationMode) ? data.profile.consultationMode : ['Video']
       });
       setImagePreview(data.user.profileImage || '');
     } catch (error) {
@@ -76,9 +76,10 @@ const token = userInfo?.token;
   };
 
   const handleModeChange = (mode) => {
-    const newModes = formData.consultationMode.includes(mode)
-      ? formData.consultationMode.filter(m => m !== mode)
-      : [...formData.consultationMode, mode];
+    const currentModes = Array.isArray(formData.consultationMode) ? formData.consultationMode : [];
+    const newModes = currentModes.includes(mode)
+      ? currentModes.filter(m => m !== mode)
+      : [...currentModes, mode];
     setFormData({ ...formData, consultationMode: newModes });
   };
 
@@ -87,7 +88,7 @@ const token = userInfo?.token;
     try {
       startLoading('Saving changes...');
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-const token = userInfo?.token;
+      const token = userInfo?.token;
       
       const form = new FormData();
       form.append('name', formData.name);
@@ -106,17 +107,23 @@ const token = userInfo?.token;
       }
 
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5007';
+      console.log('Sending PUT to:', `${API_URL}/api/profile`);
+      console.log('FormData:', Object.fromEntries(form.entries()));
+      
       const { data } = await axios.put(`${API_URL}/api/profile`, form, {
         headers: { 
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
         }
       });
+      console.log('Update Success:', data);
       
       setUser(data.user);
       toast.success('Professional profile updated!');
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Update failed');
+      console.error('Submit Error:', error);
+      if (error.response) console.error('Error Response:', error.response.data);
+      toast.error(error.response?.data?.message || error.message || 'Update failed');
     } finally {
       stopLoading();
     }
