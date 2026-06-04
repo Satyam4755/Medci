@@ -57,10 +57,16 @@ export const updateProfile = async (req, res) => {
         patientProfile = new PatientProfile({ user: user._id });
       }
       
-      const pFields = ['age', 'gender', 'contactNumber', 'hairConcerns', 'preferredMode', 'emergencyContact', 'address'];
+      const pFields = ['age', 'gender', 'contactNumber', 'preferredMode', 'emergencyContact', 'address'];
       pFields.forEach(field => {
         if (req.body[field] !== undefined) patientProfile[field] = req.body[field];
       });
+      
+      if (req.body['hairConcerns[]']) {
+        patientProfile.hairConcerns = Array.isArray(req.body['hairConcerns[]']) 
+          ? req.body['hairConcerns[]'] 
+          : [req.body['hairConcerns[]']];
+      }
       
       updatedProfile = await patientProfile.save();
     } else if (user.role === 'Doctor') {
@@ -69,14 +75,25 @@ export const updateProfile = async (req, res) => {
         doctorProfile = new DoctorProfile({ user: user._id });
       }
 
-      const dFields = ['qualification', 'experience', 'clinicName', 'consultationMode', 'medicalRegistrationNumber', 'clinicLocation'];
+      const dFields = ['clinicName', 'medicalRegistrationNumber'];
       dFields.forEach(field => {
         if (req.body[field] !== undefined) doctorProfile[field] = req.body[field];
       });
 
-      if (req.body.feeMin !== undefined && req.body.feeMax !== undefined) {
-        doctorProfile.feeRange = { min: req.body.feeMin, max: req.body.feeMax };
+      if (req.body['consultationMode[]']) {
+        doctorProfile.consultationMode = Array.isArray(req.body['consultationMode[]']) 
+          ? req.body['consultationMode[]'] 
+          : [req.body['consultationMode[]']];
       }
+
+      doctorProfile.qualification = req.body.qualification || doctorProfile.qualification || 'Not provided';
+      doctorProfile.experience = req.body.experience || doctorProfile.experience || 0;
+      doctorProfile.clinicLocation = req.body.clinicLocation || doctorProfile.clinicLocation || 'Not provided';
+
+      doctorProfile.feeRange = { 
+        min: req.body.feeMin || doctorProfile.feeRange?.min || 0, 
+        max: req.body.feeMax || doctorProfile.feeRange?.max || 0 
+      };
 
       updatedProfile = await doctorProfile.save();
     }
@@ -93,8 +110,10 @@ export const updateProfile = async (req, res) => {
       profile: updatedProfile
     });
   } catch (error) {
-    console.error('Error updating profile:', error);
-    res.status(500).json({ message: 'Server error updating profile' });
+    console.error('PROFILE UPDATE ERROR:');
+    console.error(error);
+    console.error(error.stack);
+    res.status(500).json({ success: false, message: error.message, stack: error.stack });
   }
 };
 
