@@ -76,7 +76,13 @@ const ExploreDoctors = () => {
           {doctors.map(doc => (
             <div key={doc._id} className="glass-panel p-6 rounded-2xl hover:border-[var(--color-theme-primary)] transition border border-[var(--color-theme-border)]">
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-16 h-16 rounded-full bg-neutral-800 flex-shrink-0"></div>
+                <div className="w-16 h-16 rounded-full bg-neutral-800 flex-shrink-0 overflow-hidden flex items-center justify-center border-2 border-[var(--color-theme-primary)]">
+                  {doc.user?.profileImage ? (
+                    <img src={doc.user.profileImage} alt={`Dr. ${doc.user?.name}`} className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-2xl text-[var(--color-theme-muted)]">?</span>
+                  )}
+                </div>
                 <div>
                   <h3 className="font-bold text-lg text-[var(--color-theme-text)]">Dr. {doc.user?.name}</h3>
                   <p className="text-sm text-[var(--color-theme-primary)]">{doc.qualification}</p>
@@ -87,7 +93,7 @@ const ExploreDoctors = () => {
                 <p>⭐ {doc.experience} Years Exp.</p>
                 <p>💰 ₹{doc.feeRange?.min} - ₹{doc.feeRange?.max} / visit</p>
               </div>
-              <button className="w-full py-2 bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-[var(--color-theme-text)] rounded-lg font-medium transition">
+              <button className="w-full py-2 bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-[var(--color-theme-button-text)] rounded-lg font-medium transition">
                 View Profile
               </button>
             </div>
