@@ -18,6 +18,21 @@ const RaiseRequest = () => {
   const [mode, setMode] = useState('online');
   const [radius, setRadius] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const [previousPrescription, setPreviousPrescription] = useState(null);
+  const [hairMedia, setHairMedia] = useState([{ id: Date.now(), file: null }]);
+
+  const handleAddMediaField = () => {
+    setHairMedia([...hairMedia, { id: Date.now(), file: null }]);
+  };
+
+  const handleRemoveMediaField = (id) => {
+    setHairMedia(hairMedia.filter(media => media.id !== id));
+  };
+
+  const handleMediaChange = (id, file) => {
+    setHairMedia(hairMedia.map(media => media.id === id ? { ...media, file } : media));
+  };
 
   const submitRequest = async (e) => {
     e.preventDefault();
@@ -27,18 +42,29 @@ const RaiseRequest = () => {
     startLoading('Broadcasting your request...');
 
     try {
-      const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      const payload = {
-        problemDescription,
-        budgetRange: { min: Number(budgetMin), max: Number(budgetMax) },
-        preferredTiming,
-        mode,
-        distancePreference: Number(radius),
-        longitude: 77.2090,
-        latitude: 28.6139
-      };
+      const config = { headers: { Authorization: `Bearer ${user.token}`, 'Content-Type': 'multipart/form-data' } };
+      
+      const formData = new FormData();
+      formData.append('problemDescription', problemDescription);
+      formData.append('budgetMin', budgetMin);
+      formData.append('budgetMax', budgetMax);
+      formData.append('preferredTiming', preferredTiming);
+      formData.append('mode', mode);
+      formData.append('distancePreference', radius);
+      formData.append('longitude', 77.2090);
+      formData.append('latitude', 28.6139);
 
-      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/consultations`, payload, config);
+      if (previousPrescription) {
+        formData.append('previousPrescription', previousPrescription);
+      }
+
+      hairMedia.forEach((media) => {
+        if (media.file) {
+          formData.append('hairMedia', media.file);
+        }
+      });
+
+      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/consultations`, formData, config);
       toast.success('Consultation request broadcasted successfully!');
       navigate('/patient/home');
     } catch (error) {
@@ -67,6 +93,69 @@ const RaiseRequest = () => {
               className="w-full bg-[var(--color-theme-panel)] border border-[var(--color-theme-border)] text-[var(--color-theme-text)] rounded-xl px-4 py-3 focus:outline-none focus:border-[var(--color-theme-primary)] transition disabled:opacity-50 disabled:cursor-not-allowed"
               rows="4"
             ></textarea>
+          </div>
+
+          <div>
+            <label className="block font-medium text-[var(--color-theme-muted)] mb-2">Previous Prescription (Optional)</label>
+            <input
+              type="file"
+              accept=".pdf,.jpg,.jpeg,.png"
+              onChange={(e) => setPreviousPrescription(e.target.files[0])}
+              disabled={isSubmitting}
+              className="w-full bg-[var(--color-theme-panel)] border border-[var(--color-theme-border)] text-[var(--color-theme-text)] rounded-xl px-4 py-3 focus:outline-none focus:border-[var(--color-theme-primary)] transition disabled:opacity-50 disabled:cursor-not-allowed file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[var(--color-theme-primary)] file:text-[var(--color-theme-button-text)] hover:file:bg-[var(--color-theme-primary-hover)]"
+            />
+            {previousPrescription && (
+              <p className="mt-2 text-sm text-[var(--color-theme-primary)]">Selected: {previousPrescription.name}</p>
+            )}
+          </div>
+
+          <div>
+            <div className="flex justify-between items-center mb-2">
+              <label className="block font-medium text-[var(--color-theme-muted)]">Hair Photos / Videos</label>
+              <button 
+                type="button" 
+                onClick={handleAddMediaField}
+                className="text-sm px-3 py-1 bg-[var(--color-theme-panel)] border border-[var(--color-theme-primary)] text-[var(--color-theme-primary)] rounded-lg hover:bg-[var(--color-theme-primary)] hover:text-white transition"
+              >
+                + Add More
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              {hairMedia.map((media, index) => (
+                <div key={media.id} className="flex flex-col gap-2 p-4 bg-[var(--color-theme-from)]/5 rounded-xl border border-[var(--color-theme-border)]">
+                  <div className="flex items-center gap-4">
+                    <input
+                      type="file"
+                      accept=".jpg,.jpeg,.png,.mp4,.mov,.webm"
+                      onChange={(e) => handleMediaChange(media.id, e.target.files[0])}
+                      disabled={isSubmitting}
+                      className="flex-1 bg-[var(--color-theme-panel)] border border-[var(--color-theme-border)] text-[var(--color-theme-text)] rounded-xl px-4 py-2 focus:outline-none focus:border-[var(--color-theme-primary)] transition disabled:opacity-50 disabled:cursor-not-allowed file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[var(--color-theme-primary)] file:text-[var(--color-theme-button-text)] hover:file:bg-[var(--color-theme-primary-hover)]"
+                    />
+                    {hairMedia.length > 1 && (
+                      <button 
+                        type="button" 
+                        onClick={() => handleRemoveMediaField(media.id)}
+                        className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition"
+                        title="Remove"
+                      >
+                        ❌
+                      </button>
+                    )}
+                  </div>
+                  
+                  {media.file && (
+                    <div className="mt-2 rounded-lg overflow-hidden border border-[var(--color-theme-border)] max-w-[200px]">
+                      {media.file.type.startsWith('video') ? (
+                        <video src={URL.createObjectURL(media.file)} className="w-full h-auto" controls />
+                      ) : (
+                        <img src={URL.createObjectURL(media.file)} className="w-full h-auto object-cover" alt="Preview" />
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

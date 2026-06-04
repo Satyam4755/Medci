@@ -9,12 +9,16 @@ import consultationRoutes from './routes/consultationRoutes.js';
 import doctorRoutes from './routes/doctorRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import profileRoutes from './routes/profileRoutes.js';
+import { initCronJobs } from './cronJobs.js';
 
 // Load environment variables
 dotenv.config();
 
 // Connect to Database
 connectDB();
+
+// Initialize scheduled tasks
+initCronJobs();
 
 const app = express();
 const httpServer = createServer(app);

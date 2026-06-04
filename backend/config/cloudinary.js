@@ -29,4 +29,17 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage: storage });
 
-export { cloudinary, upload };
+const requestStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    return {
+      folder: 'medci_requests',
+      resource_type: 'auto',
+      allowed_formats: ['jpg', 'jpeg', 'png', 'mp4', 'mov', 'webm', 'pdf']
+    };
+  },
+});
+
+const uploadRequestMedia = multer({ storage: requestStorage });
+
+export { cloudinary, upload, uploadRequestMedia };

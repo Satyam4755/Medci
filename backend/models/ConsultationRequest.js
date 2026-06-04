@@ -10,8 +10,14 @@ const consultationRequestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  images: [{
-    type: String,
+  previousPrescription: {
+    url: String,
+    public_id: String
+  },
+  hairMedia: [{
+    url: String,
+    public_id: String,
+    resource_type: String
   }],
   budgetRange: {
     min: { type: Number },

@@ -83,7 +83,7 @@ const LiveRequests = () => {
                 </div>
                 <span className="px-3 py-1 bg-[var(--color-theme-panel)] border border-[var(--color-theme-border)] rounded-lg text-sm text-[var(--color-theme-primary)] capitalize">{req.mode}</span>
               </div>
-              <div className="grid grid-cols-2 gap-4 text-sm text-[var(--color-theme-muted)] mb-6 mt-4 p-4 bg-[var(--color-theme-from)]/10 rounded-xl">
+              <div className="grid grid-cols-2 gap-4 text-sm text-[var(--color-theme-muted)] mb-4 mt-4 p-4 bg-[var(--color-theme-from)]/10 rounded-xl">
                 <div>
                   <span className="block opacity-70 mb-1">Timing</span>
                   <span className="font-medium text-[var(--color-theme-text)]">{req.preferredTiming}</span>
@@ -93,6 +93,43 @@ const LiveRequests = () => {
                   <span className="font-medium text-[var(--color-theme-text)]">₹{req.budgetRange?.min} - ₹{req.budgetRange?.max}</span>
                 </div>
               </div>
+
+              {(req.previousPrescription?.url || (req.hairMedia && req.hairMedia.length > 0)) && (
+                <div className="mb-6 space-y-4 border-t border-[var(--color-theme-border)] pt-4 text-[var(--color-theme-text)]">
+                  {req.previousPrescription?.url && (
+                    <div>
+                      <span className="block opacity-70 mb-2 text-sm text-[var(--color-theme-muted)]">Previous Prescription</span>
+                      <a 
+                        href={req.previousPrescription.url} 
+                        target="_blank" 
+                        rel="noreferrer"
+                        className="inline-block px-4 py-2 bg-[var(--color-theme-from)]/20 text-[var(--color-theme-primary)] rounded-lg text-sm font-medium hover:bg-[var(--color-theme-from)]/40 transition border border-[var(--color-theme-border)]"
+                      >
+                        📄 View Prescription
+                      </a>
+                    </div>
+                  )}
+
+                  {req.hairMedia && req.hairMedia.length > 0 && (
+                    <div>
+                      <span className="block opacity-70 mb-2 text-sm text-[var(--color-theme-muted)]">Patient Media ({req.hairMedia.length})</span>
+                      <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+                        {req.hairMedia.map((media, idx) => (
+                          <div key={idx} className="flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden border border-[var(--color-theme-border)] bg-[var(--color-theme-panel)]">
+                            {media.resource_type === 'video' ? (
+                              <video src={media.url} className="w-full h-full object-cover" controls preload="metadata" />
+                            ) : (
+                              <a href={media.url} target="_blank" rel="noreferrer">
+                                <img src={media.url} className="w-full h-full object-cover hover:scale-110 transition cursor-pointer" alt="Patient media" />
+                              </a>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
               <button 
                 onClick={() => handleAccept(req._id)}
                 className="w-full bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-[var(--color-theme-text)] py-3 rounded-xl font-bold transition shadow-lg shadow-[var(--color-theme-primary)]/20"

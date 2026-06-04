@@ -4,20 +4,43 @@ import Appointment from '../models/Appointment.js';
 
 export const createRequest = async (req, res) => {
   try {
-    const { problemDescription, images, budgetRange, preferredTiming, mode, distancePreference, longitude, latitude } = req.body;
+    const { problemDescription, budgetMin, budgetMax, preferredTiming, mode, distancePreference, longitude, latitude } = req.body;
     
+    // Parse budget range from either individual fields or the old object structure
+    let bMin = budgetMin ? Number(budgetMin) : (req.body.budgetRange?.min || 0);
+    let bMax = budgetMax ? Number(budgetMax) : (req.body.budgetRange?.max || 0);
+
+    // Handle uploaded files
+    let previousPrescription = null;
+    if (req.files && req.files.previousPrescription && req.files.previousPrescription.length > 0) {
+      previousPrescription = {
+        url: req.files.previousPrescription[0].path,
+        public_id: req.files.previousPrescription[0].filename
+      };
+    }
+
+    let hairMedia = [];
+    if (req.files && req.files.hairMedia) {
+      hairMedia = req.files.hairMedia.map(file => ({
+        url: file.path,
+        public_id: file.filename,
+        resource_type: file.mimetype.startsWith('video') ? 'video' : 'image'
+      }));
+    }
+
     // Create the request
     const newRequest = await ConsultationRequest.create({
       patient: req.user._id,
       problemDescription,
-      images: images || [],
-      budgetRange,
+      previousPrescription,
+      hairMedia,
+      budgetRange: { min: bMin, max: bMax },
       preferredTiming,
       mode,
-      distancePreference,
+      distancePreference: distancePreference ? Number(distancePreference) : 0,
       location: {
         type: 'Point',
-        coordinates: [longitude || 0, latitude || 0]
+        coordinates: [longitude ? Number(longitude) : 0, latitude ? Number(latitude) : 0]
       }
     });
 
