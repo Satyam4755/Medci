@@ -1,13 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
 import { motion } from 'framer-motion';
+import DeleteAccountModal from './DeleteAccountModal';
 
 const Sidebar = ({ onClose }) => {
   const { user, logout } = useContext(AuthContext);
   const { theme, changeTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -85,11 +87,22 @@ const Sidebar = ({ onClose }) => {
         </select>
         <button 
           onClick={handleLogout}
-          className="w-full py-2 rounded-lg border border-[var(--color-theme-border)] hover:bg-red-500/20 hover:text-red-400 transition"
+          className="w-full py-2 rounded-lg border border-[var(--color-theme-border)] hover:bg-neutral-500/20 hover:text-neutral-400 transition mb-2"
         >
           Logout
         </button>
+        <button 
+          onClick={() => setIsDeleteModalOpen(true)}
+          className="w-full py-2 rounded-lg bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white border border-red-600/20 transition"
+        >
+          Delete My Account
+        </button>
       </div>
+
+      <DeleteAccountModal 
+        isOpen={isDeleteModalOpen} 
+        onClose={() => setIsDeleteModalOpen(false)} 
+      />
     </div>
   );
 };

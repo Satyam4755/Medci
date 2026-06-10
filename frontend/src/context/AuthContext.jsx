@@ -82,13 +82,43 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const sendDeleteOtp = async () => {
+    try {
+      const config = { headers: { Authorization: `Bearer ${user.token}` } };
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/account/send-delete-otp`, {}, config);
+      return data;
+    } catch (error) {
+      throw error.response?.data?.message || error.message;
+    }
+  };
+
+  const verifyDeleteOtp = async (otp) => {
+    try {
+      const config = { headers: { Authorization: `Bearer ${user.token}` } };
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/account/verify-delete-otp`, { otp }, config);
+      return data;
+    } catch (error) {
+      throw error.response?.data?.message || error.message;
+    }
+  };
+
+  const deleteAccount = async () => {
+    try {
+      const config = { headers: { Authorization: `Bearer ${user.token}` } };
+      const { data } = await axios.delete(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/account/delete`, config);
+      return data;
+    } catch (error) {
+      throw error.response?.data?.message || error.message;
+    }
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem('userInfo');
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, login, register, sendOtp, verifyOtp, logout, loading }}>
+    <AuthContext.Provider value={{ user, setUser, login, register, sendOtp, verifyOtp, sendDeleteOtp, verifyDeleteOtp, deleteAccount, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
