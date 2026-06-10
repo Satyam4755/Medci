@@ -30,6 +30,8 @@ const io = new Server(httpServer, {
 });
 
 import accountRoutes from './routes/accountRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
+import prescriptionRoutes from './routes/prescriptionRoutes.js';
 
 // Middleware
 app.use(cors());
@@ -42,6 +44,8 @@ app.use('/api/doctors', doctorRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/account', accountRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/prescriptions', prescriptionRoutes);
 
 // Socket.IO Logic
 const onlineDoctors = new Map(); // doctorId -> socketId

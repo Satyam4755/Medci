@@ -16,6 +16,8 @@ import 'react-toastify/dist/ReactToastify.css';
 // Patient Pages
 import PatientHome from './pages/Patient/PatientHome';
 import ExploreDoctors from './pages/Patient/ExploreDoctors';
+import Notifications from './pages/Patient/Notifications';
+import Prescriptions from './pages/Patient/Prescriptions';
 import RaiseRequest from './pages/Patient/RaiseRequest';
 import Appointments from './pages/Patient/Appointments';
 import PatientProfileSettings from './pages/Patient/PatientProfileSettings';
@@ -50,8 +52,8 @@ function App() {
           <Route path="/patient/explore" element={<ProtectedRoute allowedRoles={['Patient']}><PageTransition><Layout><ExploreDoctors /></Layout></PageTransition></ProtectedRoute>} />
           <Route path="/patient/request" element={<ProtectedRoute allowedRoles={['Patient']}><PageTransition><Layout><RaiseRequest /></Layout></PageTransition></ProtectedRoute>} />
           <Route path="/patient/appointments" element={<ProtectedRoute allowedRoles={['Patient']}><PageTransition><Layout><Appointments /></Layout></PageTransition></ProtectedRoute>} />
-          <Route path="/patient/prescriptions" element={<ProtectedRoute allowedRoles={['Patient']}><PageTransition><Layout><div className="text-[var(--color-theme-text)]">Prescriptions feature coming soon.</div></Layout></PageTransition></ProtectedRoute>} />
-          <Route path="/patient/notifications" element={<ProtectedRoute allowedRoles={['Patient']}><PageTransition><Layout><div className="text-[var(--color-theme-text)]">Notifications feature coming soon.</div></Layout></PageTransition></ProtectedRoute>} />
+          <Route path="/patient/prescriptions" element={<ProtectedRoute allowedRoles={['Patient']}><PageTransition><Layout><Prescriptions /></Layout></PageTransition></ProtectedRoute>} />
+          <Route path="/patient/notifications" element={<ProtectedRoute allowedRoles={['Patient']}><PageTransition><Layout><Notifications /></Layout></PageTransition></ProtectedRoute>} />
           <Route path="/patient/profile" element={<ProtectedRoute allowedRoles={['Patient']}><PageTransition><Layout><PatientProfileSettings /></Layout></PageTransition></ProtectedRoute>} />
 
           {/* Doctor Routes */}
