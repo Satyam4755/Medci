@@ -58,3 +58,15 @@ export const getDoctorAppointments = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const getDoctorDetailsById = async (req, res) => {
+  try {
+    const profile = await DoctorProfile.findById(req.params.id).populate('user', 'name profileImage email');
+    if (!profile) {
+      return res.status(404).json({ message: 'Doctor profile not found' });
+    }
+    res.json(profile);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

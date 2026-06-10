@@ -4,6 +4,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { useGlobalLoading } from '../../context/GlobalLoadingContext';
 import { toast } from 'react-toastify';
 import SkeletonLoader from '../../components/SkeletonLoader';
+import DoctorProfilePreviewModal from '../../components/DoctorProfilePreviewModal';
 
 const ExploreDoctors = () => {
   const { user } = useContext(AuthContext);
@@ -11,6 +12,8 @@ const ExploreDoctors = () => {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedDoctorId, setSelectedDoctorId] = useState(null);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -93,13 +96,25 @@ const ExploreDoctors = () => {
                 <p>⭐ {doc.experience} Years Exp.</p>
                 <p>💰 ₹{doc.feeRange?.min} - ₹{doc.feeRange?.max} / visit</p>
               </div>
-              <button className="w-full py-2 bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-[var(--color-theme-button-text)] rounded-lg font-medium transition">
+              <button 
+                onClick={() => {
+                  setSelectedDoctorId(doc._id);
+                  setIsProfileModalOpen(true);
+                }}
+                className="w-full py-2 bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-[var(--color-theme-button-text)] rounded-lg font-medium transition"
+              >
                 View Profile
               </button>
             </div>
           ))}
         </div>
       )}
+
+      <DoctorProfilePreviewModal 
+        isOpen={isProfileModalOpen} 
+        onClose={() => setIsProfileModalOpen(false)} 
+        doctorId={selectedDoctorId} 
+      />
     </div>
   );
 };

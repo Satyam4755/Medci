@@ -50,6 +50,14 @@ const doctorProfileSchema = new mongoose.Schema({
       default: [0, 0]
     },
   },
+  bio: {
+    type: String,
+    default: 'Experienced hair care specialist dedicated to providing personalized treatments and achieving optimal results for every patient.'
+  },
+  languagesSpoken: {
+    type: [String],
+    default: ['English', 'Hindi']
+  },
 }, { timestamps: true });
 
 const DoctorProfile = mongoose.model('DoctorProfile', doctorProfileSchema);
