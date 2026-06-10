@@ -159,42 +159,105 @@ const Prescriptions = () => {
           </div>
 
           {/* Educational Section */}
-          <div>
-            <h3 className="text-xl font-bold mb-6 text-center text-[var(--color-theme-text)]">Treatment & Care Guide</h3>
+          <div className="pt-4">
+            <div className="text-center mb-10">
+              <h3 className="text-2xl font-bold text-[var(--color-theme-text)] mb-2">Most Common Hair Problems & Treatments</h3>
+              <p className="text-[var(--color-theme-muted)] max-w-2xl mx-auto">Learn about commonly used medicines, cosmetics, and treatment approaches for different hair concerns.</p>
+            </div>
+            
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
-                { title: 'Medicines', icon: '💊', desc: 'Prescription medications commonly used for hair loss treatment.', examples: ['Minoxidil', 'Finasteride', 'Dutasteride'] },
-                { title: 'Supplements', icon: '🌿', desc: 'Nutritional supplements often recommended to support healthy hair growth.', examples: ['Biotin', 'Zinc', 'Iron', 'Vitamin D'] },
-                { title: 'Hair Serums', icon: '💧', desc: 'Topical formulations used to strengthen follicles and improve hair density.', examples: ['Growth Serums', 'Scalp Serums'] },
-                { title: 'Shampoos', icon: '🧴', desc: 'Products designed to maintain scalp health and reduce hair-related issues.', examples: ['Anti-Dandruff', 'Anti-Hairfall', 'Medicated'] },
-                { title: 'Scalp Treatments', icon: '🏥', desc: 'Professional procedures used to improve scalp condition and hair growth.', examples: ['PRP Therapy', 'Mesotherapy', 'Scalp Therapy'] },
-                { title: 'Lifestyle Recommendations', icon: '🧘', desc: 'Essential habits that support long-term hair health.', examples: ['Stress Management', 'Healthy Diet', 'Proper Sleep', 'Hydration'] }
+                { 
+                  title: 'Hair Fall', icon: '🍂', 
+                  medicines: ['Minoxidil', 'Finasteride'], 
+                  cosmetics: ['Anti Hair Fall Shampoo', 'Hair Growth Serum'], 
+                  lifestyle: ['Reduce stress', 'Protein-rich diet'] 
+                },
+                { 
+                  title: 'Dandruff', icon: '❄️', 
+                  medicines: ['Ketoconazole', 'Selenium Sulfide'], 
+                  cosmetics: ['Anti-Dandruff Shampoo', 'Scalp Cleanser'], 
+                  lifestyle: ['Regular scalp hygiene', 'Avoid excessive oil buildup'] 
+                },
+                { 
+                  title: 'Alopecia', icon: '👨‍🦲', 
+                  medicines: ['Minoxidil', 'Corticosteroids'], 
+                  cosmetics: ['Hair Thickening Products'], 
+                  lifestyle: ['Early specialist consultation', 'Consistent treatment'] 
+                },
+                { 
+                  title: 'Hair Thinning', icon: '📉', 
+                  medicines: ['Minoxidil', 'Biotin Supplements'], 
+                  cosmetics: ['Volumizing Shampoo', 'Hair Density Serum'], 
+                  lifestyle: ['Improve nutrition', 'Reduce heat styling'] 
+                },
+                { 
+                  title: 'Premature Greying', icon: '🦳', 
+                  medicines: ['Vitamin B12 Supplements', 'Iron Supplements'], 
+                  cosmetics: ['Hair Nourishing Oils', 'Grey Hair Care Products'], 
+                  lifestyle: ['Healthy diet', 'Stress management'] 
+                },
+                { 
+                  title: 'Scalp Irritation', icon: '🔥', 
+                  medicines: ['Anti-inflammatory treatments', 'Medicated shampoos'], 
+                  cosmetics: ['Sensitive Scalp Shampoo', 'Soothing Scalp Serum'], 
+                  lifestyle: ['Avoid harsh chemicals', 'Maintain scalp hydration'] 
+                }
               ].map((item, idx) => (
-                <div key={idx} className="bg-[var(--color-theme-panel)] p-6 rounded-xl border border-[var(--color-theme-border)] hover:border-[var(--color-theme-primary)] transition group flex flex-col h-full shadow-sm hover:shadow-md">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="text-3xl group-hover:scale-110 transition-transform">{item.icon}</span>
-                    <h4 className="font-semibold text-lg text-[var(--color-theme-text)]">{item.title}</h4>
+                <motion.div 
+                  key={idx} 
+                  whileHover={{ y: -5 }}
+                  className="bg-[var(--color-theme-panel)] p-6 rounded-2xl border border-[var(--color-theme-border)] hover:border-[var(--color-theme-primary)]/50 transition-colors group flex flex-col h-full shadow-sm"
+                >
+                  <div className="flex items-center gap-3 mb-6">
+                    <span className="text-4xl group-hover:scale-110 transition-transform origin-bottom-left">{item.icon}</span>
+                    <h4 className="font-bold text-xl text-[var(--color-theme-text)]">{item.title}</h4>
                   </div>
-                  <p className="text-sm text-[var(--color-theme-muted)] mb-5 flex-1 leading-relaxed">{item.desc}</p>
-                  <div className="flex flex-wrap gap-2 mt-auto">
-                    {item.examples.map((ex, i) => (
-                      <span key={i} className="text-xs px-2 py-1 bg-[var(--color-theme-dropdown)] rounded-md border border-[var(--color-theme-border)] text-[var(--color-theme-muted)]">
-                        {ex}
-                      </span>
-                    ))}
+                  
+                  <div className="space-y-5 flex-1">
+                    <div>
+                      <h5 className="text-xs font-bold text-[var(--color-theme-primary)] uppercase tracking-wider mb-2 flex items-center gap-2"><span>💊</span> Common Medicines</h5>
+                      <ul className="text-sm text-[var(--color-theme-muted)] space-y-1.5 ml-1">
+                        {item.medicines.map((m, i) => <li key={i} className="flex items-start gap-2"><span className="text-[var(--color-theme-primary)] opacity-50">•</span> {m}</li>)}
+                      </ul>
+                    </div>
+                    <div>
+                      <h5 className="text-xs font-bold text-blue-400 uppercase tracking-wider mb-2 flex items-center gap-2"><span>🧴</span> Common Cosmetics</h5>
+                      <ul className="text-sm text-[var(--color-theme-muted)] space-y-1.5 ml-1">
+                        {item.cosmetics.map((c, i) => <li key={i} className="flex items-start gap-2"><span className="text-blue-400 opacity-50">•</span> {c}</li>)}
+                      </ul>
+                    </div>
+                    <div>
+                      <h5 className="text-xs font-bold text-green-400 uppercase tracking-wider mb-2 flex items-center gap-2"><span>🧘</span> Lifestyle Tips</h5>
+                      <ul className="text-sm text-[var(--color-theme-muted)] space-y-1.5 ml-1">
+                        {item.lifestyle.map((l, i) => <li key={i} className="flex items-start gap-2"><span className="text-green-400 opacity-50">•</span> {l}</li>)}
+                      </ul>
+                    </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
+            </div>
+
+            <div className="mt-8 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-xl text-center max-w-3xl mx-auto">
+              <p className="text-sm text-yellow-500/90 flex items-center justify-center gap-2">
+                <span className="text-lg">⚠️</span> 
+                <span><span className="font-bold text-yellow-500">Disclaimer:</span> The medicines and products shown are for educational purposes only and should not be used without professional medical advice.</span>
+              </p>
             </div>
           </div>
 
           {/* CTA */}
-          <div className="text-center pb-8 mt-12">
-            <h3 className="text-xl font-bold mb-3">Need Professional Guidance?</h3>
-            <p className="text-[var(--color-theme-muted)] mb-8 max-w-md mx-auto">Consult a qualified specialist for a personalized treatment plan.</p>
-            <Link to="/patient/explore" className="inline-flex items-center justify-center px-8 py-4 bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-[var(--color-theme-button-text)] rounded-xl font-bold text-lg shadow-lg shadow-[var(--color-theme-primary)]/20 transition hover:-translate-y-1">
-              Explore Doctors
-            </Link>
+          <div className="text-center pb-8 mt-16">
+            <motion.div 
+              whileHover={{ scale: 1.02 }}
+              className="max-w-2xl mx-auto bg-gradient-to-br from-[var(--color-theme-panel)] to-[var(--color-theme-dropdown)] p-10 rounded-3xl border border-[var(--color-theme-primary)]/20 shadow-2xl shadow-[var(--color-theme-primary)]/5"
+            >
+              <h3 className="text-2xl font-bold mb-3 text-[var(--color-theme-text)]">Need Personalized Treatment?</h3>
+              <p className="text-[var(--color-theme-muted)] mb-8 max-w-md mx-auto leading-relaxed">Every hair condition is unique. Consult a qualified specialist to receive a treatment plan tailored to your needs.</p>
+              <Link to="/patient/explore" className="inline-flex items-center justify-center px-10 py-4 bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-[var(--color-theme-button-text)] rounded-xl font-bold text-lg shadow-lg shadow-[var(--color-theme-primary)]/20 transition hover:-translate-y-1 w-full sm:w-auto">
+                Explore Doctors
+              </Link>
+            </motion.div>
           </div>
         </motion.div>
       ) : (
