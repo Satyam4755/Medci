@@ -58,13 +58,37 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const sendOtp = async (email) => {
+    startLoading('Sending verification code...');
+    try {
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/auth/send-otp`, { email });
+      return data;
+    } catch (error) {
+      throw error.response?.data?.message || error.message;
+    } finally {
+      stopLoading();
+    }
+  };
+
+  const verifyOtp = async (email, otp) => {
+    startLoading('Verifying code...');
+    try {
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/auth/verify-otp`, { email, otp });
+      return data;
+    } catch (error) {
+      throw error.response?.data?.message || error.message;
+    } finally {
+      stopLoading();
+    }
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem('userInfo');
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, login, register, logout, loading }}>
+    <AuthContext.Provider value={{ user, setUser, login, register, sendOtp, verifyOtp, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
