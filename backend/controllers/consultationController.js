@@ -52,8 +52,8 @@ export const createRequest = async (req, res) => {
 
     // 1. Fee range (simple overlap check)
     // For simplicity, we just find doctors where their min fee is <= budgetRange.max
-    if (budgetRange && budgetRange.max) {
-      query['feeRange.min'] = { $lte: budgetRange.max };
+    if (bMax && bMax > 0) {
+      query['feeRange.min'] = { $lte: bMax };
     }
 
     // 2. Geolocation matching
