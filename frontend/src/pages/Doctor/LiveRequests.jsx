@@ -65,11 +65,11 @@ const LiveRequests = () => {
           <p className="text-[var(--color-theme-muted)] mt-2">Incoming patient requests matching your location and fee.</p>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <AnimatePresence>
           {liveRequests.map(req => (
-            <motion.div 
+            <motion.div
               key={req._id}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -99,9 +99,9 @@ const LiveRequests = () => {
                   {req.previousPrescription?.url && (
                     <div>
                       <span className="block opacity-70 mb-2 text-sm text-[var(--color-theme-muted)]">Previous Prescription</span>
-                      <a 
-                        href={req.previousPrescription.url} 
-                        target="_blank" 
+                      <a
+                        href={req.previousPrescription.url}
+                        target="_blank"
                         rel="noreferrer"
                         className="inline-block px-4 py-2 bg-[var(--color-theme-from)]/20 text-[var(--color-theme-primary)] rounded-lg text-sm font-medium hover:bg-[var(--color-theme-from)]/40 transition border border-[var(--color-theme-border)]"
                       >
@@ -130,9 +130,9 @@ const LiveRequests = () => {
                   )}
                 </div>
               )}
-              <button 
+              <button
                 onClick={() => handleAccept(req._id)}
-                className="w-full bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-[var(--color-theme-text)] py-3 rounded-xl font-bold transition shadow-lg shadow-[var(--color-theme-primary)]/20"
+                className="w-full bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-[var(--color-theme-button-text)] py-3 rounded-xl font-bold transition shadow-lg shadow-[var(--color-theme-primary)]/20"
               >
                 Accept Patient
               </button>

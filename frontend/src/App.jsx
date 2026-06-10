@@ -26,6 +26,10 @@ import PatientProfileSettings from './pages/Patient/PatientProfileSettings';
 import DoctorHome from './pages/Doctor/DoctorHome';
 import LiveRequests from './pages/Doctor/LiveRequests';
 import DoctorProfileSettings from './pages/Doctor/DoctorProfileSettings';
+import DoctorDashboard from './pages/DoctorDashboard';
+import DoctorAppointments from './pages/Doctor/DoctorAppointments';
+import DoctorEarnings from './pages/Doctor/DoctorEarnings';
+import DoctorAvailability from './pages/Doctor/DoctorAvailability';
 
 // Admin Pages
 const AdminHome = () => <Layout><div className="text-[var(--color-theme-text)] text-2xl">Admin Dashboard Coming Soon</div></Layout>;
@@ -60,9 +64,9 @@ function App() {
           <Route path="/doctor" element={<ProtectedRoute allowedRoles={['Doctor']}><Navigate to="/doctor/home" replace /></ProtectedRoute>} />
           <Route path="/doctor/home" element={<ProtectedRoute allowedRoles={['Doctor']}><PageTransition><Layout><DoctorHome /></Layout></PageTransition></ProtectedRoute>} />
           <Route path="/doctor/requests" element={<ProtectedRoute allowedRoles={['Doctor']}><PageTransition><Layout><LiveRequests /></Layout></PageTransition></ProtectedRoute>} />
-          <Route path="/doctor/appointments" element={<ProtectedRoute allowedRoles={['Doctor']}><PageTransition><Layout><div className="text-[var(--color-theme-text)]">Appointments coming soon.</div></Layout></PageTransition></ProtectedRoute>} />
-          <Route path="/doctor/earnings" element={<ProtectedRoute allowedRoles={['Doctor']}><PageTransition><Layout><div className="text-[var(--color-theme-text)]">Earnings coming soon.</div></Layout></PageTransition></ProtectedRoute>} />
-          <Route path="/doctor/availability" element={<ProtectedRoute allowedRoles={['Doctor']}><PageTransition><Layout><div className="text-[var(--color-theme-text)]">Availability settings coming soon.</div></Layout></PageTransition></ProtectedRoute>} />
+          <Route path="/doctor/availability" element={<ProtectedRoute allowedRoles={['Doctor']}><PageTransition><Layout><DoctorAvailability /></Layout></PageTransition></ProtectedRoute>} />
+          <Route path="/doctor/earnings" element={<ProtectedRoute allowedRoles={['Doctor']}><PageTransition><Layout><DoctorEarnings /></Layout></PageTransition></ProtectedRoute>} />
+          <Route path="/doctor/appointments" element={<ProtectedRoute allowedRoles={['Doctor']}><PageTransition><Layout><DoctorAppointments /></Layout></PageTransition></ProtectedRoute>} />
           <Route path="/doctor/profile" element={<ProtectedRoute allowedRoles={['Doctor']}><PageTransition><Layout><DoctorProfileSettings /></Layout></PageTransition></ProtectedRoute>} />
 
           {/* Admin Routes */}

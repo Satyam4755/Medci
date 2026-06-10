@@ -1,5 +1,5 @@
 import express from 'express';
-import { getDoctorProfile, updateDoctorProfile, getDoctorAppointments, getAllDoctors, getDoctorDetailsById } from '../controllers/doctorController.js';
+import { getDoctorProfile, updateDoctorProfile, getDoctorAppointments, getAllDoctors, getDoctorDetailsById, getDoctorEarnings } from '../controllers/doctorController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -12,6 +12,8 @@ router.route('/profile')
   .put(protect, updateDoctorProfile);
 
 router.get('/appointments', protect, getDoctorAppointments);
+
+router.get('/earnings', protect, getDoctorEarnings);
 
 router.get('/:id', protect, getDoctorDetailsById);
 
