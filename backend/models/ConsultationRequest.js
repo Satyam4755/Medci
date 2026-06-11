@@ -69,5 +69,15 @@ const consultationRequestSchema = new mongoose.Schema({
 
 consultationRequestSchema.index({ location: '2dsphere' });
 
+consultationRequestSchema.post('init', function (doc) {
+  if (doc.mode && (!doc.consultationModes || doc.consultationModes.length === 0)) {
+    doc.consultationModes = doc.mode.toLowerCase() === 'online' ? ['video'] : ['in-person'];
+  }
+  if (doc.preferredTiming && !doc.appointmentDateTime) {
+    // For legacy strings, we might not be able to parse to Date easily, but we can store it back in preferredTiming
+    // Since preferredTiming is in the schema, it will just read correctly.
+  }
+});
+
 const ConsultationRequest = mongoose.model('ConsultationRequest', consultationRequestSchema);
 export default ConsultationRequest;

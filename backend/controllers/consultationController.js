@@ -31,11 +31,14 @@ export const createRequest = async (req, res) => {
       }
     }
 
-    let legacyMode = mode || (parsedModes.includes('in-person') ? 'offline' : 'online');
     let tz = timezone || 'Asia/Kolkata';
-    let legacyTiming = preferredTiming;
-    if (!legacyTiming && appointmentDateTime) {
-      legacyTiming = new Date(appointmentDateTime).toLocaleString('en-IN', { timeZone: tz, dateStyle: 'medium', timeStyle: 'short' });
+
+    // Validate Consultation Modes
+    if (!parsedModes || parsedModes.length === 0) {
+      return res.status(400).json({ message: 'At least one consultation mode is required.' });
+    }
+    if (!appointmentDateTime) {
+      return res.status(400).json({ message: 'Appointment Date & Time is required.' });
     }
 
     // Handle uploaded files
@@ -63,11 +66,9 @@ export const createRequest = async (req, res) => {
       previousPrescription,
       hairMedia,
       budgetRange: { min: bMin, max: bMax },
-      preferredTiming: legacyTiming,
-      appointmentDateTime: appointmentDateTime ? new Date(appointmentDateTime) : undefined,
+      appointmentDateTime: new Date(appointmentDateTime),
       timezone: tz,
       consultationModes: parsedModes,
-      mode: legacyMode,
       distancePreference: distancePreference ? Number(distancePreference) : 0,
       location: {
         type: 'Point',
@@ -145,6 +146,24 @@ export const getPatientAppointments = async (req, res) => {
   }
 };
 
+export const getActiveRequest = async (req, res) => {
+  try {
+    const activeRequest = await ConsultationRequest.findOne({
+      patient: req.user._id,
+      status: { $in: ['pending', 'accepted', 'broadcasted', 'scheduled', 'in progress'] }
+    })
+    .populate('acceptedBy', 'name profileImage')
+    .sort('-createdAt');
+
+    if (activeRequest) {
+      return res.json({ hasActiveRequest: true, request: activeRequest });
+    }
+    res.json({ hasActiveRequest: false });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const getPatientRequests = async (req, res) => {
   try {
     const requests = await ConsultationRequest.find({ patient: req.user._id })
@@ -194,11 +213,9 @@ export const acceptRequest = async (req, res) => {
       patient: request.patient,
       doctor: req.user._id,
       consultationRequest: request._id,
-      meetingTiming: request.preferredTiming || 'To be decided',
       appointmentDateTime: request.appointmentDateTime,
       timezone: request.timezone,
       consultationModes: request.consultationModes,
-      mode: request.mode,
       price: doctorProfile ? doctorProfile.feeRange.min : 0
     });
 

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { useGlobalLoading } from '../../context/GlobalLoadingContext';
 import axios from 'axios';
@@ -20,6 +20,27 @@ const RaiseRequest = () => {
   
   const [previousPrescription, setPreviousPrescription] = useState(null);
   const [hairMedia, setHairMedia] = useState([{ id: Date.now(), file: null }]);
+  
+  const [activeRequest, setActiveRequest] = useState(null);
+  const [checkingActive, setCheckingActive] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+
+  useEffect(() => {
+    const checkActiveRequest = async () => {
+      try {
+        const config = { headers: { Authorization: `Bearer ${user.token}` } };
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/consultations/active`, config);
+        if (data.hasActiveRequest) {
+          setActiveRequest(data.request);
+        }
+      } catch (error) {
+        console.error('Failed to check active request:', error);
+      } finally {
+        setCheckingActive(false);
+      }
+    };
+    checkActiveRequest();
+  }, [user.token]);
 
   const handleAddMediaField = () => {
     setHairMedia([...hairMedia, { id: Date.now(), file: null }]);
@@ -148,14 +169,86 @@ const RaiseRequest = () => {
     }
   `;
 
+  if (checkingActive) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="w-12 h-12 border-4 border-[var(--color-theme-primary)] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-3xl mx-auto pb-12">
       <style>{dualSliderStyles}</style>
       <h1 className="text-3xl font-bold mb-2 text-[var(--color-theme-text)]">Book an Appointment</h1>
       <p className="text-[var(--color-theme-muted)] mb-8">Fill in your details, and we'll instantly notify matching doctors in your area.</p>
 
-      <div className="glass-panel p-8 rounded-2xl border border-[var(--color-theme-border)] shadow-xl">
-        <form onSubmit={submitRequest} className="space-y-8">
+      {/* Duplicate Prevention Card */}
+      {activeRequest && !showForm && (
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          className="glass-panel p-8 rounded-2xl border border-[var(--color-theme-primary)] shadow-xl relative overflow-hidden"
+        >
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[var(--color-theme-primary)] to-blue-500"></div>
+          <h2 className="text-2xl font-bold text-[var(--color-theme-text)] mb-4 flex items-center gap-3">
+            <span>📋</span> Request Already Active
+          </h2>
+          <p className="text-[var(--color-theme-muted)] mb-6">
+            Your consultation request has already been submitted and is currently being processed.
+          </p>
+
+          <div className="grid grid-cols-2 gap-4 mb-8">
+            <div className="bg-[var(--color-theme-from)]/10 p-4 rounded-xl border border-[var(--color-theme-border)]">
+              <p className="text-xs text-[var(--color-theme-muted)] mb-1">Current Status</p>
+              <p className="font-bold text-[var(--color-theme-primary)] capitalize">{activeRequest.status}</p>
+            </div>
+            <div className="bg-[var(--color-theme-from)]/10 p-4 rounded-xl border border-[var(--color-theme-border)]">
+              <p className="text-xs text-[var(--color-theme-muted)] mb-1">Budget</p>
+              <p className="font-bold text-[var(--color-theme-text)]">₹{activeRequest.budgetRange?.min} - ₹{activeRequest.budgetRange?.max}</p>
+            </div>
+            <div className="bg-[var(--color-theme-from)]/10 p-4 rounded-xl border border-[var(--color-theme-border)]">
+              <p className="text-xs text-[var(--color-theme-muted)] mb-1">Appointment</p>
+              <p className="font-bold text-[var(--color-theme-text)] text-sm">
+                {activeRequest.appointmentDateTime 
+                  ? new Date(activeRequest.appointmentDateTime).toLocaleString('en-IN', { timeZone: activeRequest.timezone || 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' })
+                  : activeRequest.preferredTiming || 'Flexible'}
+              </p>
+            </div>
+            <div className="bg-[var(--color-theme-from)]/10 p-4 rounded-xl border border-[var(--color-theme-border)]">
+              <p className="text-xs text-[var(--color-theme-muted)] mb-1">Consultation Mode</p>
+              <p className="font-bold text-[var(--color-theme-text)] capitalize">
+                {activeRequest.consultationModes?.join(', ') || activeRequest.mode}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4">
+            <button 
+              onClick={() => navigate('/patient/appointments')}
+              className="flex-1 py-3 bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-[var(--color-theme-button-text)] font-bold rounded-xl transition shadow-lg text-center"
+            >
+              View Existing Request
+            </button>
+            <button 
+              onClick={() => setShowForm(true)}
+              className="flex-1 py-3 bg-[var(--color-theme-dropdown)] hover:bg-[var(--color-theme-border)] text-[var(--color-theme-text)] font-bold rounded-xl transition border border-[var(--color-theme-border)] text-center"
+            >
+              Raise Another Request
+            </button>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Main Booking Form */}
+      {(!activeRequest || showForm) && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-panel p-8 rounded-2xl border border-[var(--color-theme-border)] shadow-xl mt-6">
+          {activeRequest && (
+            <div className="bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 p-4 rounded-xl mb-8 flex items-start gap-3">
+              <span className="text-xl">⚠️</span>
+              <p className="text-sm font-medium">Doctors are still reviewing your current request. Creating another request may result in duplicate consultations.</p>
+            </div>
+          )}
+          <form onSubmit={submitRequest} className="space-y-8">
           
           {/* Problem Description */}
           <div>
@@ -330,7 +423,8 @@ const RaiseRequest = () => {
             {isSubmitting ? 'Broadcasting to Doctors...' : 'Book Appointment Request'}
           </button>
         </form>
-      </div>
+        </motion.div>
+      )}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import express from 'express';
-import { createRequest, getPatientRequests, getLiveRequests, acceptRequest, getPatientAppointments } from '../controllers/consultationController.js';
+import { createRequest, getPatientRequests, getLiveRequests, acceptRequest, getPatientAppointments, getActiveRequest } from '../controllers/consultationController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 import { uploadRequestMedia } from '../config/cloudinary.js';
 
@@ -11,6 +11,7 @@ router.route('/')
     { name: 'hairMedia', maxCount: 10 }
   ]), createRequest); // Patients create requests
 
+router.get('/active', protect, getActiveRequest);
 router.get('/myrequests', protect, getPatientRequests); // Patients get their requests
 router.get('/appointments', protect, getPatientAppointments); // Patients get their appointments
 router.get('/live', protect, getLiveRequests); // Doctors get live requests

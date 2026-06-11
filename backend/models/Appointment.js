@@ -44,5 +44,11 @@ const appointmentSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
+appointmentSchema.post('init', function (doc) {
+  if (doc.mode && (!doc.consultationModes || doc.consultationModes.length === 0)) {
+    doc.consultationModes = doc.mode.toLowerCase() === 'online' ? ['video'] : ['in-person'];
+  }
+});
+
 const Appointment = mongoose.model('Appointment', appointmentSchema);
 export default Appointment;
