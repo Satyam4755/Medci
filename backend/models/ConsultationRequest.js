@@ -26,10 +26,20 @@ const consultationRequestSchema = new mongoose.Schema({
   preferredTiming: {
     type: String,
   },
+  appointmentDateTime: {
+    type: Date,
+  },
+  timezone: {
+    type: String,
+    default: 'Asia/Kolkata',
+  },
+  consultationModes: {
+    type: [String],
+    enum: ['video', 'audio', 'chat', 'in-person'],
+  },
   mode: {
     type: String,
     enum: ['online', 'offline'],
-    required: true,
   },
   distancePreference: {
     type: Number, // Radius in km. Use 0 or large number for 'Any'

@@ -4,11 +4,39 @@ import Appointment from '../models/Appointment.js';
 
 export const createRequest = async (req, res) => {
   try {
-    const { problemDescription, budgetMin, budgetMax, preferredTiming, mode, distancePreference, longitude, latitude } = req.body;
+    const { problemDescription, budgetMin, budgetMax, budgetRange, preferredTiming, mode, distancePreference, longitude, latitude, appointmentDateTime, consultationModes, timezone } = req.body;
     
-    // Parse budget range from either individual fields or the old object structure
-    let bMin = budgetMin ? Number(budgetMin) : (req.body.budgetRange?.min || 0);
-    let bMax = budgetMax ? Number(budgetMax) : (req.body.budgetRange?.max || 0);
+    // Parse budget range from either individual fields, old object structure, or new JSON string
+    let bMin = budgetMin ? Number(budgetMin) : 0;
+    let bMax = budgetMax ? Number(budgetMax) : 0;
+    
+    if (budgetRange && typeof budgetRange === 'string') {
+      try { 
+        const parsedBudget = JSON.parse(budgetRange); 
+        bMin = parsedBudget.min || bMin;
+        bMax = parsedBudget.max || bMax;
+      } catch(e) {}
+    } else if (budgetRange && typeof budgetRange === 'object') {
+      bMin = bMin || (budgetRange.min || 0);
+      bMax = bMax || (budgetRange.max || 0);
+    }
+
+    let parsedModes = [];
+    if (consultationModes) {
+      try { 
+        parsedModes = JSON.parse(consultationModes); 
+      } catch(e) {
+        if (typeof consultationModes === 'string') parsedModes = consultationModes.split(',');
+        else if (Array.isArray(consultationModes)) parsedModes = consultationModes;
+      }
+    }
+
+    let legacyMode = mode || (parsedModes.includes('in-person') ? 'offline' : 'online');
+    let tz = timezone || 'Asia/Kolkata';
+    let legacyTiming = preferredTiming;
+    if (!legacyTiming && appointmentDateTime) {
+      legacyTiming = new Date(appointmentDateTime).toLocaleString('en-IN', { timeZone: tz, dateStyle: 'medium', timeStyle: 'short' });
+    }
 
     // Handle uploaded files
     let previousPrescription = null;
@@ -35,8 +63,11 @@ export const createRequest = async (req, res) => {
       previousPrescription,
       hairMedia,
       budgetRange: { min: bMin, max: bMax },
-      preferredTiming,
-      mode,
+      preferredTiming: legacyTiming,
+      appointmentDateTime: appointmentDateTime ? new Date(appointmentDateTime) : undefined,
+      timezone: tz,
+      consultationModes: parsedModes,
+      mode: legacyMode,
       distancePreference: distancePreference ? Number(distancePreference) : 0,
       location: {
         type: 'Point',
@@ -164,6 +195,9 @@ export const acceptRequest = async (req, res) => {
       doctor: req.user._id,
       consultationRequest: request._id,
       meetingTiming: request.preferredTiming || 'To be decided',
+      appointmentDateTime: request.appointmentDateTime,
+      timezone: request.timezone,
+      consultationModes: request.consultationModes,
       mode: request.mode,
       price: doctorProfile ? doctorProfile.feeRange.min : 0
     });

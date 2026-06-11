@@ -18,7 +18,17 @@ const appointmentSchema = new mongoose.Schema({
   },
   meetingTiming: {
     type: String,
-    required: true,
+  },
+  appointmentDateTime: {
+    type: Date,
+  },
+  timezone: {
+    type: String,
+    default: 'Asia/Kolkata',
+  },
+  consultationModes: {
+    type: [String],
+    enum: ['video', 'audio', 'chat', 'in-person'],
   },
   status: {
     type: String,
@@ -28,7 +38,6 @@ const appointmentSchema = new mongoose.Schema({
   mode: {
     type: String,
     enum: ['online', 'offline'],
-    required: true,
   },
   price: {
     type: Number,

@@ -129,16 +129,28 @@ const AppointmentDetailsModal = ({ appointment, onClose, userRole }) => {
                     <div>
                       <p className="text-xs text-[var(--color-theme-muted)] mb-1">Date & Time</p>
                       <p className="font-medium text-[var(--color-theme-text)] text-sm">
-                        {isDateValid(appointment.meetingTiming) 
-                          ? new Date(appointment.meetingTiming).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })
-                          : appointment.meetingTiming || 'To be decided'}
+                        {appointment.appointmentDateTime 
+                          ? new Date(appointment.appointmentDateTime).toLocaleString('en-IN', { timeZone: appointment.timezone || 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' })
+                          : (isDateValid(appointment.meetingTiming) 
+                            ? new Date(appointment.meetingTiming).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })
+                            : appointment.meetingTiming || 'To be decided')}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-[var(--color-theme-muted)] mb-1">Mode</p>
-                      <p className="font-medium text-[var(--color-theme-text)] text-sm">
-                        {appointment.mode === 'online' ? '💻 Online Consultation' : '🏥 Clinic Visit'}
-                      </p>
+                      <p className="text-xs text-[var(--color-theme-muted)] mb-2">Consultation Mode(s)</p>
+                      <div className="flex flex-wrap gap-2">
+                        {appointment.consultationModes && appointment.consultationModes.length > 0 ? (
+                          appointment.consultationModes.map(m => (
+                            <span key={m} className="px-2 py-1 text-xs font-bold rounded-lg bg-[var(--color-theme-primary)]/10 text-[var(--color-theme-primary)] border border-[var(--color-theme-primary)]/20 uppercase">
+                              {m}
+                            </span>
+                          ))
+                        ) : (
+                          <span className="px-2 py-1 text-xs font-bold rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase">
+                            {appointment.mode === 'online' ? 'Online' : 'Clinic Visit'}
+                          </span>
+                        )}
+                      </div>
                     </div>
                     <div>
                       <p className="text-xs text-[var(--color-theme-muted)] mb-1">Estimated Duration</p>
@@ -179,8 +191,12 @@ const AppointmentDetailsModal = ({ appointment, onClose, userRole }) => {
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-[var(--color-theme-muted)] mb-1">Preferred Timing</p>
-                      <p className="font-medium text-[var(--color-theme-text)] text-sm">{req.preferredTiming || 'Flexible'}</p>
+                      <p className="text-xs text-[var(--color-theme-muted)] mb-1">Requested Timing</p>
+                      <p className="font-medium text-[var(--color-theme-text)] text-sm truncate" title={req.appointmentDateTime ? new Date(req.appointmentDateTime).toLocaleString() : req.preferredTiming}>
+                        {req.appointmentDateTime 
+                          ? new Date(req.appointmentDateTime).toLocaleString('en-IN', { timeZone: req.timezone || 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' })
+                          : req.preferredTiming || 'Flexible'}
+                      </p>
                     </div>
                     <div>
                       <p className="text-xs text-[var(--color-theme-muted)] mb-1">Search Radius</p>

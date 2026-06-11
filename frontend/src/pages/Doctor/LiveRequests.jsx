@@ -81,12 +81,28 @@ const LiveRequests = () => {
                   <h3 className="font-bold text-xl text-[var(--color-theme-text)]">{req.patient?.name || 'Anonymous'}</h3>
                   <p className="text-[var(--color-theme-muted)] mt-2 line-clamp-2">{req.problemDescription}</p>
                 </div>
-                <span className="px-3 py-1 bg-[var(--color-theme-panel)] border border-[var(--color-theme-border)] rounded-lg text-sm text-[var(--color-theme-primary)] capitalize">{req.mode}</span>
+                <div className="flex flex-wrap gap-2 justify-end">
+                  {req.consultationModes && req.consultationModes.length > 0 ? (
+                    req.consultationModes.map(m => (
+                      <span key={m} className="px-2 py-1 text-xs font-bold rounded-lg bg-[var(--color-theme-primary)]/10 text-[var(--color-theme-primary)] border border-[var(--color-theme-primary)]/20 uppercase">
+                        {m}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="px-3 py-1 bg-[var(--color-theme-panel)] border border-[var(--color-theme-border)] rounded-lg text-sm text-[var(--color-theme-primary)] capitalize">
+                      {req.mode}
+                    </span>
+                  )}
+                </div>
               </div>
               <div className="grid grid-cols-2 gap-4 text-sm text-[var(--color-theme-muted)] mb-4 mt-4 p-4 bg-[var(--color-theme-from)]/10 rounded-xl">
                 <div>
-                  <span className="block opacity-70 mb-1">Timing</span>
-                  <span className="font-medium text-[var(--color-theme-text)]">{req.preferredTiming}</span>
+                  <span className="block opacity-70 mb-1">Requested Timing</span>
+                  <span className="font-medium text-[var(--color-theme-text)] block truncate" title={req.appointmentDateTime ? new Date(req.appointmentDateTime).toLocaleString() : req.preferredTiming}>
+                    {req.appointmentDateTime
+                      ? new Date(req.appointmentDateTime).toLocaleString('en-IN', { timeZone: req.timezone || 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' })
+                      : req.preferredTiming || 'Flexible'}
+                  </span>
                 </div>
                 <div>
                   <span className="block opacity-70 mb-1">Budget Range</span>
