@@ -1,5 +1,5 @@
 import express from 'express';
-import { createRequest, getPatientRequests, getLiveRequests, acceptRequest } from '../controllers/consultationController.js';
+import { createRequest, getPatientRequests, getLiveRequests, acceptRequest, getPatientAppointments } from '../controllers/consultationController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 import { uploadRequestMedia } from '../config/cloudinary.js';
 
@@ -12,6 +12,7 @@ router.route('/')
   ]), createRequest); // Patients create requests
 
 router.get('/myrequests', protect, getPatientRequests); // Patients get their requests
+router.get('/appointments', protect, getPatientAppointments); // Patients get their appointments
 router.get('/live', protect, getLiveRequests); // Doctors get live requests
 router.post('/:id/accept', protect, acceptRequest); // Doctors accept requests
 

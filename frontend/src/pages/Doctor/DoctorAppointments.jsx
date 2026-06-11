@@ -36,9 +36,29 @@ const DoctorAppointments = () => {
     );
   }
 
-  const today = new Date().toDateString();
-  const todaysAppointments = appointments.filter(a => new Date(a.meetingTiming).toDateString() === today);
-  const upcomingAppointments = appointments.filter(a => new Date(a.meetingTiming) > new Date() && a.status === 'scheduled');
+  const isDateValid = (dateStr) => {
+    const d = new Date(dateStr);
+    return !isNaN(d.getTime());
+  };
+
+  const todayStr = new Date().toDateString();
+
+  const todaysAppointments = appointments.filter(a => {
+    if (a.status !== 'scheduled') return false;
+    if (isDateValid(a.meetingTiming)) {
+      return new Date(a.meetingTiming).toDateString() === todayStr;
+    }
+    return false; // Text based dates are shown in upcoming by default
+  });
+
+  const upcomingAppointments = appointments.filter(a => {
+    if (a.status !== 'scheduled') return false;
+    if (isDateValid(a.meetingTiming)) {
+      return new Date(a.meetingTiming).toDateString() !== todayStr && new Date(a.meetingTiming) > new Date();
+    }
+    return true; // Free-text timings just go to upcoming
+  });
+
   const completedAppointments = appointments.filter(a => a.status === 'completed');
 
   return (
@@ -147,7 +167,11 @@ const DoctorAppointments = () => {
                   <div className="flex-1 grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-xs text-[var(--color-theme-muted)] uppercase tracking-wider mb-1">Date & Time</p>
-                      <p className="font-medium">{new Date(app.meetingTiming).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</p>
+                      <p className="font-medium">
+                        {isDateValid(app.meetingTiming) 
+                          ? new Date(app.meetingTiming).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })
+                          : app.meetingTiming}
+                      </p>
                     </div>
                     <div>
                       <p className="text-xs text-[var(--color-theme-muted)] uppercase tracking-wider mb-1">Mode</p>

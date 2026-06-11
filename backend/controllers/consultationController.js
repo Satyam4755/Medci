@@ -87,6 +87,18 @@ export const createRequest = async (req, res) => {
   }
 };
 
+export const getPatientAppointments = async (req, res) => {
+  try {
+    const appointments = await Appointment.find({ patient: req.user._id })
+      .populate('doctor', 'name profileImage email')
+      .populate('consultationRequest', 'problemDescription')
+      .sort('-createdAt');
+    res.json(appointments);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const getPatientRequests = async (req, res) => {
   try {
     const requests = await ConsultationRequest.find({ patient: req.user._id })
