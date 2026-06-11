@@ -91,9 +91,24 @@ export const getPatientAppointments = async (req, res) => {
   try {
     const appointments = await Appointment.find({ patient: req.user._id })
       .populate('doctor', 'name profileImage email')
-      .populate('consultationRequest', 'problemDescription')
+      .populate('consultationRequest')
       .sort('-createdAt');
-    res.json(appointments);
+      
+    const doctorIds = appointments.map(app => app.doctor._id);
+    const doctorProfiles = await DoctorProfile.find({ user: { $in: doctorIds } });
+    
+    const profileMap = {};
+    doctorProfiles.forEach(p => {
+      profileMap[p.user.toString()] = p;
+    });
+
+    const enrichedAppointments = appointments.map(app => {
+      const appObj = app.toObject();
+      appObj.doctorProfile = profileMap[appObj.doctor._id.toString()] || null;
+      return appObj;
+    });
+
+    res.json(enrichedAppointments);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

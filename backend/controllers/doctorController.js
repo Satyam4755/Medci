@@ -1,5 +1,6 @@
 import DoctorProfile from '../models/DoctorProfile.js';
 import Appointment from '../models/Appointment.js';
+import PatientProfile from '../models/PatientProfile.js';
 
 export const getAllDoctors = async (req, res) => {
   try {
@@ -53,10 +54,25 @@ export const updateDoctorProfile = async (req, res) => {
 export const getDoctorAppointments = async (req, res) => {
   try {
     const appointments = await Appointment.find({ doctor: req.user._id })
-      .populate('patient', 'name profileImage')
-      .populate('consultationRequest', 'problemDescription mode')
+      .populate('patient', 'name profileImage email')
+      .populate('consultationRequest')
       .sort('meetingTiming');
-    res.json(appointments);
+      
+    const patientIds = appointments.map(app => app.patient._id);
+    const patientProfiles = await PatientProfile.find({ user: { $in: patientIds } });
+    
+    const profileMap = {};
+    patientProfiles.forEach(p => {
+      profileMap[p.user.toString()] = p;
+    });
+
+    const enrichedAppointments = appointments.map(app => {
+      const appObj = app.toObject();
+      appObj.patientProfile = profileMap[appObj.patient._id.toString()] || null;
+      return appObj;
+    });
+
+    res.json(enrichedAppointments);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

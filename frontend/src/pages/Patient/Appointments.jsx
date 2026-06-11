@@ -4,11 +4,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { AuthContext } from '../../context/AuthContext';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import AppointmentDetailsModal from '../../components/AppointmentDetailsModal';
 
 const Appointments = () => {
   const { user } = useContext(AuthContext);
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -167,7 +169,10 @@ const Appointments = () => {
                      }`}>
                        {app.status}
                      </span>
-                     <button className="px-4 py-2 bg-[var(--color-theme-dropdown)] hover:bg-[var(--color-theme-border)] border border-[var(--color-theme-border)] rounded-lg text-sm font-medium transition text-[var(--color-theme-text)] w-full md:w-auto">
+                     <button 
+                       onClick={() => setSelectedAppointment(app)}
+                       className="px-4 py-2 bg-[var(--color-theme-dropdown)] hover:bg-[var(--color-theme-border)] border border-[var(--color-theme-border)] rounded-lg text-sm font-medium transition text-[var(--color-theme-text)] w-full md:w-auto"
+                     >
                        View Details
                      </button>
                   </div>
@@ -176,6 +181,15 @@ const Appointments = () => {
             </AnimatePresence>
           </div>
         </motion.div>
+      )}
+
+      {/* Appointment Details Modal */}
+      {selectedAppointment && (
+        <AppointmentDetailsModal 
+          appointment={selectedAppointment} 
+          onClose={() => setSelectedAppointment(null)} 
+          userRole="patient" 
+        />
       )}
     </div>
   );
