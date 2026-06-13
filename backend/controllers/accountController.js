@@ -7,7 +7,7 @@ import EmailOTP from '../models/EmailOTP.js';
 import DeleteAccountOTP from '../models/DeleteAccountOTP.js';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
-import sendEmail from '../utils/sendEmail.js';
+import sendEmail from '../services/brevoService.js';
 import { cloudinary } from '../config/cloudinary.js';
 
 const extractPublicId = (url) => {

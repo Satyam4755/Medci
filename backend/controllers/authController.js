@@ -4,7 +4,7 @@ import DoctorProfile from '../models/DoctorProfile.js';
 import EmailOTP from '../models/EmailOTP.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import sendEmail from '../utils/sendEmail.js';
+import sendEmail from '../services/brevoService.js';
 import crypto from 'crypto';
 
 const generateToken = (id) => {

@@ -32,7 +32,11 @@ const io = new Server(httpServer, {
 import accountRoutes from './routes/accountRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import prescriptionRoutes from './routes/prescriptionRoutes.js';
-
+app.get("/server-ip", async (req, res) => {
+  const response = await fetch("https://api.ipify.org?format=json");
+  const data = await response.json();
+  res.json(data);
+});
 // Middleware
 app.use(cors());
 app.use(express.json());
