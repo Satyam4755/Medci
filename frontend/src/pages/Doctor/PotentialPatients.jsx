@@ -17,7 +17,7 @@ const PotentialPatients = () => {
   const [radius, setRadius] = useState(20);
   const [mode, setMode] = useState('nearby'); // 'nearby' or 'worldwide'
   const [selectedRequest, setSelectedRequest] = useState(null);
-  
+
   const userLocation = user?.location;
 
   const [viewState, setViewState] = useState({
@@ -36,7 +36,7 @@ const PotentialPatients = () => {
 
   useEffect(() => {
     if (!socket) return;
-    
+
     const handleLocationUpdate = (data) => {
       if (data.role === 'Patient') {
         fetchNearbyPatients(); // Refetch if a patient moved
@@ -52,15 +52,15 @@ const PotentialPatients = () => {
       startLoading('Finding active requests...');
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const token = userInfo?.token;
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5007';
-      
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5006';
+
       const lat = userLocation?.coordinates?.[1] || 0;
       const lng = userLocation?.coordinates?.[0] || 0;
-      
+
       const res = await axios.get(`${API_URL}/api/consultations/nearby?lat=${lat}&lng=${lng}&radius=${radius}&mode=${mode}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      
+
       setRequests(res.data);
     } catch (error) {
       toast.error('Failed to fetch patient requests');
@@ -98,26 +98,26 @@ const PotentialPatients = () => {
           <h1 className="text-2xl font-bold text-foreground">Potential Patients</h1>
           <p className="text-sm text-muted-foreground">Showing active consultation requests</p>
         </div>
-        
+
         <div className="flex items-center gap-4">
           <div className="flex bg-popover rounded-lg p-1 border border-border">
-            <button 
+            <button
               onClick={() => handleModeToggle('nearby')}
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${mode === 'nearby' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
             >
               Nearby
             </button>
-            <button 
+            <button
               onClick={() => handleModeToggle('worldwide')}
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${mode === 'worldwide' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
             >
               Worldwide
             </button>
           </div>
-          
+
           {mode === 'nearby' && (
-            <select 
-              value={radius} 
+            <select
+              value={radius}
               onChange={e => setRadius(Number(e.target.value))}
               className="bg-popover border border-border text-foreground rounded-lg px-3 py-1.5 focus:outline-none focus:border-primary"
             >
@@ -149,7 +149,7 @@ const PotentialPatients = () => {
                 <MapPin size={20} className="text-primary-foreground" />
               </div>
               <div className="absolute -bottom-1 w-3 h-1 bg-black/30 rounded-[100%] blur-[1px]"></div>
-              
+
               <div className="absolute bottom-12 bg-popover text-foreground px-3 py-1.5 rounded-lg border border-border shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                 Your Clinic
               </div>
@@ -161,7 +161,7 @@ const PotentialPatients = () => {
             // Check if request itself has location, fallback to patient location
             const reqLocation = req.location?.coordinates || req.patient?.location?.coordinates;
             if (!reqLocation || reqLocation[0] === 0) return null;
-            
+
             return (
               <MapMarker
                 key={req._id}
@@ -205,13 +205,13 @@ const PotentialPatients = () => {
                     <p className="text-xs text-muted-foreground capitalize">{selectedRequest.status}</p>
                   </div>
                 </div>
-                
+
                 <div className="space-y-1.5 text-sm text-muted-foreground mb-4">
                   <p className="truncate"><span className="font-medium text-foreground">Issue:</span> {selectedRequest.problemDescription}</p>
                   <p><span className="font-medium text-foreground">Budget:</span> ₹{selectedRequest.budgetRange?.min} - ₹{selectedRequest.budgetRange?.max}</p>
                   <p><span className="font-medium text-foreground">Distance:</span> {
                     formatDistance(calculateDistance(
-                      userLocation.coordinates, 
+                      userLocation.coordinates,
                       selectedRequest.location?.coordinates || selectedRequest.patient?.location?.coordinates
                     ))
                   }</p>

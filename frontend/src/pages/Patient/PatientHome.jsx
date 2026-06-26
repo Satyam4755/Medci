@@ -19,7 +19,7 @@ const PatientHome = () => {
         setError(null);
         startLoading('Loading your dashboard...');
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/consultations/myrequests`, config);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/consultations/myrequests`, config);
         const active = data.filter(r => r.status === 'pending').length;
         setStats({ activeRequests: active, appointments: data.length - active });
       } catch (error) {

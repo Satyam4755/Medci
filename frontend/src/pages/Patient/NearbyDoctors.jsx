@@ -18,7 +18,7 @@ const NearbyDoctors = () => {
   const [doctors, setDoctors] = useState([]);
   const [radius, setRadius] = useState(10);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
-  
+
   const userLocation = user?.location;
 
   const [viewState, setViewState] = useState({
@@ -37,7 +37,7 @@ const NearbyDoctors = () => {
 
   useEffect(() => {
     if (!socket) return;
-    
+
     const handleLocationUpdate = (data) => {
       if (data.role === 'Doctor') {
         fetchNearbyDoctors(); // Refetch if a doctor moved
@@ -53,12 +53,12 @@ const NearbyDoctors = () => {
       startLoading('Finding doctors near you...');
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const token = userInfo?.token;
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5007';
-      
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5006';
+
       const res = await axios.get(`${API_URL}/api/doctors/nearby?lat=${userLocation.coordinates[1]}&lng=${userLocation.coordinates[0]}&radius=${radius}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      
+
       setDoctors(res.data);
     } catch (error) {
       toast.error('Failed to fetch nearby doctors');
@@ -79,7 +79,7 @@ const NearbyDoctors = () => {
         <p className="text-muted-foreground max-w-md">
           You need to set your location in your profile settings before you can find nearby doctors.
         </p>
-        <button 
+        <button
           onClick={() => navigate('/patient/profile')}
           className="mt-6 px-6 py-2 bg-primary text-primary-foreground font-bold rounded-xl"
         >
@@ -97,11 +97,11 @@ const NearbyDoctors = () => {
           <h1 className="text-2xl font-bold text-foreground">Nearby Doctors</h1>
           <p className="text-sm text-muted-foreground">Showing doctors within {radius} km</p>
         </div>
-        
+
         <div className="flex items-center gap-3">
           <label className="text-sm text-foreground">Search Radius:</label>
-          <select 
-            value={radius} 
+          <select
+            value={radius}
             onChange={e => setRadius(Number(e.target.value))}
             className="bg-popover border border-border text-foreground rounded-lg px-3 py-1.5 focus:outline-none focus:border-primary"
           >
@@ -133,7 +133,7 @@ const NearbyDoctors = () => {
                 <MapPin size={20} className="text-primary-foreground" />
               </div>
               <div className="absolute -bottom-1 w-3 h-1 bg-black/30 rounded-[100%] blur-[1px]"></div>
-              
+
               <div className="absolute bottom-12 bg-popover text-foreground px-3 py-1.5 rounded-lg border border-border shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                 You are here
               </div>
@@ -144,7 +144,7 @@ const NearbyDoctors = () => {
           {doctors.map(doc => {
             const docLocation = doc.user?.location?.coordinates;
             if (!docLocation || docLocation[0] === 0) return null;
-            
+
             return (
               <MapMarker
                 key={doc._id}
@@ -200,13 +200,13 @@ const NearbyDoctors = () => {
                     <p className="text-xs text-primary">{selectedDoctor.qualification}</p>
                   </div>
                 </div>
-                
+
                 <div className="space-y-1.5 text-sm text-muted-foreground mb-4">
                   <p><span className="font-medium text-foreground">Experience:</span> {selectedDoctor.experience} years</p>
                   <p><span className="font-medium text-foreground">Fee:</span> ₹{selectedDoctor.feeRange?.min} - ₹{selectedDoctor.feeRange?.max}</p>
                   <p><span className="font-medium text-foreground">Distance:</span> {
                     formatDistance(calculateDistance(
-                      userLocation.coordinates, 
+                      userLocation.coordinates,
                       selectedDoctor.user.location.coordinates
                     ))
                   }</p>
@@ -218,8 +218,8 @@ const NearbyDoctors = () => {
                     ))}
                   </div>
                 </div>
-                
-                <button 
+
+                <button
                   onClick={() => handleRaiseRequest(selectedDoctor.user?._id)}
                   className="w-full py-2.5 bg-primary text-primary-foreground hover:opacity-90 font-bold rounded-lg transition-colors text-sm shadow-md"
                 >

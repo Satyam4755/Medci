@@ -39,7 +39,7 @@ const DoctorDashboard = () => {
   const fetchInitialRequests = async () => {
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/consultations/live`, config);
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/consultations/live`, config);
       setLiveRequests(data);
     } catch (error) {
       console.error(error);
@@ -49,7 +49,7 @@ const DoctorDashboard = () => {
   const handleAccept = async (id) => {
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/consultations/${id}/accept`, {}, config);
+      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/consultations/${id}/accept`, {}, config);
       toast.success('Request accepted successfully!');
       setLiveRequests(prev => prev.filter(r => r._id !== id));
       // Switch to appointments tab (to be implemented)

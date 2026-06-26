@@ -4,7 +4,7 @@ import FormData from 'form-data';
 const runTest = async () => {
   try {
     console.log("Registering test doctor...");
-    const regRes = await axios.post('http://localhost:5007/api/auth/register', {
+    const regRes = await axios.post('http://localhost:5006/api/auth/register', {
       name: 'Test Doctor Trace',
       email: `test-trace-${Date.now()}@example.com`,
       password: 'password123',
@@ -26,7 +26,7 @@ const runTest = async () => {
     form.append('consultationMode[]', 'Video');
     // Not appending image to simulate missing image or basic profile update
 
-    const res = await axios.put('http://localhost:5007/api/profile', form, {
+    const res = await axios.put('http://localhost:5006/api/profile', form, {
       headers: {
         ...form.getHeaders(),
         Authorization: `Bearer ${token}`

@@ -15,13 +15,13 @@ const DoctorProfilePreviewModal = ({ doctorId, isOpen, onClose }) => {
   useEffect(() => {
     const fetchDoctorProfile = async () => {
       if (!isOpen || !doctorId) return;
-      
+
       setLoading(true);
       setProfile(null);
-      
+
       try {
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/doctors/${doctorId}`, config);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/doctors/${doctorId}`, config);
         setProfile(data);
       } catch (error) {
         console.error(error);
@@ -61,7 +61,7 @@ const DoctorProfilePreviewModal = ({ doctorId, isOpen, onClose }) => {
   };
 
   const modalContent = (
-    <div 
+    <div
       className="fixed inset-0 z-[9999] flex items-end md:items-center justify-center bg-black/60 backdrop-blur-sm p-0 md:p-4"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
@@ -77,7 +77,7 @@ const DoctorProfilePreviewModal = ({ doctorId, isOpen, onClose }) => {
       >
         {/* Header / Draggable area indicator for mobile */}
         <div className="md:hidden flex justify-center py-3 border-b border-border bg-card z-10 sticky top-0">
-           <div className="w-12 h-1.5 bg-[var(--color-theme-border)] rounded-full"></div>
+          <div className="w-12 h-1.5 bg-[var(--color-theme-border)] rounded-full"></div>
         </div>
 
         <button
@@ -91,20 +91,20 @@ const DoctorProfilePreviewModal = ({ doctorId, isOpen, onClose }) => {
         <div className="flex-1 overflow-y-auto p-6 md:p-8 hide-scrollbar">
           {loading || !profile ? (
             <div className="space-y-6 animate-pulse">
-               <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-                 <div className="w-24 h-24 rounded-full bg-neutral-700/50"></div>
-                 <div className="space-y-3 flex-1 text-center md:text-left">
-                   <div className="h-8 bg-neutral-700/50 rounded-lg w-1/2 mx-auto md:mx-0"></div>
-                   <div className="h-4 bg-neutral-700/50 rounded-lg w-1/3 mx-auto md:mx-0"></div>
-                   <div className="h-4 bg-neutral-700/50 rounded-lg w-1/4 mx-auto md:mx-0"></div>
-                 </div>
-               </div>
-               <div className="h-32 bg-neutral-700/50 rounded-xl w-full"></div>
-               <div className="h-32 bg-neutral-700/50 rounded-xl w-full"></div>
+              <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+                <div className="w-24 h-24 rounded-full bg-neutral-700/50"></div>
+                <div className="space-y-3 flex-1 text-center md:text-left">
+                  <div className="h-8 bg-neutral-700/50 rounded-lg w-1/2 mx-auto md:mx-0"></div>
+                  <div className="h-4 bg-neutral-700/50 rounded-lg w-1/3 mx-auto md:mx-0"></div>
+                  <div className="h-4 bg-neutral-700/50 rounded-lg w-1/4 mx-auto md:mx-0"></div>
+                </div>
+              </div>
+              <div className="h-32 bg-neutral-700/50 rounded-xl w-full"></div>
+              <div className="h-32 bg-neutral-700/50 rounded-xl w-full"></div>
             </div>
           ) : (
             <div className="space-y-8">
-              
+
               {/* Profile Header */}
               <div className="flex flex-col md:flex-row items-center md:items-start gap-6 text-center md:text-left">
                 <div className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden flex-shrink-0 border-4 border-primary shadow-lg relative">
@@ -116,7 +116,7 @@ const DoctorProfilePreviewModal = ({ doctorId, isOpen, onClose }) => {
                   {/* Availability Badge */}
                   <div className="absolute bottom-1 right-3 w-4 h-4 bg-green-500 border-2 border-[var(--color-theme-panel)] rounded-full"></div>
                 </div>
-                
+
                 <div className="flex-1">
                   <div className="flex flex-col md:flex-row md:items-center gap-2 mb-2">
                     <h2 className="text-2xl md:text-3xl font-bold text-foreground">Dr. {profile.user?.name}</h2>
@@ -126,7 +126,7 @@ const DoctorProfilePreviewModal = ({ doctorId, isOpen, onClose }) => {
                   </div>
                   <p className="text-lg text-primary font-medium">{profile.qualification}</p>
                   <p className="text-muted-foreground mt-1">{profile.experience} Years of Experience</p>
-                  
+
                   <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mt-4">
                     <div className="px-3 py-1.5 bg-popover rounded-lg text-sm border border-border">
                       <span className="text-muted-foreground">Fee:</span> <span className="font-semibold">₹{profile.feeRange?.min} - ₹{profile.feeRange?.max}</span>
@@ -164,14 +164,14 @@ const DoctorProfilePreviewModal = ({ doctorId, isOpen, onClose }) => {
                   <span className="text-primary mr-2">🏥</span> Clinic Information
                 </h3>
                 <div className="bg-popover p-4 rounded-xl border border-border flex flex-col gap-2">
-                   <div>
-                     <span className="text-muted-foreground text-sm">Clinic Name</span>
-                     <p className="font-medium text-lg">{profile.clinicName || 'Independent Practitioner'}</p>
-                   </div>
-                   <div>
-                     <span className="text-muted-foreground text-sm">Location</span>
-                     <p className="font-medium">{profile.clinicLocation}</p>
-                   </div>
+                  <div>
+                    <span className="text-muted-foreground text-sm">Clinic Name</span>
+                    <p className="font-medium text-lg">{profile.clinicName || 'Independent Practitioner'}</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground text-sm">Location</span>
+                    <p className="font-medium">{profile.clinicLocation}</p>
+                  </div>
                 </div>
               </section>
 
@@ -184,8 +184,8 @@ const DoctorProfilePreviewModal = ({ doctorId, isOpen, onClose }) => {
                   {['Video', 'Audio', 'Chat', 'In-Person'].map((mode) => {
                     const isAvailable = profile.consultationMode?.includes(mode);
                     return (
-                      <div 
-                        key={mode} 
+                      <div
+                        key={mode}
                         className={`px-4 py-2 rounded-lg flex items-center gap-2 border ${isAvailable ? 'bg-primary/10 border-primary/30 text-primary' : 'bg-popover border-border text-muted-foreground opacity-50'}`}
                       >
                         <span className="text-lg">
@@ -204,7 +204,7 @@ const DoctorProfilePreviewModal = ({ doctorId, isOpen, onClose }) => {
                   <span className="text-yellow-500 mr-2">⭐</span> Patient Reviews
                 </h3>
                 <div className="bg-popover p-8 rounded-xl border border-border text-center">
-                   <p className="text-muted-foreground italic">"No reviews available yet"</p>
+                  <p className="text-muted-foreground italic">"No reviews available yet"</p>
                 </div>
               </section>
 

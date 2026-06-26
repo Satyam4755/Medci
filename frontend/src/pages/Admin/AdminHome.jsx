@@ -17,7 +17,7 @@ const AdminHome = () => {
     const fetchStats = async () => {
       try {
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/admin/stats`, config);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/admin/stats`, config);
         setStats(data);
       } catch (error) {
         toast.error('Failed to load admin stats');

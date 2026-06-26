@@ -14,7 +14,7 @@ const DoctorHome = () => {
     const fetchStats = async () => {
       try {
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/consultations/live`, config);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/consultations/live`, config);
         setStats({ requests: data.length, appointments: 0, earnings: 0 });
       } catch (error) {
         console.error(error);
@@ -39,10 +39,10 @@ const DoctorHome = () => {
             </p>
           </div>
           <div className="flex items-center gap-3 glass-panel px-4 py-2 rounded-full border border-border">
-              <span className="relative flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
-              </span>
+            <span className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+            </span>
             <span className="text-sm font-medium text-foreground">Available</span>
           </div>
         </div>
@@ -50,7 +50,7 @@ const DoctorHome = () => {
           <Link to="/doctor/requests" className="px-6 py-3 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition shadow-lg flex items-center gap-2">
             View Live Requests <span className="bg-primary/20 text-primary px-2 py-0.5 rounded text-sm">{stats.requests}</span>
           </Link>
-        </div> 
+        </div>
       </div>
 
       {/* Overview Cards */}

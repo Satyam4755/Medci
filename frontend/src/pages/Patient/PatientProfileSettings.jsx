@@ -11,7 +11,7 @@ const PatientProfileSettings = () => {
   const { user, setUser } = useContext(AuthContext);
   const { startLoading, stopLoading } = useGlobalLoading();
   const [activeTab, setActiveTab] = useState('personal'); // 'personal' or 'account'
-  
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -23,7 +23,7 @@ const PatientProfileSettings = () => {
     preferredMode: 'Video',
     location: null
   });
-  
+
   const [passwordData, setPasswordData] = useState({
     oldPassword: '',
     newPassword: '',
@@ -41,12 +41,12 @@ const PatientProfileSettings = () => {
     try {
       startLoading('Loading profile...');
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-const token = userInfo?.token;
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5007';
+      const token = userInfo?.token;
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5006';
       const { data } = await axios.get(`${API_URL}/api/profile`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      
+
       setFormData({
         name: data.user.name || '',
         email: data.user.email || '',
@@ -89,8 +89,8 @@ const token = userInfo?.token;
     try {
       startLoading('Saving changes...');
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-const token = userInfo?.token;
-      
+      const token = userInfo?.token;
+
       const form = new FormData();
       form.append('name', formData.name);
       form.append('age', formData.age);
@@ -98,11 +98,11 @@ const token = userInfo?.token;
       form.append('contactNumber', formData.contactNumber);
       form.append('emergencyContact', formData.emergencyContact);
       form.append('preferredMode', formData.preferredMode);
-      
+
       if (formData.location) {
         form.append('location', JSON.stringify(formData.location));
       }
-      
+
       // Convert comma separated string back to array
       const concernsArray = formData.hairConcerns.split(',').map(s => s.trim()).filter(s => s);
       concernsArray.forEach(concern => form.append('hairConcerns[]', concern));
@@ -111,14 +111,14 @@ const token = userInfo?.token;
         form.append('profileImage', selectedFile);
       }
 
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5007';
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5006';
       const { data } = await axios.put(`${API_URL}/api/profile`, form, {
-        headers: { 
+        headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
         }
       });
-      
+
       setUser(data.user);
       toast.success('Profile updated successfully!');
     } catch (error) {
@@ -136,8 +136,8 @@ const token = userInfo?.token;
     try {
       startLoading('Updating password...');
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-const token = userInfo?.token;
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5007';
+      const token = userInfo?.token;
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5006';
       await axios.put(`${API_URL}/api/profile/password`, {
         oldPassword: passwordData.oldPassword,
         newPassword: passwordData.newPassword
@@ -192,13 +192,13 @@ const token = userInfo?.token;
       </div>
 
       <div className="flex gap-4 border-b border-border">
-        <button 
+        <button
           onClick={() => setActiveTab('personal')}
           className={`pb-3 font-semibold px-2 border-b-2 transition ${activeTab === 'personal' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
         >
           Personal Information
         </button>
-        <button 
+        <button
           onClick={() => setActiveTab('account')}
           className={`pb-3 font-semibold px-2 border-b-2 transition ${activeTab === 'account' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
         >
@@ -211,7 +211,7 @@ const token = userInfo?.token;
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Full Name</label>
-              <input type="text" required value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
+              <input type="text" required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
             </div>
             <div>
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Email (Cannot be changed)</label>
@@ -219,11 +219,11 @@ const token = userInfo?.token;
             </div>
             <div>
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Age</label>
-              <input type="number" value={formData.age} onChange={e => setFormData({...formData, age: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
+              <input type="number" value={formData.age} onChange={e => setFormData({ ...formData, age: e.target.value })} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
             </div>
             <div>
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Gender</label>
-              <select value={formData.gender} onChange={e => setFormData({...formData, gender: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary">
+              <select value={formData.gender} onChange={e => setFormData({ ...formData, gender: e.target.value })} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary">
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
                 <option value="Other">Other</option>
@@ -231,26 +231,26 @@ const token = userInfo?.token;
             </div>
             <div>
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Contact Number</label>
-              <input type="text" value={formData.contactNumber} onChange={e => setFormData({...formData, contactNumber: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
+              <input type="text" value={formData.contactNumber} onChange={e => setFormData({ ...formData, contactNumber: e.target.value })} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
             </div>
             <div>
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Emergency Contact</label>
-              <input type="text" value={formData.emergencyContact} onChange={e => setFormData({...formData, emergencyContact: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
+              <input type="text" value={formData.emergencyContact} onChange={e => setFormData({ ...formData, emergencyContact: e.target.value })} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
             </div>
             <div className="md:col-span-2">
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Location</label>
-              <LocationPicker 
-                location={formData.location} 
-                onLocationChange={(loc) => setFormData({...formData, location: loc})} 
+              <LocationPicker
+                location={formData.location}
+                onLocationChange={(loc) => setFormData({ ...formData, location: loc })}
               />
             </div>
             <div className="md:col-span-2">
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Hair Concerns (comma separated)</label>
-              <input type="text" placeholder="e.g. Hair fall, Dandruff" value={formData.hairConcerns} onChange={e => setFormData({...formData, hairConcerns: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
+              <input type="text" placeholder="e.g. Hair fall, Dandruff" value={formData.hairConcerns} onChange={e => setFormData({ ...formData, hairConcerns: e.target.value })} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
             </div>
             <div>
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Preferred Consultation Mode</label>
-              <select value={formData.preferredMode} onChange={e => setFormData({...formData, preferredMode: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary">
+              <select value={formData.preferredMode} onChange={e => setFormData({ ...formData, preferredMode: e.target.value })} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary">
                 <option value="Video">Video</option>
                 <option value="Audio">Audio</option>
                 <option value="Chat">Chat</option>
@@ -271,15 +271,15 @@ const token = userInfo?.token;
           <h3 className={`text-xl font-semibold mb-4 ${theme.textPrimary}`}>Change Password</h3>
           <div>
             <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Current Password</label>
-            <input type="password" required value={passwordData.oldPassword} onChange={e => setPasswordData({...passwordData, oldPassword: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
+            <input type="password" required value={passwordData.oldPassword} onChange={e => setPasswordData({ ...passwordData, oldPassword: e.target.value })} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
           </div>
           <div>
             <label className={`block text-sm mb-1 ${theme.textSecondary}`}>New Password</label>
-            <input type="password" required value={passwordData.newPassword} onChange={e => setPasswordData({...passwordData, newPassword: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
+            <input type="password" required value={passwordData.newPassword} onChange={e => setPasswordData({ ...passwordData, newPassword: e.target.value })} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
           </div>
           <div>
             <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Confirm New Password</label>
-            <input type="password" required value={passwordData.confirmPassword} onChange={e => setPasswordData({...passwordData, confirmPassword: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
+            <input type="password" required value={passwordData.confirmPassword} onChange={e => setPasswordData({ ...passwordData, confirmPassword: e.target.value })} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
           </div>
           <div className="pt-4">
             <button type="submit" className={`w-full py-2 rounded-lg font-semibold ${theme.buttonPrimary}`}>

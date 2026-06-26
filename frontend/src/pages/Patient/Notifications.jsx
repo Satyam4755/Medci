@@ -13,7 +13,7 @@ const Notifications = () => {
   const fetchNotifications = async () => {
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/notifications`, config);
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/notifications`, config);
       setNotifications(data);
     } catch (error) {
       console.error(error);
@@ -31,7 +31,7 @@ const Notifications = () => {
   const markAsRead = async (id) => {
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.put(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/notifications/${id}/read`, {}, config);
+      await axios.put(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/notifications/${id}/read`, {}, config);
       setNotifications(prev => prev.map(n => n._id === id ? { ...n, read: true } : n));
     } catch (error) {
       toast.error('Failed to mark as read');
@@ -41,7 +41,7 @@ const Notifications = () => {
   const markAllAsRead = async () => {
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.put(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/notifications/read-all`, {}, config);
+      await axios.put(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/notifications/read-all`, {}, config);
       setNotifications(prev => prev.map(n => ({ ...n, read: true })));
       toast.success('All notifications marked as read');
     } catch (error) {
@@ -52,7 +52,7 @@ const Notifications = () => {
   const deleteNotification = async (id) => {
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.delete(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/notifications/${id}`, config);
+      await axios.delete(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/notifications/${id}`, config);
       setNotifications(prev => prev.filter(n => n._id !== id));
       toast.success('Notification deleted');
     } catch (error) {
@@ -85,7 +85,7 @@ const Notifications = () => {
           <p className="text-muted-foreground mt-2">Stay updated with your appointments and prescriptions.</p>
         </div>
         {notifications.length > 0 && unreadCount > 0 && (
-          <button 
+          <button
             onClick={markAllAsRead}
             className="px-4 py-2 bg-card hover:bg-popover border border-border rounded-lg text-sm font-medium transition"
           >
@@ -95,7 +95,7 @@ const Notifications = () => {
       </div>
 
       {notifications.length === 0 ? (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           className="space-y-12"
         >
@@ -153,7 +153,7 @@ const Notifications = () => {
                 {!notif.read && (
                   <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
                 )}
-                
+
                 <div className="flex gap-4">
                   <div className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl flex-shrink-0 ${notif.read ? 'bg-neutral-800' : 'bg-primary/20'}`}>
                     {notif.icon || '🔔'}
@@ -164,11 +164,11 @@ const Notifications = () => {
                         {notif.title}
                       </h3>
                       <span className="text-xs text-muted-foreground ml-4 whitespace-nowrap">
-                        {new Date(notif.createdAt).toLocaleDateString()} {new Date(notif.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                        {new Date(notif.createdAt).toLocaleDateString()} {new Date(notif.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>
                     <p className="text-muted-foreground mt-1">{notif.description}</p>
-                    
+
                     <div className="flex gap-4 mt-4">
                       {!notif.read && (
                         <button onClick={() => markAsRead(notif._id)} className="text-sm font-medium text-primary hover:underline">

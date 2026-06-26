@@ -29,7 +29,7 @@ const PrescriptionModal = ({ prescription, isOpen, onClose }) => {
         className="w-full max-w-2xl bg-card rounded-2xl border border-border shadow-2xl overflow-hidden text-foreground max-h-[90vh] flex flex-col relative"
       >
         <button onClick={onClose} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground z-10 p-2">✕</button>
-        
+
         <div className="p-6 border-b border-border bg-popover">
           <h2 className="text-2xl font-bold">Prescription Details</h2>
           <p className="text-muted-foreground mt-1">Prescribed on {new Date(prescription.createdAt).toLocaleDateString()}</p>
@@ -38,11 +38,11 @@ const PrescriptionModal = ({ prescription, isOpen, onClose }) => {
         <div className="p-6 overflow-y-auto space-y-8 flex-1">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 rounded-full overflow-hidden bg-neutral-800 border-2 border-primary">
-               {prescription.doctor?.profileImage ? (
-                 <img src={prescription.doctor.profileImage} alt="Doctor" className="w-full h-full object-cover" />
-               ) : (
-                 <div className="w-full h-full flex items-center justify-center text-2xl">👨‍⚕️</div>
-               )}
+              {prescription.doctor?.profileImage ? (
+                <img src={prescription.doctor.profileImage} alt="Doctor" className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-2xl">👨‍⚕️</div>
+              )}
             </div>
             <div>
               <h3 className="font-bold text-xl">Dr. {prescription.doctor?.name}</h3>
@@ -88,11 +88,11 @@ const PrescriptionModal = ({ prescription, isOpen, onClose }) => {
             </div>
           )}
         </div>
-        
+
         <div className="p-4 border-t border-border bg-card flex justify-end">
-           <button onClick={onClose} className="px-6 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg font-medium transition">
-             Done
-           </button>
+          <button onClick={onClose} className="px-6 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg font-medium transition">
+            Done
+          </button>
         </div>
       </motion.div>
     </div>
@@ -112,7 +112,7 @@ const Prescriptions = () => {
     const fetchPrescriptions = async () => {
       try {
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/prescriptions/patient`, config);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/prescriptions/patient`, config);
         setPrescriptions(data);
       } catch (error) {
         console.error(error);
@@ -143,7 +143,7 @@ const Prescriptions = () => {
       </div>
 
       {prescriptions.length === 0 ? (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           className="space-y-12"
         >
@@ -164,48 +164,48 @@ const Prescriptions = () => {
               <h3 className="text-2xl font-bold text-foreground mb-2">Most Common Hair Problems & Treatments</h3>
               <p className="text-muted-foreground max-w-2xl mx-auto">Learn about commonly used medicines, cosmetics, and treatment approaches for different hair concerns.</p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
-                { 
-                  title: 'Hair Fall', icon: '🍂', 
-                  medicines: ['Minoxidil', 'Finasteride'], 
-                  cosmetics: ['Anti Hair Fall Shampoo', 'Hair Growth Serum'], 
-                  lifestyle: ['Reduce stress', 'Protein-rich diet'] 
+                {
+                  title: 'Hair Fall', icon: '🍂',
+                  medicines: ['Minoxidil', 'Finasteride'],
+                  cosmetics: ['Anti Hair Fall Shampoo', 'Hair Growth Serum'],
+                  lifestyle: ['Reduce stress', 'Protein-rich diet']
                 },
-                { 
-                  title: 'Dandruff', icon: '❄️', 
-                  medicines: ['Ketoconazole', 'Selenium Sulfide'], 
-                  cosmetics: ['Anti-Dandruff Shampoo', 'Scalp Cleanser'], 
-                  lifestyle: ['Regular scalp hygiene', 'Avoid excessive oil buildup'] 
+                {
+                  title: 'Dandruff', icon: '❄️',
+                  medicines: ['Ketoconazole', 'Selenium Sulfide'],
+                  cosmetics: ['Anti-Dandruff Shampoo', 'Scalp Cleanser'],
+                  lifestyle: ['Regular scalp hygiene', 'Avoid excessive oil buildup']
                 },
-                { 
-                  title: 'Alopecia', icon: '👨‍🦲', 
-                  medicines: ['Minoxidil', 'Corticosteroids'], 
-                  cosmetics: ['Hair Thickening Products'], 
-                  lifestyle: ['Early specialist consultation', 'Consistent treatment'] 
+                {
+                  title: 'Alopecia', icon: '👨‍🦲',
+                  medicines: ['Minoxidil', 'Corticosteroids'],
+                  cosmetics: ['Hair Thickening Products'],
+                  lifestyle: ['Early specialist consultation', 'Consistent treatment']
                 },
-                { 
-                  title: 'Hair Thinning', icon: '📉', 
-                  medicines: ['Minoxidil', 'Biotin Supplements'], 
-                  cosmetics: ['Volumizing Shampoo', 'Hair Density Serum'], 
-                  lifestyle: ['Improve nutrition', 'Reduce heat styling'] 
+                {
+                  title: 'Hair Thinning', icon: '📉',
+                  medicines: ['Minoxidil', 'Biotin Supplements'],
+                  cosmetics: ['Volumizing Shampoo', 'Hair Density Serum'],
+                  lifestyle: ['Improve nutrition', 'Reduce heat styling']
                 },
-                { 
-                  title: 'Premature Greying', icon: '🦳', 
-                  medicines: ['Vitamin B12 Supplements', 'Iron Supplements'], 
-                  cosmetics: ['Hair Nourishing Oils', 'Grey Hair Care Products'], 
-                  lifestyle: ['Healthy diet', 'Stress management'] 
+                {
+                  title: 'Premature Greying', icon: '🦳',
+                  medicines: ['Vitamin B12 Supplements', 'Iron Supplements'],
+                  cosmetics: ['Hair Nourishing Oils', 'Grey Hair Care Products'],
+                  lifestyle: ['Healthy diet', 'Stress management']
                 },
-                { 
-                  title: 'Scalp Irritation', icon: '🔥', 
-                  medicines: ['Anti-inflammatory treatments', 'Medicated shampoos'], 
-                  cosmetics: ['Sensitive Scalp Shampoo', 'Soothing Scalp Serum'], 
-                  lifestyle: ['Avoid harsh chemicals', 'Maintain scalp hydration'] 
+                {
+                  title: 'Scalp Irritation', icon: '🔥',
+                  medicines: ['Anti-inflammatory treatments', 'Medicated shampoos'],
+                  cosmetics: ['Sensitive Scalp Shampoo', 'Soothing Scalp Serum'],
+                  lifestyle: ['Avoid harsh chemicals', 'Maintain scalp hydration']
                 }
               ].map((item, idx) => (
-                <motion.div 
-                  key={idx} 
+                <motion.div
+                  key={idx}
                   whileHover={{ y: -5 }}
                   className="bg-card p-6 rounded-2xl border border-border hover:border-primary/50 transition-colors group flex flex-col h-full shadow-sm"
                 >
@@ -213,7 +213,7 @@ const Prescriptions = () => {
                     <span className="text-4xl group-hover:scale-110 transition-transform origin-bottom-left">{item.icon}</span>
                     <h4 className="font-bold text-xl text-foreground">{item.title}</h4>
                   </div>
-                  
+
                   <div className="space-y-5 flex-1">
                     <div>
                       <h5 className="text-xs font-bold text-primary uppercase tracking-wider mb-2 flex items-center gap-2"><span>💊</span> Common Medicines</h5>
@@ -240,7 +240,7 @@ const Prescriptions = () => {
 
             <div className="mt-8 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-xl text-center max-w-3xl mx-auto">
               <p className="text-sm text-yellow-500/90 flex items-center justify-center gap-2">
-                <span className="text-lg">⚠️</span> 
+                <span className="text-lg">⚠️</span>
                 <span><span className="font-bold text-yellow-500">Disclaimer:</span> The medicines and products shown are for educational purposes only and should not be used without professional medical advice.</span>
               </p>
             </div>
@@ -248,7 +248,7 @@ const Prescriptions = () => {
 
           {/* CTA */}
           <div className="text-center pb-8 mt-16">
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.02 }}
               className="max-w-2xl mx-auto bg-gradient-to-br from-[var(--color-theme-panel)] to-[var(--color-theme-dropdown)] p-10 rounded-3xl border border-primary/20 shadow-2xl shadow-primary/5"
             >
@@ -270,32 +270,32 @@ const Prescriptions = () => {
               className="bg-card p-6 rounded-xl border border-border hover:border-primary/50 transition flex flex-col md:flex-row gap-6 justify-between items-start md:items-center"
             >
               <div className="flex gap-4 items-center">
-                 <div className="w-14 h-14 bg-neutral-800 rounded-full flex items-center justify-center text-2xl border border-border flex-shrink-0">
-                    📄
-                 </div>
-                 <div>
-                   <h3 className="font-bold text-lg text-foreground">Dr. {prescription.doctor?.name}</h3>
-                   <p className="text-sm text-primary font-medium mb-1">
-                     {prescription.appointment?.mode === 'online' ? 'Online Consultation' : 'In-Person Consultation'}
-                   </p>
-                   <p className="text-xs text-muted-foreground">
-                     Date: {new Date(prescription.createdAt).toLocaleDateString()}
-                   </p>
-                 </div>
+                <div className="w-14 h-14 bg-neutral-800 rounded-full flex items-center justify-center text-2xl border border-border flex-shrink-0">
+                  📄
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg text-foreground">Dr. {prescription.doctor?.name}</h3>
+                  <p className="text-sm text-primary font-medium mb-1">
+                    {prescription.appointment?.mode === 'online' ? 'Online Consultation' : 'In-Person Consultation'}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Date: {new Date(prescription.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
               </div>
-              
+
               <div className="flex gap-3 w-full md:w-auto">
                 {prescription.file?.url && (
-                  <a 
-                    href={prescription.file.url} 
-                    target="_blank" 
+                  <a
+                    href={prescription.file.url}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 md:flex-none text-center px-4 py-2 bg-popover hover:bg-neutral-800 border border-border rounded-lg text-sm font-medium transition"
                   >
                     Download
                   </a>
                 )}
-                <button 
+                <button
                   onClick={() => setSelectedPrescription(prescription)}
                   className="flex-1 md:flex-none px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg text-sm font-medium transition"
                 >
@@ -308,13 +308,13 @@ const Prescriptions = () => {
       )}
 
       <AnimatePresence>
-         {selectedPrescription && (
-           <PrescriptionModal 
-             isOpen={true} 
-             onClose={() => setSelectedPrescription(null)} 
-             prescription={selectedPrescription} 
-           />
-         )}
+        {selectedPrescription && (
+          <PrescriptionModal
+            isOpen={true}
+            onClose={() => setSelectedPrescription(null)}
+            prescription={selectedPrescription}
+          />
+        )}
       </AnimatePresence>
     </div>
   );

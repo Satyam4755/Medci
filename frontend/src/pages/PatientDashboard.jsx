@@ -26,7 +26,7 @@ const PatientDashboard = () => {
   const fetchMyRequests = async () => {
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/consultations/myrequests`, config);
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/consultations/myrequests`, config);
       setRequests(data);
     } catch (error) {
       toast.error('Failed to load requests');
@@ -47,7 +47,7 @@ const PatientDashboard = () => {
         latitude: 28.6139   // mock location
       };
 
-      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/consultations`, payload, config);
+      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/consultations`, payload, config);
       toast.success('Consultation request sent!');
       setActiveTab('requests');
       setProblemDescription('');

@@ -20,7 +20,7 @@ const DoctorEarnings = () => {
     const fetchEarnings = async () => {
       try {
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
-        const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/doctors/earnings`, config);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/doctors/earnings`, config);
         setData(response.data);
       } catch (error) {
         console.error(error);
@@ -60,7 +60,7 @@ const DoctorEarnings = () => {
       </div>
 
       {data.totalEarnings === 0 ? (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           className="space-y-12"
         >
@@ -85,8 +85,8 @@ const DoctorEarnings = () => {
                 { title: '5 Consultations / Day', amount: '₹75,000', icon: '🌿', highlight: true },
                 { title: '10 Consultations / Day', amount: '₹150,000', icon: '🌳', highlight: false }
               ].map((item, idx) => (
-                <motion.div 
-                  key={idx} 
+                <motion.div
+                  key={idx}
                   whileHover={{ y: -5 }}
                   className={`p-6 rounded-2xl border transition-all text-center ${item.highlight ? 'bg-gradient-to-b from-[var(--color-theme-primary)]/20 to-[var(--color-theme-panel)] border-primary/50 shadow-lg shadow-primary/10' : 'bg-card border-border hover:border-primary/30'}`}
                 >
@@ -110,8 +110,8 @@ const DoctorEarnings = () => {
                 { title: 'Build Positive Reviews', icon: '🌟' }
               ].map((item, idx) => (
                 <div key={idx} className="bg-popover p-4 rounded-xl border border-border text-center flex flex-col items-center justify-center gap-2">
-                   <span className="text-2xl">{item.icon}</span>
-                   <span className="text-sm font-semibold text-foreground">{item.title}</span>
+                  <span className="text-2xl">{item.icon}</span>
+                  <span className="text-sm font-semibold text-foreground">{item.title}</span>
                 </div>
               ))}
             </div>
@@ -158,7 +158,7 @@ const DoctorEarnings = () => {
                 <div className="border-t border-[var(--color-theme-muted)] w-full"></div>
                 <div className="border-t border-[var(--color-theme-muted)] w-full"></div>
               </div>
-              
+
               {chartData.map((data, index) => {
                 const maxEarnings = Math.max(...chartData.map(d => d.earnings)) || 1;
                 const heightPercentage = Math.max((data.earnings / maxEarnings) * 100, 5); // min 5% height
@@ -170,7 +170,7 @@ const DoctorEarnings = () => {
                       ₹{Math.round(data.earnings)}
                     </div>
                     {/* Bar */}
-                    <div 
+                    <div
                       className="w-full max-w-[3rem] bg-gradient-to-t from-[var(--color-theme-primary)]/20 to-[var(--color-theme-primary)] rounded-t-lg transition-all duration-500 ease-out group-hover:brightness-110"
                       style={{ height: `${heightPercentage}%` }}
                     ></div>

@@ -11,7 +11,7 @@ const DoctorProfileSettings = () => {
   const { user, setUser } = useContext(AuthContext);
   const { startLoading, stopLoading } = useGlobalLoading();
   const [activeTab, setActiveTab] = useState('professional'); // 'professional' or 'account'
-  
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -24,7 +24,7 @@ const DoctorProfileSettings = () => {
     consultationMode: [], // array of modes
     location: null
   });
-  
+
   const [passwordData, setPasswordData] = useState({
     oldPassword: '',
     newPassword: '',
@@ -42,12 +42,12 @@ const DoctorProfileSettings = () => {
     try {
       startLoading('Loading profile...');
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-const token = userInfo?.token;
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5007';
+      const token = userInfo?.token;
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5006';
       const { data } = await axios.get(`${API_URL}/api/profile`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      
+
       setFormData({
         name: data.user.name || '',
         email: data.user.email || '',
@@ -100,7 +100,7 @@ const token = userInfo?.token;
       startLoading('Saving changes...');
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const token = userInfo?.token;
-      
+
       const form = new FormData();
       form.append('name', formData.name);
       form.append('qualification', formData.qualification);
@@ -109,29 +109,29 @@ const token = userInfo?.token;
       form.append('feeMax', formData.feeMax);
       form.append('clinicName', formData.clinicName);
       form.append('medicalRegistrationNumber', formData.medicalRegistrationNumber);
-      
+
       if (formData.location) {
         form.append('location', JSON.stringify(formData.location));
       }
-      
+
       formData.consultationMode.forEach(mode => form.append('consultationMode[]', mode));
 
       if (selectedFile) {
         form.append('profileImage', selectedFile);
       }
 
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5007';
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5006';
       console.log('Sending PUT to:', `${API_URL}/api/profile`);
       console.log('FormData:', Object.fromEntries(form.entries()));
-      
+
       const { data } = await axios.put(`${API_URL}/api/profile`, form, {
-        headers: { 
+        headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
         }
       });
       console.log('Update Success:', data);
-      
+
       setUser(data.user);
       toast.success('Professional profile updated!');
     } catch (error) {
@@ -151,8 +151,8 @@ const token = userInfo?.token;
     try {
       startLoading('Updating password...');
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-const token = userInfo?.token;
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5007';
+      const token = userInfo?.token;
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5006';
       await axios.put(`${API_URL}/api/profile/password`, {
         oldPassword: passwordData.oldPassword,
         newPassword: passwordData.newPassword
@@ -207,13 +207,13 @@ const token = userInfo?.token;
       </div>
 
       <div className="flex gap-4 border-b border-border">
-        <button 
+        <button
           onClick={() => setActiveTab('professional')}
           className={`pb-3 font-semibold px-2 border-b-2 transition ${activeTab === 'professional' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
         >
           Professional Information
         </button>
-        <button 
+        <button
           onClick={() => setActiveTab('account')}
           className={`pb-3 font-semibold px-2 border-b-2 transition ${activeTab === 'account' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
         >
@@ -226,7 +226,7 @@ const token = userInfo?.token;
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Full Name</label>
-              <input type="text" required value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
+              <input type="text" required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
             </div>
             <div>
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Email (Cannot be changed)</label>
@@ -234,35 +234,35 @@ const token = userInfo?.token;
             </div>
             <div>
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Qualification</label>
-              <input type="text" required placeholder="e.g. MBBS, MD" value={formData.qualification} onChange={e => setFormData({...formData, qualification: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
+              <input type="text" required placeholder="e.g. MBBS, MD" value={formData.qualification} onChange={e => setFormData({ ...formData, qualification: e.target.value })} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
             </div>
             <div>
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Years of Experience</label>
-              <input type="number" required value={formData.experience} onChange={e => setFormData({...formData, experience: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
+              <input type="number" required value={formData.experience} onChange={e => setFormData({ ...formData, experience: e.target.value })} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
             </div>
             <div>
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Medical Reg. Number</label>
-              <input type="text" required value={formData.medicalRegistrationNumber} onChange={e => setFormData({...formData, medicalRegistrationNumber: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
+              <input type="text" required value={formData.medicalRegistrationNumber} onChange={e => setFormData({ ...formData, medicalRegistrationNumber: e.target.value })} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div>
                 <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Min Fee ($)</label>
-                <input type="number" required value={formData.feeMin} onChange={e => setFormData({...formData, feeMin: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
+                <input type="number" required value={formData.feeMin} onChange={e => setFormData({ ...formData, feeMin: e.target.value })} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
               </div>
               <div>
                 <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Max Fee ($)</label>
-                <input type="number" required value={formData.feeMax} onChange={e => setFormData({...formData, feeMax: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
+                <input type="number" required value={formData.feeMax} onChange={e => setFormData({ ...formData, feeMax: e.target.value })} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
               </div>
             </div>
             <div>
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Clinic Name</label>
-              <input type="text" required value={formData.clinicName} onChange={e => setFormData({...formData, clinicName: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
+              <input type="text" required value={formData.clinicName} onChange={e => setFormData({ ...formData, clinicName: e.target.value })} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
             </div>
             <div className="md:col-span-2">
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Clinic Location</label>
-              <LocationPicker 
-                location={formData.location} 
-                onLocationChange={(loc) => setFormData({...formData, location: loc})} 
+              <LocationPicker
+                location={formData.location}
+                onLocationChange={(loc) => setFormData({ ...formData, location: loc })}
               />
             </div>
             <div className="md:col-span-2">
@@ -270,11 +270,11 @@ const token = userInfo?.token;
               <div className="flex gap-4">
                 {['Video', 'Audio', 'Chat', 'In-Person'].map(mode => (
                   <label key={mode} className="flex items-center gap-2 cursor-pointer">
-                    <input 
-                      type="checkbox" 
-                      checked={formData.consultationMode.includes(mode)} 
+                    <input
+                      type="checkbox"
+                      checked={formData.consultationMode.includes(mode)}
                       onChange={() => handleModeChange(mode)}
-                      className="w-4 h-4 rounded border-border bg-background text-primary focus:ring-[var(--color-theme-primary)]" 
+                      className="w-4 h-4 rounded border-border bg-background text-primary focus:ring-[var(--color-theme-primary)]"
                     />
                     <span className={theme.textPrimary}>{mode}</span>
                   </label>
@@ -295,15 +295,15 @@ const token = userInfo?.token;
           <h3 className={`text-xl font-semibold mb-4 ${theme.textPrimary}`}>Change Password</h3>
           <div>
             <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Current Password</label>
-            <input type="password" required value={passwordData.oldPassword} onChange={e => setPasswordData({...passwordData, oldPassword: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
+            <input type="password" required value={passwordData.oldPassword} onChange={e => setPasswordData({ ...passwordData, oldPassword: e.target.value })} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
           </div>
           <div>
             <label className={`block text-sm mb-1 ${theme.textSecondary}`}>New Password</label>
-            <input type="password" required value={passwordData.newPassword} onChange={e => setPasswordData({...passwordData, newPassword: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
+            <input type="password" required value={passwordData.newPassword} onChange={e => setPasswordData({ ...passwordData, newPassword: e.target.value })} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
           </div>
           <div>
             <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Confirm New Password</label>
-            <input type="password" required value={passwordData.confirmPassword} onChange={e => setPasswordData({...passwordData, confirmPassword: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
+            <input type="password" required value={passwordData.confirmPassword} onChange={e => setPasswordData({ ...passwordData, confirmPassword: e.target.value })} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
           </div>
           <div className="pt-4">
             <button type="submit" className={`w-full py-2 rounded-lg font-semibold ${theme.buttonPrimary}`}>

@@ -46,7 +46,7 @@ const AvailabilityModal = ({ isOpen, onClose, currentTimings, onSave }) => {
         className="w-full max-w-2xl bg-card rounded-2xl border border-border shadow-2xl overflow-hidden text-foreground max-h-[90vh] flex flex-col relative"
       >
         <button onClick={onClose} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground z-10 p-2">✕</button>
-        
+
         <div className="p-6 border-b border-border bg-popover">
           <h2 className="text-2xl font-bold">Set Availability</h2>
           <p className="text-muted-foreground mt-1">Configure your weekly consultation hours.</p>
@@ -60,34 +60,34 @@ const AvailabilityModal = ({ isOpen, onClose, currentTimings, onSave }) => {
           </div>
           {timings.map((t, idx) => (
             <div key={idx} className="grid grid-cols-12 gap-4 items-center">
-               <div className="col-span-4 font-medium">{t.day}</div>
-               <div className="col-span-4">
-                 <input 
-                   type="time" 
-                   value={t.startTime} 
-                   onChange={(e) => handleTimeChange(idx, 'startTime', e.target.value)}
-                   className="w-full p-2 bg-popover border border-border rounded-lg focus:outline-none focus:border-primary"
-                 />
-               </div>
-               <div className="col-span-4">
-                 <input 
-                   type="time" 
-                   value={t.endTime} 
-                   onChange={(e) => handleTimeChange(idx, 'endTime', e.target.value)}
-                   className="w-full p-2 bg-popover border border-border rounded-lg focus:outline-none focus:border-primary"
-                 />
-               </div>
+              <div className="col-span-4 font-medium">{t.day}</div>
+              <div className="col-span-4">
+                <input
+                  type="time"
+                  value={t.startTime}
+                  onChange={(e) => handleTimeChange(idx, 'startTime', e.target.value)}
+                  className="w-full p-2 bg-popover border border-border rounded-lg focus:outline-none focus:border-primary"
+                />
+              </div>
+              <div className="col-span-4">
+                <input
+                  type="time"
+                  value={t.endTime}
+                  onChange={(e) => handleTimeChange(idx, 'endTime', e.target.value)}
+                  className="w-full p-2 bg-popover border border-border rounded-lg focus:outline-none focus:border-primary"
+                />
+              </div>
             </div>
           ))}
         </div>
-        
+
         <div className="p-4 border-t border-border bg-card flex justify-end gap-4">
-           <button onClick={onClose} className="px-6 py-2 border border-border hover:bg-popover text-foreground rounded-lg font-medium transition">
-             Cancel
-           </button>
-           <button onClick={handleSave} className="px-6 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg font-medium transition">
-             Save Schedule
-           </button>
+          <button onClick={onClose} className="px-6 py-2 border border-border hover:bg-popover text-foreground rounded-lg font-medium transition">
+            Cancel
+          </button>
+          <button onClick={handleSave} className="px-6 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg font-medium transition">
+            Save Schedule
+          </button>
         </div>
       </motion.div>
     </div>
@@ -107,7 +107,7 @@ const DoctorAvailability = () => {
     const fetchProfile = async () => {
       try {
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/doctors/profile`, config);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/doctors/profile`, config);
         setProfile(data);
       } catch (error) {
         console.error(error);
@@ -124,7 +124,7 @@ const DoctorAvailability = () => {
   const handleSaveAvailability = async (newTimings) => {
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      const { data } = await axios.put(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/doctors/profile`, { availabilityTimings: newTimings }, config);
+      const { data } = await axios.put(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/doctors/profile`, { availabilityTimings: newTimings }, config);
       setProfile(data);
       toast.success('Availability updated successfully');
       setIsModalOpen(false);
@@ -149,11 +149,11 @@ const DoctorAvailability = () => {
   const activeDays = availability.length;
   // Calculate total hours roughly
   const totalHours = availability.reduce((acc, curr) => {
-     if(!curr.startTime || !curr.endTime) return acc;
-     const [sh, sm] = curr.startTime.split(':').map(Number);
-     const [eh, em] = curr.endTime.split(':').map(Number);
-     const hours = (eh + em/60) - (sh + sm/60);
-     return acc + (hours > 0 ? hours : hours + 24); // Handle overnight loosely
+    if (!curr.startTime || !curr.endTime) return acc;
+    const [sh, sm] = curr.startTime.split(':').map(Number);
+    const [eh, em] = curr.endTime.split(':').map(Number);
+    const hours = (eh + em / 60) - (sh + sm / 60);
+    return acc + (hours > 0 ? hours : hours + 24); // Handle overnight loosely
   }, 0);
 
   return (
@@ -164,7 +164,7 @@ const DoctorAvailability = () => {
           <p className="text-muted-foreground mt-2">Set the hours when patients can book consultations with you.</p>
         </div>
         {hasAvailability && (
-          <button 
+          <button
             onClick={() => setIsModalOpen(true)}
             className="px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-bold transition shadow-lg shadow-primary/20"
           >
@@ -174,7 +174,7 @@ const DoctorAvailability = () => {
       </div>
 
       {!hasAvailability ? (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           className="space-y-12"
         >
@@ -211,21 +211,21 @@ const DoctorAvailability = () => {
           <div className="max-w-2xl mx-auto">
             <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 text-center">Sample Weekly Calendar</h3>
             <div className="bg-card border border-border rounded-2xl overflow-hidden opacity-60 pointer-events-none">
-               {['Monday', 'Tuesday', 'Wednesday'].map((day, i) => (
-                 <div key={day} className={`p-4 flex justify-between items-center ${i !== 2 ? 'border-b border-border' : ''}`}>
-                   <span className="font-medium">{day}</span>
-                   <span className="text-primary font-mono bg-popover px-3 py-1 rounded">09:00 AM - 05:00 PM</span>
-                 </div>
-               ))}
-               <div className="p-4 border-t border-border text-center text-muted-foreground text-sm italic bg-popover">
-                 And so on for your active days...
-               </div>
+              {['Monday', 'Tuesday', 'Wednesday'].map((day, i) => (
+                <div key={day} className={`p-4 flex justify-between items-center ${i !== 2 ? 'border-b border-border' : ''}`}>
+                  <span className="font-medium">{day}</span>
+                  <span className="text-primary font-mono bg-popover px-3 py-1 rounded">09:00 AM - 05:00 PM</span>
+                </div>
+              ))}
+              <div className="p-4 border-t border-border text-center text-muted-foreground text-sm italic bg-popover">
+                And so on for your active days...
+              </div>
             </div>
           </div>
 
           {/* CTA */}
           <div className="text-center pb-8 mt-12">
-            <button 
+            <button
               onClick={() => setIsModalOpen(true)}
               className="inline-flex items-center justify-center px-10 py-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-bold text-lg shadow-lg shadow-primary/20 transition hover:-translate-y-1"
             >
@@ -235,7 +235,7 @@ const DoctorAvailability = () => {
         </motion.div>
       ) : (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
-          
+
           {/* Summary Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="glass-panel p-6 rounded-2xl border border-border">
@@ -249,7 +249,7 @@ const DoctorAvailability = () => {
             <div className="glass-panel p-6 rounded-2xl border border-border">
               <h3 className="text-muted-foreground font-medium text-sm mb-2">Consultation Modes</h3>
               <div className="flex gap-2 mt-2">
-                {profile.consultationMode?.slice(0,2).map(m => (
+                {profile.consultationMode?.slice(0, 2).map(m => (
                   <span key={m} className="px-2 py-1 bg-popover border border-border rounded text-xs">{m}</span>
                 ))}
                 {profile.consultationMode?.length > 2 && <span className="px-2 py-1 bg-popover border border-border rounded text-xs">+{profile.consultationMode.length - 2}</span>}
@@ -258,7 +258,7 @@ const DoctorAvailability = () => {
             <div className="glass-panel p-6 rounded-2xl border border-border">
               <h3 className="text-muted-foreground font-medium text-sm mb-2">Status</h3>
               <p className="text-lg font-bold text-green-500 flex items-center gap-2">
-                 <span className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></span> Active
+                <span className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></span> Active
               </p>
             </div>
           </div>
@@ -303,9 +303,9 @@ const DoctorAvailability = () => {
 
       <AnimatePresence>
         {isModalOpen && (
-          <AvailabilityModal 
-            isOpen={isModalOpen} 
-            onClose={() => setIsModalOpen(false)} 
+          <AvailabilityModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
             currentTimings={availability}
             onSave={handleSaveAvailability}
           />

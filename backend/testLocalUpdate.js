@@ -6,7 +6,7 @@ async function run() {
   try {
     const jwt = await import('jsonwebtoken');
     const token = jwt.sign({ id: '6a0363ca1893233bdd2b595c' }, process.env.JWT_SECRET || 'secret123', { expiresIn: '30d' });
-    
+
     const FormData = (await import('form-data')).default;
     const form = new FormData();
     form.append('name', 'Doctor Satyam');
@@ -19,17 +19,17 @@ async function run() {
     form.append('medicalRegistrationNumber', 'MED1234');
     form.append('consultationMode[]', 'Video');
     form.append('consultationMode[]', 'Audio');
-    
+
     const fetch = (await import('node-fetch')).default;
-    const res = await fetch('http://localhost:5007/api/profile', {
+    const res = await fetch('http://localhost:5006/api/profile', {
       method: 'PUT',
-      headers: { 
+      headers: {
         Authorization: `Bearer ${token}`,
         ...form.getHeaders()
       },
       body: form
     });
-    
+
     const data = await res.text();
     console.log("STATUS:", res.status);
     console.log("RESPONSE:", data);

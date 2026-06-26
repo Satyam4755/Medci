@@ -21,7 +21,7 @@ const ExploreDoctors = () => {
         setError(null);
         startLoading('Finding doctors...');
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/doctors`, config);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/doctors`, config);
         setDoctors(data);
         setLoading(false);
         stopLoading();
@@ -44,17 +44,17 @@ const ExploreDoctors = () => {
           <p className="text-muted-foreground mt-2">Find the best hair treatment specialists for you.</p>
         </div>
         <div className="flex w-full md:w-auto">
-           <select className="glass-panel text-sm px-3 py-3 w-full md:w-auto rounded-lg text-foreground outline-none">
-              <option value="all" className="bg-popover text-foreground">All Specialties</option>
-              <option value="transplant" className="bg-popover text-foreground">Hair Transplant</option>
-              <option value="prp" className="bg-popover text-foreground">PRP Therapy</option>
-           </select>
+          <select className="glass-panel text-sm px-3 py-3 w-full md:w-auto rounded-lg text-foreground outline-none">
+            <option value="all" className="bg-popover text-foreground">All Specialties</option>
+            <option value="transplant" className="bg-popover text-foreground">Hair Transplant</option>
+            <option value="prp" className="bg-popover text-foreground">PRP Therapy</option>
+          </select>
         </div>
       </div>
 
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1,2,3,4,5,6].map(i => <SkeletonLoader key={i} type="card" />)}
+          {[1, 2, 3, 4, 5, 6].map(i => <SkeletonLoader key={i} type="card" />)}
         </div>
       ) : error ? (
         <div className="glass-panel p-16 rounded-2xl text-center flex flex-col items-center justify-center border-dashed border-2 border-border">
@@ -96,7 +96,7 @@ const ExploreDoctors = () => {
                 <p>⭐ {doc.experience} Years Exp.</p>
                 <p>💰 ₹{doc.feeRange?.min} - ₹{doc.feeRange?.max} / visit</p>
               </div>
-              <button 
+              <button
                 onClick={() => {
                   setSelectedDoctorId(doc._id);
                   setIsProfileModalOpen(true);
@@ -110,10 +110,10 @@ const ExploreDoctors = () => {
         </div>
       )}
 
-      <DoctorProfilePreviewModal 
-        isOpen={isProfileModalOpen} 
-        onClose={() => setIsProfileModalOpen(false)} 
-        doctorId={selectedDoctorId} 
+      <DoctorProfilePreviewModal
+        isOpen={isProfileModalOpen}
+        onClose={() => setIsProfileModalOpen(false)}
+        doctorId={selectedDoctorId}
       />
     </div>
   );

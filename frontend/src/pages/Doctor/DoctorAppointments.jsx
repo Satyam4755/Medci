@@ -16,7 +16,7 @@ const DoctorAppointments = () => {
     const fetchAppointments = async () => {
       try {
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/doctors/appointments`, config);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/doctors/appointments`, config);
         setAppointments(data);
       } catch (error) {
         console.error(error);
@@ -71,7 +71,7 @@ const DoctorAppointments = () => {
       </div>
 
       {appointments.length === 0 ? (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           className="space-y-12"
         >
@@ -96,8 +96,8 @@ const DoctorAppointments = () => {
                 { title: 'Respond Quickly', icon: '⚡', desc: 'Fast response times increase your ranking and patient satisfaction.' },
                 { title: 'Build Trust', icon: '⭐', desc: 'Positive reviews and successful consultations will organically grow your patient base.' }
               ].map((item, idx) => (
-                <motion.div 
-                  key={idx} 
+                <motion.div
+                  key={idx}
                   whileHover={{ y: -5 }}
                   className="bg-card p-6 rounded-2xl border border-border hover:border-primary/50 transition-colors group flex gap-4"
                 >
@@ -115,7 +115,7 @@ const DoctorAppointments = () => {
 
           {/* CTA */}
           <div className="text-center mt-12">
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.02 }}
               className="inline-block"
             >
@@ -147,7 +147,7 @@ const DoctorAppointments = () => {
           <div className="space-y-4">
             <AnimatePresence>
               {appointments.map(app => (
-                <motion.div 
+                <motion.div
                   key={app._id}
                   initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                   className="bg-card p-6 rounded-2xl border border-border hover:border-primary/30 transition flex flex-col md:flex-row md:items-center gap-6"
@@ -170,7 +170,7 @@ const DoctorAppointments = () => {
                     <div>
                       <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Date & Time</p>
                       <p className="font-medium">
-                        {isDateValid(app.meetingTiming) 
+                        {isDateValid(app.meetingTiming)
                           ? new Date(app.meetingTiming).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })
                           : app.meetingTiming}
                       </p>
@@ -184,19 +184,18 @@ const DoctorAppointments = () => {
                   </div>
 
                   <div className="md:w-1/4 flex flex-col md:items-end gap-3">
-                     <span className={`px-3 py-1 text-xs font-bold rounded-full uppercase tracking-wider ${
-                        app.status === 'completed' ? 'bg-green-500/10 text-green-500 border border-green-500/20' : 
-                        app.status === 'scheduled' ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20' : 
-                        'bg-red-500/10 text-destructive border border-red-500/20'
-                     }`}>
-                       {app.status}
-                     </span>
-                     <button 
-                       onClick={() => setSelectedAppointment(app)}
-                       className="px-4 py-2 bg-popover hover:bg-[var(--color-theme-border)] border border-border rounded-lg text-sm font-medium transition text-foreground w-full md:w-auto"
-                     >
-                       View Details
-                     </button>
+                    <span className={`px-3 py-1 text-xs font-bold rounded-full uppercase tracking-wider ${app.status === 'completed' ? 'bg-green-500/10 text-green-500 border border-green-500/20' :
+                        app.status === 'scheduled' ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20' :
+                          'bg-red-500/10 text-destructive border border-red-500/20'
+                      }`}>
+                      {app.status}
+                    </span>
+                    <button
+                      onClick={() => setSelectedAppointment(app)}
+                      className="px-4 py-2 bg-popover hover:bg-[var(--color-theme-border)] border border-border rounded-lg text-sm font-medium transition text-foreground w-full md:w-auto"
+                    >
+                      View Details
+                    </button>
                   </div>
                 </motion.div>
               ))}
@@ -207,10 +206,10 @@ const DoctorAppointments = () => {
 
       {/* Appointment Details Modal */}
       {selectedAppointment && (
-        <AppointmentDetailsModal 
-          appointment={selectedAppointment} 
-          onClose={() => setSelectedAppointment(null)} 
-          userRole="doctor" 
+        <AppointmentDetailsModal
+          appointment={selectedAppointment}
+          onClose={() => setSelectedAppointment(null)}
+          userRole="doctor"
         />
       )}
     </div>

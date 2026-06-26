@@ -17,10 +17,10 @@ const RaiseRequest = () => {
   const [consultationModes, setConsultationModes] = useState(['video']);
   const [radius, setRadius] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const [previousPrescription, setPreviousPrescription] = useState(null);
   const [hairMedia, setHairMedia] = useState([{ id: Date.now(), file: null }]);
-  
+
   const [activeRequest, setActiveRequest] = useState(null);
   const [checkingActive, setCheckingActive] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -29,7 +29,7 @@ const RaiseRequest = () => {
     const checkActiveRequest = async () => {
       try {
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/consultations/active`, config);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/consultations/active`, config);
         if (data.hasActiveRequest) {
           setActiveRequest(data.request);
         }
@@ -97,7 +97,7 @@ const RaiseRequest = () => {
 
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}`, 'Content-Type': 'multipart/form-data' } };
-      
+
       const formData = new FormData();
       formData.append('problemDescription', problemDescription);
       formData.append('budgetRange', JSON.stringify({ min: budgetRange[0], max: budgetRange[1] }));
@@ -105,7 +105,7 @@ const RaiseRequest = () => {
       formData.append('timezone', 'Asia/Kolkata');
       formData.append('consultationModes', JSON.stringify(consultationModes));
       formData.append('distancePreference', radius);
-      
+
       // Default location for now
       formData.append('longitude', 77.2090);
       formData.append('latitude', 28.6139);
@@ -120,7 +120,7 @@ const RaiseRequest = () => {
         }
       });
 
-      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5007'}/api/consultations`, formData, config);
+      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/consultations`, formData, config);
       toast.success('Consultation request broadcasted successfully!');
       navigate('/patient/home');
     } catch (error) {
@@ -185,7 +185,7 @@ const RaiseRequest = () => {
 
       {/* Duplicate Prevention Card */}
       {activeRequest && !showForm && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           className="glass-panel p-8 rounded-2xl border border-primary shadow-xl relative overflow-hidden"
         >
@@ -209,7 +209,7 @@ const RaiseRequest = () => {
             <div className="bg-background/10 p-4 rounded-xl border border-border">
               <p className="text-xs text-muted-foreground mb-1">Appointment</p>
               <p className="font-bold text-foreground text-sm">
-                {activeRequest.appointmentDateTime 
+                {activeRequest.appointmentDateTime
                   ? new Date(activeRequest.appointmentDateTime).toLocaleString('en-IN', { timeZone: activeRequest.timezone || 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' })
                   : activeRequest.preferredTiming || 'Flexible'}
               </p>
@@ -223,13 +223,13 @@ const RaiseRequest = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <button 
+            <button
               onClick={() => navigate('/patient/appointments')}
               className="flex-1 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-xl transition shadow-lg text-center"
             >
               View Existing Request
             </button>
-            <button 
+            <button
               onClick={() => setShowForm(true)}
               className="flex-1 py-3 bg-popover hover:bg-[var(--color-theme-border)] text-foreground font-bold rounded-xl transition border border-border text-center"
             >
@@ -249,180 +249,179 @@ const RaiseRequest = () => {
             </div>
           )}
           <form onSubmit={submitRequest} className="space-y-8">
-          
-          {/* Problem Description */}
-          <div>
-            <label className="block font-bold text-foreground mb-2">Problem Description</label>
-            <textarea
-              required
-              value={problemDescription}
-              onChange={(e) => setProblemDescription(e.target.value)}
-              disabled={isSubmitting}
-              placeholder="Describe your hair issue in detail..."
-              className="w-full bg-card border border-border text-foreground rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition disabled:opacity-50"
-              rows="4"
-            ></textarea>
-          </div>
 
-          {/* Attachments Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-card p-5 rounded-xl border border-border">
-              <label className="block font-bold text-foreground mb-3">Previous Prescription</label>
-              <input
-                type="file"
-                accept=".pdf,.jpg,.jpeg,.png"
-                onChange={(e) => setPreviousPrescription(e.target.files[0])}
+            {/* Problem Description */}
+            <div>
+              <label className="block font-bold text-foreground mb-2">Problem Description</label>
+              <textarea
+                required
+                value={problemDescription}
+                onChange={(e) => setProblemDescription(e.target.value)}
                 disabled={isSubmitting}
-                className="w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-popover file:text-foreground hover:file:bg-[var(--color-theme-border)] transition"
-              />
+                placeholder="Describe your hair issue in detail..."
+                className="w-full bg-card border border-border text-foreground rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition disabled:opacity-50"
+                rows="4"
+              ></textarea>
             </div>
 
-            <div className="bg-card p-5 rounded-xl border border-border">
-               <div className="flex justify-between items-center mb-3">
-                <label className="block font-bold text-foreground">Hair Photos / Videos</label>
-                <button type="button" onClick={handleAddMediaField} className="text-xs px-2 py-1 bg-primary/10 text-primary rounded hover:bg-primary/20 transition">+ Add</button>
-               </div>
-               <div className="space-y-3 max-h-48 overflow-y-auto custom-scrollbar pr-2">
-                 {hairMedia.map((media) => (
-                   <div key={media.id} className="flex items-center gap-2">
-                     <input
-                       type="file"
-                       accept=".jpg,.jpeg,.png,.mp4"
-                       onChange={(e) => handleMediaChange(media.id, e.target.files[0])}
-                       disabled={isSubmitting}
-                       className="flex-1 text-sm text-muted-foreground file:mr-3 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-popover file:text-foreground hover:file:bg-[var(--color-theme-border)] transition"
-                     />
-                     {hairMedia.length > 1 && (
-                       <button type="button" onClick={() => handleRemoveMediaField(media.id)} className="text-destructive hover:bg-red-500/10 p-2 rounded-full">✕</button>
-                     )}
-                   </div>
-                 ))}
-               </div>
-            </div>
-          </div>
+            {/* Attachments Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-card p-5 rounded-xl border border-border">
+                <label className="block font-bold text-foreground mb-3">Previous Prescription</label>
+                <input
+                  type="file"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  onChange={(e) => setPreviousPrescription(e.target.files[0])}
+                  disabled={isSubmitting}
+                  className="w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-popover file:text-foreground hover:file:bg-[var(--color-theme-border)] transition"
+                />
+              </div>
 
-          <hr className="border-border" />
-
-          {/* Budget Range Slider */}
-          <div>
-            <div className="flex justify-between items-center mb-6">
-              <label className="block font-bold text-foreground">Consultation Budget Range</label>
-              <div className="font-mono bg-popover px-4 py-2 rounded-lg text-primary font-bold border border-border">
-                ₹{budgetRange[0]} - ₹{budgetRange[1]}
+              <div className="bg-card p-5 rounded-xl border border-border">
+                <div className="flex justify-between items-center mb-3">
+                  <label className="block font-bold text-foreground">Hair Photos / Videos</label>
+                  <button type="button" onClick={handleAddMediaField} className="text-xs px-2 py-1 bg-primary/10 text-primary rounded hover:bg-primary/20 transition">+ Add</button>
+                </div>
+                <div className="space-y-3 max-h-48 overflow-y-auto custom-scrollbar pr-2">
+                  {hairMedia.map((media) => (
+                    <div key={media.id} className="flex items-center gap-2">
+                      <input
+                        type="file"
+                        accept=".jpg,.jpeg,.png,.mp4"
+                        onChange={(e) => handleMediaChange(media.id, e.target.files[0])}
+                        disabled={isSubmitting}
+                        className="flex-1 text-sm text-muted-foreground file:mr-3 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-popover file:text-foreground hover:file:bg-[var(--color-theme-border)] transition"
+                      />
+                      {hairMedia.length > 1 && (
+                        <button type="button" onClick={() => handleRemoveMediaField(media.id)} className="text-destructive hover:bg-red-500/10 p-2 rounded-full">✕</button>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-            
-            <div className="relative w-full h-12 flex items-center">
-              {/* Background Track */}
-              <div className="absolute w-full h-3 bg-popover rounded-full border border-border"></div>
-              {/* Active Track */}
-              <div 
-                className="absolute h-3 bg-gradient-to-r from-[var(--color-theme-primary)] to-blue-400 rounded-full"
-                style={{ 
-                  left: `${((budgetRange[0] - 100) / 9900) * 100}%`, 
-                  right: `${100 - ((budgetRange[1] - 100) / 9900) * 100}%` 
-                }}
-              ></div>
-              
-              {/* Range Inputs */}
-              <input 
-                type="range" 
-                min={100} max={10000} step={100} 
-                value={budgetRange[0]} 
-                onChange={handleMinBudgetChange} 
-                className="dual-slider-input" 
-              />
-              <input 
-                type="range" 
-                min={100} max={10000} step={100} 
-                value={budgetRange[1]} 
-                onChange={handleMaxBudgetChange} 
-                className="dual-slider-input" 
-              />
-            </div>
-            <div className="flex justify-between text-xs text-muted-foreground mt-2 font-mono">
-              <span>₹100</span>
-              <span>₹10,000+</span>
-            </div>
-          </div>
 
-          <hr className="border-border" />
+            <hr className="border-border" />
 
-          {/* Date Time & Modes */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            
-            {/* DateTime Picker */}
+            {/* Budget Range Slider */}
             <div>
-              <label className="block font-bold text-foreground mb-3">Appointment Date & Time</label>
-              <input
-                type="datetime-local"
-                required
-                value={appointmentDateTime}
-                onChange={(e) => setAppointmentDateTime(e.target.value)}
-                min={new Date().toISOString().slice(0, 16)}
-                disabled={isSubmitting}
-                className="w-full bg-card border border-border text-foreground rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition disabled:opacity-50 custom-datetime"
-              />
-              <p className="text-xs text-muted-foreground mt-2 italic">Timezone: Asia/Kolkata</p>
+              <div className="flex justify-between items-center mb-6">
+                <label className="block font-bold text-foreground">Consultation Budget Range</label>
+                <div className="font-mono bg-popover px-4 py-2 rounded-lg text-primary font-bold border border-border">
+                  ₹{budgetRange[0]} - ₹{budgetRange[1]}
+                </div>
+              </div>
+
+              <div className="relative w-full h-12 flex items-center">
+                {/* Background Track */}
+                <div className="absolute w-full h-3 bg-popover rounded-full border border-border"></div>
+                {/* Active Track */}
+                <div
+                  className="absolute h-3 bg-gradient-to-r from-[var(--color-theme-primary)] to-blue-400 rounded-full"
+                  style={{
+                    left: `${((budgetRange[0] - 100) / 9900) * 100}%`,
+                    right: `${100 - ((budgetRange[1] - 100) / 9900) * 100}%`
+                  }}
+                ></div>
+
+                {/* Range Inputs */}
+                <input
+                  type="range"
+                  min={100} max={10000} step={100}
+                  value={budgetRange[0]}
+                  onChange={handleMinBudgetChange}
+                  className="dual-slider-input"
+                />
+                <input
+                  type="range"
+                  min={100} max={10000} step={100}
+                  value={budgetRange[1]}
+                  onChange={handleMaxBudgetChange}
+                  className="dual-slider-input"
+                />
+              </div>
+              <div className="flex justify-between text-xs text-muted-foreground mt-2 font-mono">
+                <span>₹100</span>
+                <span>₹10,000+</span>
+              </div>
             </div>
 
-            {/* Radius */}
+            <hr className="border-border" />
+
+            {/* Date Time & Modes */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+              {/* DateTime Picker */}
+              <div>
+                <label className="block font-bold text-foreground mb-3">Appointment Date & Time</label>
+                <input
+                  type="datetime-local"
+                  required
+                  value={appointmentDateTime}
+                  onChange={(e) => setAppointmentDateTime(e.target.value)}
+                  min={new Date().toISOString().slice(0, 16)}
+                  disabled={isSubmitting}
+                  className="w-full bg-card border border-border text-foreground rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition disabled:opacity-50 custom-datetime"
+                />
+                <p className="text-xs text-muted-foreground mt-2 italic">Timezone: Asia/Kolkata</p>
+              </div>
+
+              {/* Radius */}
+              <div>
+                <label className="block font-bold text-foreground mb-3">Search Radius (Optional)</label>
+                <select
+                  value={radius}
+                  onChange={(e) => setRadius(e.target.value)}
+                  disabled={isSubmitting}
+                  className="w-full bg-card border border-border text-foreground rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition disabled:opacity-50"
+                >
+                  <option value={0} className="bg-popover">Any Location</option>
+                  <option value={10} className="bg-popover">Within 10 km</option>
+                  <option value={25} className="bg-popover">Within 25 km</option>
+                  <option value={50} className="bg-popover">Within 50 km</option>
+                  <option value={100} className="bg-popover">Within 100 km</option>
+                </select>
+              </div>
+
+            </div>
+
+            {/* Consultation Modes */}
             <div>
-              <label className="block font-bold text-foreground mb-3">Search Radius (Optional)</label>
-              <select
-                value={radius}
-                onChange={(e) => setRadius(e.target.value)}
-                disabled={isSubmitting}
-                className="w-full bg-card border border-border text-foreground rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition disabled:opacity-50"
-              >
-                <option value={0} className="bg-popover">Any Location</option>
-                <option value={10} className="bg-popover">Within 10 km</option>
-                <option value={25} className="bg-popover">Within 25 km</option>
-                <option value={50} className="bg-popover">Within 50 km</option>
-                <option value={100} className="bg-popover">Within 100 km</option>
-              </select>
+              <label className="block font-bold text-foreground mb-3">Preferred Consultation Modes (Select multiple)</label>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {modesList.map(m => {
+                  const isSelected = consultationModes.includes(m.id);
+                  return (
+                    <motion.button
+                      key={m.id}
+                      type="button"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => toggleMode(m.id)}
+                      className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${isSelected
+                          ? 'border-primary bg-primary/10 text-primary shadow-md shadow-primary/10'
+                          : 'border-border bg-card text-muted-foreground hover:border-gray-500'
+                        }`}
+                    >
+                      <span className="text-2xl mb-2">{m.icon}</span>
+                      <span className="font-bold text-sm">{m.label}</span>
+                    </motion.button>
+                  )
+                })}
+              </div>
             </div>
 
-          </div>
-
-          {/* Consultation Modes */}
-          <div>
-            <label className="block font-bold text-foreground mb-3">Preferred Consultation Modes (Select multiple)</label>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {modesList.map(m => {
-                const isSelected = consultationModes.includes(m.id);
-                return (
-                  <motion.button
-                    key={m.id}
-                    type="button"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => toggleMode(m.id)}
-                    className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${
-                      isSelected 
-                        ? 'border-primary bg-primary/10 text-primary shadow-md shadow-primary/10' 
-                        : 'border-border bg-card text-muted-foreground hover:border-gray-500'
-                    }`}
-                  >
-                    <span className="text-2xl mb-2">{m.icon}</span>
-                    <span className="font-bold text-sm">{m.label}</span>
-                  </motion.button>
-                )
-              })}
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full bg-primary hover:bg-primary/90 disabled:bg-primary disabled:opacity-50 text-primary-foreground py-4 rounded-xl font-bold text-lg transition shadow-xl flex items-center justify-center gap-3 mt-4"
-          >
-            {isSubmitting ? (
-              <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} className="w-6 h-6 border-2 border-white border-t-transparent rounded-full" />
-            ) : null}
-            {isSubmitting ? 'Broadcasting to Doctors...' : 'Book Appointment Request'}
-          </button>
-        </form>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-primary hover:bg-primary/90 disabled:bg-primary disabled:opacity-50 text-primary-foreground py-4 rounded-xl font-bold text-lg transition shadow-xl flex items-center justify-center gap-3 mt-4"
+            >
+              {isSubmitting ? (
+                <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} className="w-6 h-6 border-2 border-white border-t-transparent rounded-full" />
+              ) : null}
+              {isSubmitting ? 'Broadcasting to Doctors...' : 'Book Appointment Request'}
+            </button>
+          </form>
         </motion.div>
       )}
     </div>
