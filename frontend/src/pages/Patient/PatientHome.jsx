@@ -37,17 +37,17 @@ const PatientHome = () => {
     <div className="space-y-8">
       {/* Welcome Section */}
       <div className="glass-panel p-8 rounded-2xl">
-        <h1 className="text-3xl font-bold mb-2 text-[var(--color-theme-text)]">
-          Welcome back, <span className="text-[var(--color-theme-primary)]">{user?.name}</span>
+        <h1 className="text-3xl font-bold mb-2 text-foreground">
+          Welcome back, <span className="text-primary">{user?.name}</span>
         </h1>
-        <p className="text-[var(--color-theme-muted)] text-lg">
+        <p className="text-muted-foreground text-lg">
           Manage your hair treatment journey and upcoming consultations from here.
         </p>
         <div className="mt-6 flex gap-4 flex-wrap">
           <Link to="/patient/explore" className={`px-6 py-3 rounded-xl font-semibold transition shadow-lg ${theme.buttonPrimary}`}>
             Find Doctors
           </Link>
-          <Link to="/patient/request" className="px-6 py-3 glass-panel text-[var(--color-theme-text)] rounded-xl font-semibold hover:bg-[var(--color-theme-primary)] hover:bg-opacity-20 transition">
+          <Link to="/patient/request" className="px-6 py-3 glass-panel text-foreground rounded-xl font-semibold hover:bg-primary hover:bg-opacity-20 transition">
             Raise Request
           </Link>
         </div>
@@ -66,7 +66,7 @@ const PatientHome = () => {
             <p className="text-red-400">{error}</p>
             <button
               onClick={() => window.location.reload()}
-              className="mt-4 px-4 py-2 bg-[var(--color-theme-primary)] text-[var(--color-theme-text)] rounded-lg"
+              className="mt-4 px-4 py-2 bg-primary text-foreground rounded-lg"
             >
               Retry
             </button>
@@ -74,16 +74,16 @@ const PatientHome = () => {
         ) : (
           <>
             <div className="glass-panel p-6 rounded-2xl flex flex-col justify-between">
-              <h3 className="text-[var(--color-theme-muted)] font-medium">Active Requests</h3>
-              <p className="text-4xl font-bold mt-4 text-[var(--color-theme-text)]">{stats.activeRequests}</p>
+              <h3 className="text-muted-foreground font-medium">Active Requests</h3>
+              <p className="text-4xl font-bold mt-4 text-foreground">{stats.activeRequests}</p>
             </div>
             <div className="glass-panel p-6 rounded-2xl flex flex-col justify-between">
-              <h3 className="text-[var(--color-theme-muted)] font-medium">Upcoming Appointments</h3>
-              <p className="text-4xl font-bold mt-4 text-[var(--color-theme-primary)]">{stats.appointments}</p>
+              <h3 className="text-muted-foreground font-medium">Upcoming Appointments</h3>
+              <p className="text-4xl font-bold mt-4 text-primary">{stats.appointments}</p>
             </div>
             <div className="glass-panel p-6 rounded-2xl flex flex-col justify-between">
-              <h3 className="text-[var(--color-theme-muted)] font-medium">Prescriptions</h3>
-              <p className="text-4xl font-bold mt-4 text-[var(--color-theme-text)]">0</p>
+              <h3 className="text-muted-foreground font-medium">Prescriptions</h3>
+              <p className="text-4xl font-bold mt-4 text-foreground">0</p>
             </div>
           </>
         )}
@@ -91,9 +91,9 @@ const PatientHome = () => {
 
       {/* Recent Activity */}
       <div>
-        <h2 className="text-xl font-semibold mb-4 text-[var(--color-theme-text)]">Recent Activity</h2>
+        <h2 className="text-xl font-semibold mb-4 text-foreground">Recent Activity</h2>
         <div className="glass-panel p-8 rounded-2xl text-center">
-          <p className="text-[var(--color-theme-muted)]">No recent activity to show.</p>
+          <p className="text-muted-foreground">No recent activity to show.</p>
         </div>
       </div>
     </div>

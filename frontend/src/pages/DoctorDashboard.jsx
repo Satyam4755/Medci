@@ -61,13 +61,13 @@ const DoctorDashboard = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-[var(--color-theme-from)] text-[var(--color-theme-text)]">
+    <div className="flex min-h-screen bg-background text-foreground">
       {/* Sidebar */}
-      <div className="w-64 bg-[var(--color-theme-panel)] p-6 border-r border-[var(--color-theme-border)] hidden md:block">
-        <h2 className="text-2xl font-bold text-[var(--color-theme-text)] mb-8">Doctor Panel</h2>
-        <ul className="space-y-4 text-[var(--color-theme-muted)]">
-          <li className={`cursor-pointer hover:text-[var(--color-theme-text)] ${activeTab === 'live' && 'text-[var(--color-theme-text)] font-semibold'}`} onClick={() => setActiveTab('live')}>Live Requests</li>
-          <li className={`cursor-pointer hover:text-[var(--color-theme-text)] ${activeTab === 'appointments' && 'text-[var(--color-theme-text)] font-semibold'}`} onClick={() => setActiveTab('appointments')}>Appointments</li>
+      <div className="w-64 bg-card p-6 border-r border-border hidden md:block">
+        <h2 className="text-2xl font-bold text-foreground mb-8">Doctor Panel</h2>
+        <ul className="space-y-4 text-muted-foreground">
+          <li className={`cursor-pointer hover:text-foreground ${activeTab === 'live' && 'text-foreground font-semibold'}`} onClick={() => setActiveTab('live')}>Live Requests</li>
+          <li className={`cursor-pointer hover:text-foreground ${activeTab === 'appointments' && 'text-foreground font-semibold'}`} onClick={() => setActiveTab('appointments')}>Appointments</li>
         </ul>
       </div>
 
@@ -77,25 +77,25 @@ const DoctorDashboard = () => {
 
         {activeTab === 'live' && (
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold mb-4 text-[var(--color-theme-muted)] flex items-center">
+            <h2 className="text-xl font-semibold mb-4 text-muted-foreground flex items-center">
               <span className="relative flex h-3 w-3 mr-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-theme-primary)] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-[var(--color-theme-primary)]"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
               </span>
               Incoming Live Requests
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {liveRequests.map(req => (
-                <div key={req._id} className="bg-[var(--color-theme-panel)] p-6 rounded-xl border border-white/30 shadow-lg shadow-white/10">
+                <div key={req._id} className="bg-card p-6 rounded-xl border border-white/30 shadow-lg shadow-white/10">
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h3 className="font-semibold text-lg text-[var(--color-theme-text)]">Patient: {req.patient?.name || 'Anonymous'}</h3>
-                      <p className="text-[var(--color-theme-muted)] mt-1">{req.problemDescription}</p>
+                      <h3 className="font-semibold text-lg text-foreground">Patient: {req.patient?.name || 'Anonymous'}</h3>
+                      <p className="text-muted-foreground mt-1">{req.problemDescription}</p>
                     </div>
-                    <span className="px-3 py-1 bg-[var(--color-theme-dropdown)] rounded-lg text-sm">{req.mode}</span>
+                    <span className="px-3 py-1 bg-popover rounded-lg text-sm">{req.mode}</span>
                   </div>
-                  <div className="text-sm text-[var(--color-theme-muted)] mb-6 space-y-1">
+                  <div className="text-sm text-muted-foreground mb-6 space-y-1">
                     <p>Timing: {req.preferredTiming}</p>
                     <p>Budget: ${req.budgetRange?.min} - ${req.budgetRange?.max}</p>
                   </div>
@@ -108,14 +108,14 @@ const DoctorDashboard = () => {
                 </div>
               ))}
               {liveRequests.length === 0 && (
-                <p className="text-[var(--color-theme-muted)] col-span-2 text-center py-12">No active requests matching your profile right now. Waiting for new patients...</p>
+                <p className="text-muted-foreground col-span-2 text-center py-12">No active requests matching your profile right now. Waiting for new patients...</p>
               )}
             </div>
           </div>
         )}
 
         {activeTab === 'appointments' && (
-          <div className="text-[var(--color-theme-muted)]">Appointment view coming soon...</div>
+          <div className="text-muted-foreground">Appointment view coming soon...</div>
         )}
       </div>
     </div>

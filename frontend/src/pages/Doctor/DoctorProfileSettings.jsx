@@ -181,7 +181,7 @@ const token = userInfo?.token;
       <div className={`${theme.card} p-6 rounded-2xl`}>
         <div className="flex flex-col md:flex-row items-center gap-6">
           <div className="relative group cursor-pointer">
-            <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-[var(--color-theme-primary)] bg-[var(--color-theme-from)] flex items-center justify-center">
+            <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-primary bg-background flex items-center justify-center">
               {imagePreview ? (
                 <img src={imagePreview} alt="Profile" className="w-full h-full object-cover" />
               ) : (
@@ -189,7 +189,7 @@ const token = userInfo?.token;
               )}
             </div>
             <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition">
-              <label className="cursor-pointer text-white text-xs font-semibold">
+              <label className="cursor-pointer text-primary-foreground text-xs font-semibold">
                 Change
                 <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
               </label>
@@ -198,24 +198,24 @@ const token = userInfo?.token;
           <div className="flex-1 text-center md:text-left">
             <h3 className={`text-xl font-bold ${theme.textPrimary}`}>Dr. {formData.name || 'Your Name'}</h3>
             <p className={`${theme.textSecondary}`}>{user?.email}</p>
-            <div className="mt-3 w-full bg-[var(--color-theme-from)] rounded-full h-2.5">
-              <div className="bg-[var(--color-theme-primary)] h-2.5 rounded-full" style={{ width: `${calculateCompletion()}%` }}></div>
+            <div className="mt-3 w-full bg-background rounded-full h-2.5">
+              <div className="bg-primary h-2.5 rounded-full" style={{ width: `${calculateCompletion()}%` }}></div>
             </div>
             <p className={`text-xs mt-1 ${theme.textSecondary}`}>Profile completion: {calculateCompletion()}%</p>
           </div>
         </div>
       </div>
 
-      <div className="flex gap-4 border-b border-[var(--color-theme-border)]">
+      <div className="flex gap-4 border-b border-border">
         <button 
           onClick={() => setActiveTab('professional')}
-          className={`pb-3 font-semibold px-2 border-b-2 transition ${activeTab === 'professional' ? 'border-[var(--color-theme-primary)] text-[var(--color-theme-primary)]' : 'border-transparent text-[var(--color-theme-muted)] hover:text-[var(--color-theme-text)]'}`}
+          className={`pb-3 font-semibold px-2 border-b-2 transition ${activeTab === 'professional' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
         >
           Professional Information
         </button>
         <button 
           onClick={() => setActiveTab('account')}
-          className={`pb-3 font-semibold px-2 border-b-2 transition ${activeTab === 'account' ? 'border-[var(--color-theme-primary)] text-[var(--color-theme-primary)]' : 'border-transparent text-[var(--color-theme-muted)] hover:text-[var(--color-theme-text)]'}`}
+          className={`pb-3 font-semibold px-2 border-b-2 transition ${activeTab === 'account' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
         >
           Account Settings
         </button>
@@ -226,37 +226,37 @@ const token = userInfo?.token;
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Full Name</label>
-              <input type="text" required value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full bg-[var(--color-theme-from)] border border-[var(--color-theme-border)] rounded-lg px-4 py-2 focus:outline-none focus:border-[var(--color-theme-primary)]" />
+              <input type="text" required value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
             </div>
             <div>
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Email (Cannot be changed)</label>
-              <input type="email" disabled value={formData.email} className="w-full bg-[var(--color-theme-from)] opacity-50 border border-[var(--color-theme-border)] rounded-lg px-4 py-2 cursor-not-allowed" />
+              <input type="email" disabled value={formData.email} className="w-full bg-background opacity-50 border border-border rounded-lg px-4 py-2 cursor-not-allowed" />
             </div>
             <div>
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Qualification</label>
-              <input type="text" required placeholder="e.g. MBBS, MD" value={formData.qualification} onChange={e => setFormData({...formData, qualification: e.target.value})} className="w-full bg-[var(--color-theme-from)] border border-[var(--color-theme-border)] rounded-lg px-4 py-2 focus:outline-none focus:border-[var(--color-theme-primary)]" />
+              <input type="text" required placeholder="e.g. MBBS, MD" value={formData.qualification} onChange={e => setFormData({...formData, qualification: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
             </div>
             <div>
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Years of Experience</label>
-              <input type="number" required value={formData.experience} onChange={e => setFormData({...formData, experience: e.target.value})} className="w-full bg-[var(--color-theme-from)] border border-[var(--color-theme-border)] rounded-lg px-4 py-2 focus:outline-none focus:border-[var(--color-theme-primary)]" />
+              <input type="number" required value={formData.experience} onChange={e => setFormData({...formData, experience: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
             </div>
             <div>
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Medical Reg. Number</label>
-              <input type="text" required value={formData.medicalRegistrationNumber} onChange={e => setFormData({...formData, medicalRegistrationNumber: e.target.value})} className="w-full bg-[var(--color-theme-from)] border border-[var(--color-theme-border)] rounded-lg px-4 py-2 focus:outline-none focus:border-[var(--color-theme-primary)]" />
+              <input type="text" required value={formData.medicalRegistrationNumber} onChange={e => setFormData({...formData, medicalRegistrationNumber: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div>
                 <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Min Fee ($)</label>
-                <input type="number" required value={formData.feeMin} onChange={e => setFormData({...formData, feeMin: e.target.value})} className="w-full bg-[var(--color-theme-from)] border border-[var(--color-theme-border)] rounded-lg px-4 py-2 focus:outline-none focus:border-[var(--color-theme-primary)]" />
+                <input type="number" required value={formData.feeMin} onChange={e => setFormData({...formData, feeMin: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
               </div>
               <div>
                 <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Max Fee ($)</label>
-                <input type="number" required value={formData.feeMax} onChange={e => setFormData({...formData, feeMax: e.target.value})} className="w-full bg-[var(--color-theme-from)] border border-[var(--color-theme-border)] rounded-lg px-4 py-2 focus:outline-none focus:border-[var(--color-theme-primary)]" />
+                <input type="number" required value={formData.feeMax} onChange={e => setFormData({...formData, feeMax: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
               </div>
             </div>
             <div>
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Clinic Name</label>
-              <input type="text" required value={formData.clinicName} onChange={e => setFormData({...formData, clinicName: e.target.value})} className="w-full bg-[var(--color-theme-from)] border border-[var(--color-theme-border)] rounded-lg px-4 py-2 focus:outline-none focus:border-[var(--color-theme-primary)]" />
+              <input type="text" required value={formData.clinicName} onChange={e => setFormData({...formData, clinicName: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
             </div>
             <div className="md:col-span-2">
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Clinic Location</label>
@@ -274,7 +274,7 @@ const token = userInfo?.token;
                       type="checkbox" 
                       checked={formData.consultationMode.includes(mode)} 
                       onChange={() => handleModeChange(mode)}
-                      className="w-4 h-4 rounded border-[var(--color-theme-border)] bg-[var(--color-theme-from)] text-[var(--color-theme-primary)] focus:ring-[var(--color-theme-primary)]" 
+                      className="w-4 h-4 rounded border-border bg-background text-primary focus:ring-[var(--color-theme-primary)]" 
                     />
                     <span className={theme.textPrimary}>{mode}</span>
                   </label>
@@ -282,7 +282,7 @@ const token = userInfo?.token;
               </div>
             </div>
           </div>
-          <div className="flex justify-end pt-4 border-t border-[var(--color-theme-border)]">
+          <div className="flex justify-end pt-4 border-t border-border">
             <button type="submit" className={`px-6 py-2 rounded-lg font-semibold ${theme.buttonPrimary}`}>
               Save Professional Profile
             </button>
@@ -295,15 +295,15 @@ const token = userInfo?.token;
           <h3 className={`text-xl font-semibold mb-4 ${theme.textPrimary}`}>Change Password</h3>
           <div>
             <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Current Password</label>
-            <input type="password" required value={passwordData.oldPassword} onChange={e => setPasswordData({...passwordData, oldPassword: e.target.value})} className="w-full bg-[var(--color-theme-from)] border border-[var(--color-theme-border)] rounded-lg px-4 py-2 focus:outline-none focus:border-[var(--color-theme-primary)]" />
+            <input type="password" required value={passwordData.oldPassword} onChange={e => setPasswordData({...passwordData, oldPassword: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
           </div>
           <div>
             <label className={`block text-sm mb-1 ${theme.textSecondary}`}>New Password</label>
-            <input type="password" required value={passwordData.newPassword} onChange={e => setPasswordData({...passwordData, newPassword: e.target.value})} className="w-full bg-[var(--color-theme-from)] border border-[var(--color-theme-border)] rounded-lg px-4 py-2 focus:outline-none focus:border-[var(--color-theme-primary)]" />
+            <input type="password" required value={passwordData.newPassword} onChange={e => setPasswordData({...passwordData, newPassword: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
           </div>
           <div>
             <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Confirm New Password</label>
-            <input type="password" required value={passwordData.confirmPassword} onChange={e => setPasswordData({...passwordData, confirmPassword: e.target.value})} className="w-full bg-[var(--color-theme-from)] border border-[var(--color-theme-border)] rounded-lg px-4 py-2 focus:outline-none focus:border-[var(--color-theme-primary)]" />
+            <input type="password" required value={passwordData.confirmPassword} onChange={e => setPasswordData({...passwordData, confirmPassword: e.target.value})} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
           </div>
           <div className="pt-4">
             <button type="submit" className={`w-full py-2 rounded-lg font-semibold ${theme.buttonPrimary}`}>

@@ -61,8 +61,8 @@ const LiveRequests = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-end mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-[var(--color-theme-text)]">Live Requests</h1>
-          <p className="text-[var(--color-theme-muted)] mt-2">Incoming patient requests matching your location and fee.</p>
+          <h1 className="text-3xl font-bold text-foreground">Live Requests</h1>
+          <p className="text-muted-foreground mt-2">Incoming patient requests matching your location and fee.</p>
         </div>
       </div>
 
@@ -74,31 +74,31 @@ const LiveRequests = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="glass-panel p-6 rounded-2xl border border-[var(--color-theme-primary)]/30 shadow-[0_0_15px_rgba(0,0,0,0.1)] hover:shadow-[0_0_20px_var(--color-theme-primary)] transition duration-300"
+              className="glass-panel p-6 rounded-2xl border border-primary/30 shadow-[0_0_15px_rgba(0,0,0,0.1)] hover:shadow-[0_0_20px_var(--color-theme-primary)] transition duration-300"
             >
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <h3 className="font-bold text-xl text-[var(--color-theme-text)]">{req.patient?.name || 'Anonymous'}</h3>
-                  <p className="text-[var(--color-theme-muted)] mt-2 line-clamp-2">{req.problemDescription}</p>
+                  <h3 className="font-bold text-xl text-foreground">{req.patient?.name || 'Anonymous'}</h3>
+                  <p className="text-muted-foreground mt-2 line-clamp-2">{req.problemDescription}</p>
                 </div>
                 <div className="flex flex-wrap gap-2 justify-end">
                   {req.consultationModes && req.consultationModes.length > 0 ? (
                     req.consultationModes.map(m => (
-                      <span key={m} className="px-2 py-1 text-xs font-bold rounded-lg bg-[var(--color-theme-primary)]/10 text-[var(--color-theme-primary)] border border-[var(--color-theme-primary)]/20 uppercase">
+                      <span key={m} className="px-2 py-1 text-xs font-bold rounded-lg bg-primary/10 text-primary border border-primary/20 uppercase">
                         {m}
                       </span>
                     ))
                   ) : (
-                    <span className="px-3 py-1 bg-[var(--color-theme-panel)] border border-[var(--color-theme-border)] rounded-lg text-sm text-[var(--color-theme-primary)] capitalize">
+                    <span className="px-3 py-1 bg-card border border-border rounded-lg text-sm text-primary capitalize">
                       {req.mode}
                     </span>
                   )}
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4 text-sm text-[var(--color-theme-muted)] mb-4 mt-4 p-4 bg-[var(--color-theme-from)]/10 rounded-xl">
+              <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground mb-4 mt-4 p-4 bg-background/10 rounded-xl">
                 <div>
                   <span className="block opacity-70 mb-1">Requested Timing</span>
-                  <span className="font-medium text-[var(--color-theme-text)] block truncate" title={req.appointmentDateTime ? new Date(req.appointmentDateTime).toLocaleString() : req.preferredTiming}>
+                  <span className="font-medium text-foreground block truncate" title={req.appointmentDateTime ? new Date(req.appointmentDateTime).toLocaleString() : req.preferredTiming}>
                     {req.appointmentDateTime
                       ? new Date(req.appointmentDateTime).toLocaleString('en-IN', { timeZone: req.timezone || 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' })
                       : req.preferredTiming || 'Flexible'}
@@ -106,20 +106,20 @@ const LiveRequests = () => {
                 </div>
                 <div>
                   <span className="block opacity-70 mb-1">Budget Range</span>
-                  <span className="font-medium text-[var(--color-theme-text)]">₹{req.budgetRange?.min} - ₹{req.budgetRange?.max}</span>
+                  <span className="font-medium text-foreground">₹{req.budgetRange?.min} - ₹{req.budgetRange?.max}</span>
                 </div>
               </div>
 
               {(req.previousPrescription?.url || (req.hairMedia && req.hairMedia.length > 0)) && (
-                <div className="mb-6 space-y-4 border-t border-[var(--color-theme-border)] pt-4 text-[var(--color-theme-text)]">
+                <div className="mb-6 space-y-4 border-t border-border pt-4 text-foreground">
                   {req.previousPrescription?.url && (
                     <div>
-                      <span className="block opacity-70 mb-2 text-sm text-[var(--color-theme-muted)]">Previous Prescription</span>
+                      <span className="block opacity-70 mb-2 text-sm text-muted-foreground">Previous Prescription</span>
                       <a
                         href={req.previousPrescription.url}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-block px-4 py-2 bg-[var(--color-theme-from)]/20 text-[var(--color-theme-primary)] rounded-lg text-sm font-medium hover:bg-[var(--color-theme-from)]/40 transition border border-[var(--color-theme-border)]"
+                        className="inline-block px-4 py-2 bg-background/20 text-primary rounded-lg text-sm font-medium hover:bg-background/40 transition border border-border"
                       >
                         📄 View Prescription
                       </a>
@@ -128,10 +128,10 @@ const LiveRequests = () => {
 
                   {req.hairMedia && req.hairMedia.length > 0 && (
                     <div>
-                      <span className="block opacity-70 mb-2 text-sm text-[var(--color-theme-muted)]">Patient Media ({req.hairMedia.length})</span>
+                      <span className="block opacity-70 mb-2 text-sm text-muted-foreground">Patient Media ({req.hairMedia.length})</span>
                       <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
                         {req.hairMedia.map((media, idx) => (
-                          <div key={idx} className="flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden border border-[var(--color-theme-border)] bg-[var(--color-theme-panel)]">
+                          <div key={idx} className="flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden border border-border bg-card">
                             {media.resource_type === 'video' ? (
                               <video src={media.url} className="w-full h-full object-cover" controls preload="metadata" />
                             ) : (
@@ -148,7 +148,7 @@ const LiveRequests = () => {
               )}
               <button
                 onClick={() => handleAccept(req._id)}
-                className="w-full bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-[var(--color-theme-button-text)] py-3 rounded-xl font-bold transition shadow-lg shadow-[var(--color-theme-primary)]/20"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3 rounded-xl font-bold transition shadow-lg shadow-primary/20"
               >
                 Accept Patient
               </button>
@@ -157,13 +157,13 @@ const LiveRequests = () => {
         </AnimatePresence>
 
         {liveRequests.length === 0 && (
-          <div className="col-span-full glass-panel p-16 rounded-2xl text-center flex flex-col items-center justify-center border-dashed border-2 border-[var(--color-theme-border)]">
+          <div className="col-span-full glass-panel p-16 rounded-2xl text-center flex flex-col items-center justify-center border-dashed border-2 border-border">
             <div className="relative flex h-16 w-16 mb-4">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-theme-primary)] opacity-20"></span>
-              <div className="relative rounded-full h-16 w-16 bg-[var(--color-theme-panel)] flex items-center justify-center text-2xl">📡</div>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-20"></span>
+              <div className="relative rounded-full h-16 w-16 bg-card flex items-center justify-center text-2xl">📡</div>
             </div>
-            <h3 className="text-xl font-semibold text-[var(--color-theme-text)]">Listening for requests...</h3>
-            <p className="text-[var(--color-theme-muted)] mt-2 max-w-md">No active requests matching your profile right now. New requests will appear here instantly.</p>
+            <h3 className="text-xl font-semibold text-foreground">Listening for requests...</h3>
+            <p className="text-muted-foreground mt-2 max-w-md">No active requests matching your profile right now. New requests will appear here instantly.</p>
           </div>
         )}
       </div>

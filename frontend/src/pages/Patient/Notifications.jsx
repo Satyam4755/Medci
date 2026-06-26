@@ -65,7 +65,7 @@ const Notifications = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="w-12 h-12 border-4 border-[var(--color-theme-primary)] border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -74,20 +74,20 @@ const Notifications = () => {
     <div className="max-w-4xl mx-auto space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-[var(--color-theme-text)] flex items-center gap-3">
+          <h1 className="text-3xl font-bold text-foreground flex items-center gap-3">
             Notifications
             {unreadCount > 0 && (
-              <span className="bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full">
+              <span className="bg-red-500 text-primary-foreground text-sm font-bold px-3 py-1 rounded-full">
                 {unreadCount} New
               </span>
             )}
           </h1>
-          <p className="text-[var(--color-theme-muted)] mt-2">Stay updated with your appointments and prescriptions.</p>
+          <p className="text-muted-foreground mt-2">Stay updated with your appointments and prescriptions.</p>
         </div>
         {notifications.length > 0 && unreadCount > 0 && (
           <button 
             onClick={markAllAsRead}
-            className="px-4 py-2 bg-[var(--color-theme-panel)] hover:bg-[var(--color-theme-dropdown)] border border-[var(--color-theme-border)] rounded-lg text-sm font-medium transition"
+            className="px-4 py-2 bg-card hover:bg-popover border border-border rounded-lg text-sm font-medium transition"
           >
             Mark all as read
           </button>
@@ -100,12 +100,12 @@ const Notifications = () => {
           className="space-y-12"
         >
           {/* Empty State Hero */}
-          <div className="glass-panel p-12 text-center rounded-2xl border border-[var(--color-theme-border)]">
-            <div className="w-20 h-20 bg-[var(--color-theme-dropdown)] rounded-full flex items-center justify-center mx-auto mb-6">
+          <div className="glass-panel p-12 text-center rounded-2xl border border-border">
+            <div className="w-20 h-20 bg-popover rounded-full flex items-center justify-center mx-auto mb-6">
               <span className="text-4xl">📭</span>
             </div>
             <h2 className="text-2xl font-bold mb-4">No Notifications Yet</h2>
-            <p className="text-[var(--color-theme-muted)] max-w-lg mx-auto leading-relaxed">
+            <p className="text-muted-foreground max-w-lg mx-auto leading-relaxed">
               We’ll notify you whenever doctors respond, appointments are scheduled, prescriptions are uploaded, or important updates are available.
             </p>
           </div>
@@ -122,10 +122,10 @@ const Notifications = () => {
                 { title: 'Patchy Beard', icon: '🧔', desc: 'Uneven facial hair growth' },
                 { title: 'Scalp Infection', icon: '🦠', desc: 'Redness or inflammation' }
               ].map((item, idx) => (
-                <div key={idx} className="bg-[var(--color-theme-panel)] p-6 rounded-xl border border-[var(--color-theme-border)] hover:border-[var(--color-theme-primary)] transition text-center group cursor-pointer">
+                <div key={idx} className="bg-card p-6 rounded-xl border border-border hover:border-primary transition text-center group cursor-pointer">
                   <span className="text-3xl mb-3 block group-hover:scale-110 transition-transform">{item.icon}</span>
-                  <h4 className="font-semibold text-[var(--color-theme-text)]">{item.title}</h4>
-                  <p className="text-xs text-[var(--color-theme-muted)] mt-1">{item.desc}</p>
+                  <h4 className="font-semibold text-foreground">{item.title}</h4>
+                  <p className="text-xs text-muted-foreground mt-1">{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -133,7 +133,7 @@ const Notifications = () => {
 
           {/* CTA */}
           <div className="text-center pb-8">
-            <Link to="/patient/explore" className="inline-flex items-center justify-center px-8 py-4 bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-[var(--color-theme-button-text)] rounded-xl font-bold text-lg shadow-lg shadow-[var(--color-theme-primary)]/20 transition hover:-translate-y-1">
+            <Link to="/patient/explore" className="inline-flex items-center justify-center px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-bold text-lg shadow-lg shadow-primary/20 transition hover:-translate-y-1">
               Explore Doctors
             </Link>
           </div>
@@ -147,35 +147,35 @@ const Notifications = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className={`p-6 rounded-xl border transition relative overflow-hidden ${notif.read ? 'bg-[var(--color-theme-panel)] border-[var(--color-theme-border)]' : 'bg-[var(--color-theme-dropdown)] border-[var(--color-theme-primary)]/50 shadow-md'}`}
+                className={`p-6 rounded-xl border transition relative overflow-hidden ${notif.read ? 'bg-card border-border' : 'bg-popover border-primary/50 shadow-md'}`}
               >
                 {/* Unread Indicator Bar */}
                 {!notif.read && (
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-[var(--color-theme-primary)]"></div>
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
                 )}
                 
                 <div className="flex gap-4">
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl flex-shrink-0 ${notif.read ? 'bg-neutral-800' : 'bg-[var(--color-theme-primary)]/20'}`}>
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl flex-shrink-0 ${notif.read ? 'bg-neutral-800' : 'bg-primary/20'}`}>
                     {notif.icon || '🔔'}
                   </div>
                   <div className="flex-1">
                     <div className="flex justify-between items-start">
-                      <h3 className={`font-bold text-lg ${notif.read ? 'text-[var(--color-theme-text)]' : 'text-[var(--color-theme-primary)]'}`}>
+                      <h3 className={`font-bold text-lg ${notif.read ? 'text-foreground' : 'text-primary'}`}>
                         {notif.title}
                       </h3>
-                      <span className="text-xs text-[var(--color-theme-muted)] ml-4 whitespace-nowrap">
+                      <span className="text-xs text-muted-foreground ml-4 whitespace-nowrap">
                         {new Date(notif.createdAt).toLocaleDateString()} {new Date(notif.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                       </span>
                     </div>
-                    <p className="text-[var(--color-theme-muted)] mt-1">{notif.description}</p>
+                    <p className="text-muted-foreground mt-1">{notif.description}</p>
                     
                     <div className="flex gap-4 mt-4">
                       {!notif.read && (
-                        <button onClick={() => markAsRead(notif._id)} className="text-sm font-medium text-[var(--color-theme-primary)] hover:underline">
+                        <button onClick={() => markAsRead(notif._id)} className="text-sm font-medium text-primary hover:underline">
                           Mark as Read
                         </button>
                       )}
-                      <button onClick={() => deleteNotification(notif._id)} className="text-sm font-medium text-red-500 hover:text-red-400 hover:underline">
+                      <button onClick={() => deleteNotification(notif._id)} className="text-sm font-medium text-destructive hover:text-red-400 hover:underline">
                         Delete
                       </button>
                     </div>

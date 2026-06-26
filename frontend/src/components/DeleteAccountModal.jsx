@@ -129,12 +129,12 @@ const DeleteAccountModal = ({ isOpen, onClose }) => {
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="w-full max-w-md bg-[var(--color-theme-panel)] rounded-2xl border border-[var(--color-theme-border)] shadow-2xl overflow-hidden text-[var(--color-theme-text)] relative max-h-[90vh] overflow-y-auto"
+        className="w-full max-w-md bg-card rounded-2xl border border-border shadow-2xl overflow-hidden text-foreground relative max-h-[90vh] overflow-y-auto"
       >
         <button
           onClick={onClose}
           disabled={isSubmitting || step === 3}
-          className="absolute top-4 right-4 text-[var(--color-theme-muted)] hover:text-[var(--color-theme-text)] disabled:opacity-50 z-10 p-2"
+          className="absolute top-4 right-4 text-muted-foreground hover:text-foreground disabled:opacity-50 z-10 p-2"
           aria-label="Close modal"
         >
           ✕
@@ -145,26 +145,26 @@ const DeleteAccountModal = ({ isOpen, onClose }) => {
             {step === 1 && (
               <motion.div key="step1" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}>
                 <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-8 h-8 text-red-600 dark:text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-8 h-8 text-destructive dark:text-destructive" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                   </svg>
                 </div>
                 <h2 className="text-2xl font-bold mb-4 text-center">Delete Account</h2>
-                <p className="text-center text-[var(--color-theme-muted)] mb-8">
+                <p className="text-center text-muted-foreground mb-8">
                   Are you sure you want to permanently delete your account? This action cannot be undone and all your data will be lost.
                 </p>
                 <div className="flex gap-4">
                   <button
                     onClick={onClose}
                     disabled={isSubmitting}
-                    className="flex-1 px-4 py-3 bg-[var(--color-theme-from)] hover:bg-[var(--color-theme-border)] rounded-lg font-medium transition"
+                    className="flex-1 px-4 py-3 bg-background hover:bg-[var(--color-theme-border)] rounded-lg font-medium transition"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleSendOtp}
                     disabled={isSubmitting}
-                    className="flex-1 px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition flex justify-center items-center"
+                    className="flex-1 px-4 py-3 bg-destructive hover:bg-destructive/90 text-primary-foreground rounded-lg font-medium transition flex justify-center items-center"
                   >
                     {isSubmitting ? (
                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -176,8 +176,8 @@ const DeleteAccountModal = ({ isOpen, onClose }) => {
 
             {step === 2 && (
               <motion.div key="step2" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}>
-                <h2 className="text-2xl font-bold mb-2 text-center text-red-500">Security Verification</h2>
-                <p className="text-center text-[var(--color-theme-muted)] mb-6">
+                <h2 className="text-2xl font-bold mb-2 text-center text-destructive">Security Verification</h2>
+                <p className="text-center text-muted-foreground mb-6">
                   Enter the 6-digit verification code sent to your email.
                 </p>
                 <form onSubmit={handleVerifyOtp} className="space-y-6">
@@ -192,14 +192,14 @@ const DeleteAccountModal = ({ isOpen, onClose }) => {
                         onChange={(e) => handleOtpChange(index, e.target.value)}
                         onKeyDown={(e) => handleOtpKeyDown(index, e)}
                         disabled={isSubmitting}
-                        className="w-10 sm:w-12 h-12 sm:h-14 text-center text-lg sm:text-xl font-bold bg-[var(--color-theme-from)] border border-red-500/30 rounded-lg focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 disabled:opacity-50 shrink-0"
+                        className="w-10 sm:w-12 h-12 sm:h-14 text-center text-lg sm:text-xl font-bold bg-background border border-red-500/30 rounded-lg focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 disabled:opacity-50 shrink-0"
                       />
                     ))}
                   </div>
                   <button
                     type="submit"
                     disabled={isSubmitting || otp.join('').length !== 6}
-                    className="w-full bg-red-600 hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium py-3 rounded-lg transition flex items-center justify-center"
+                    className="w-full bg-destructive hover:bg-destructive/90 disabled:bg-gray-400 disabled:cursor-not-allowed text-primary-foreground font-medium py-3 rounded-lg transition flex items-center justify-center"
                   >
                     {isSubmitting ? (
                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -210,7 +210,7 @@ const DeleteAccountModal = ({ isOpen, onClose }) => {
                   <button
                     onClick={handleSendOtp}
                     disabled={timer > 0 || isSubmitting}
-                    className="text-[var(--color-theme-muted)] hover:text-[var(--color-theme-text)] font-medium text-sm transition disabled:opacity-50"
+                    className="text-muted-foreground hover:text-foreground font-medium text-sm transition disabled:opacity-50"
                   >
                     {timer > 0 ? `Resend Code in ${timer}s` : 'Resend Code'}
                   </button>
@@ -221,11 +221,11 @@ const DeleteAccountModal = ({ isOpen, onClose }) => {
             {step === 3 && (
               <motion.div key="step3" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="py-8 text-center">
                 <div className="w-16 h-16 mx-auto mb-6 relative">
-                  <div className="absolute inset-0 border-4 border-[var(--color-theme-border)] rounded-full"></div>
+                  <div className="absolute inset-0 border-4 border-border rounded-full"></div>
                   <div className="absolute inset-0 border-4 border-red-600 rounded-full border-t-transparent animate-spin"></div>
                 </div>
                 <h2 className="text-xl font-bold mb-2">Deleting Account...</h2>
-                <p className="text-[var(--color-theme-muted)] text-sm">Please do not close this window.</p>
+                <p className="text-muted-foreground text-sm">Please do not close this window.</p>
                 {/* Auto trigger deletion once verified */}
                 {(() => {
                   if (!isSubmitting) handleDelete();

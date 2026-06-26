@@ -73,15 +73,15 @@ const NearbyDoctors = () => {
 
   if (!userLocation || userLocation.coordinates[0] === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] bg-[var(--color-theme-from)] text-center p-6">
-        <MapPin size={48} className="text-[var(--color-theme-primary)] mb-4" />
-        <h2 className="text-2xl font-bold text-[var(--color-theme-text)] mb-2">Location Not Set</h2>
-        <p className="text-[var(--color-theme-muted)] max-w-md">
+      <div className="flex flex-col items-center justify-center min-h-[60vh] bg-background text-center p-6">
+        <MapPin size={48} className="text-primary mb-4" />
+        <h2 className="text-2xl font-bold text-foreground mb-2">Location Not Set</h2>
+        <p className="text-muted-foreground max-w-md">
           You need to set your location in your profile settings before you can find nearby doctors.
         </p>
         <button 
           onClick={() => navigate('/patient/profile')}
-          className="mt-6 px-6 py-2 bg-[var(--color-theme-primary)] text-white font-bold rounded-xl"
+          className="mt-6 px-6 py-2 bg-primary text-primary-foreground font-bold rounded-xl"
         >
           Go to Profile
         </button>
@@ -90,20 +90,20 @@ const NearbyDoctors = () => {
   }
 
   return (
-    <div className="h-[calc(100vh-80px)] w-full flex flex-col animate-fade-in bg-[var(--color-theme-from)]">
+    <div className="h-[calc(100vh-80px)] w-full flex flex-col animate-fade-in bg-background">
       {/* Header */}
-      <div className="p-4 bg-[var(--color-theme-panel)] border-b border-[var(--color-theme-border)] flex items-center justify-between z-10">
+      <div className="p-4 bg-card border-b border-border flex items-center justify-between z-10">
         <div>
-          <h1 className="text-2xl font-bold text-[var(--color-theme-text)]">Nearby Doctors</h1>
-          <p className="text-sm text-[var(--color-theme-muted)]">Showing doctors within {radius} km</p>
+          <h1 className="text-2xl font-bold text-foreground">Nearby Doctors</h1>
+          <p className="text-sm text-muted-foreground">Showing doctors within {radius} km</p>
         </div>
         
         <div className="flex items-center gap-3">
-          <label className="text-sm text-[var(--color-theme-text)]">Search Radius:</label>
+          <label className="text-sm text-foreground">Search Radius:</label>
           <select 
             value={radius} 
             onChange={e => setRadius(Number(e.target.value))}
-            className="bg-[var(--color-theme-dropdown)] border border-[var(--color-theme-border)] text-[var(--color-theme-text)] rounded-lg px-3 py-1.5 focus:outline-none focus:border-[var(--color-theme-primary)]"
+            className="bg-popover border border-border text-foreground rounded-lg px-3 py-1.5 focus:outline-none focus:border-primary"
           >
             <option value={5}>5 km</option>
             <option value={10}>10 km</option>
@@ -129,12 +129,12 @@ const NearbyDoctors = () => {
             anchor="bottom"
           >
             <div className="relative flex flex-col items-center justify-center -translate-y-1/2 group cursor-pointer">
-              <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-blue-600/40 border-2 border-white animate-pulse">
-                <MapPin size={20} className="text-white" />
+              <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/40 border-2 border-white animate-pulse">
+                <MapPin size={20} className="text-primary-foreground" />
               </div>
               <div className="absolute -bottom-1 w-3 h-1 bg-black/30 rounded-[100%] blur-[1px]"></div>
               
-              <div className="absolute bottom-12 bg-[var(--color-theme-dropdown)] text-[var(--color-theme-text)] px-3 py-1.5 rounded-lg border border-[var(--color-theme-border)] shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+              <div className="absolute bottom-12 bg-popover text-foreground px-3 py-1.5 rounded-lg border border-border shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                 You are here
               </div>
             </div>
@@ -161,7 +161,7 @@ const NearbyDoctors = () => {
                     {doc.user?.profileImage ? (
                       <img src={doc.user.profileImage} alt={doc.user?.name} className="w-full h-full object-cover" />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-[#22c55e] text-white">
+                      <div className="w-full h-full flex items-center justify-center bg-[#22c55e] text-primary-foreground">
                         <BriefcaseMedical size={20} />
                       </div>
                     )}
@@ -184,27 +184,27 @@ const NearbyDoctors = () => {
               offset={[0, -40]}
               className="z-50"
             >
-              <div className="p-4 bg-[var(--color-theme-panel)] text-[var(--color-theme-text)] rounded-xl w-64 shadow-2xl border border-[var(--color-theme-border)]">
+              <div className="p-4 bg-card text-foreground rounded-xl w-64 shadow-2xl border border-border">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-12 h-12 rounded-full overflow-hidden border border-[var(--color-theme-border)] shrink-0">
+                  <div className="w-12 h-12 rounded-full overflow-hidden border border-border shrink-0">
                     {selectedDoctor.user?.profileImage ? (
                       <img src={selectedDoctor.user.profileImage} alt="Profile" className="w-full h-full object-cover" />
                     ) : (
-                      <div className="w-full h-full bg-[var(--color-theme-from)] flex items-center justify-center text-[var(--color-theme-muted)]">
+                      <div className="w-full h-full bg-background flex items-center justify-center text-muted-foreground">
                         <UserIcon size={24} />
                       </div>
                     )}
                   </div>
                   <div>
-                    <h3 className="font-bold text-[var(--color-theme-text)] truncate">Dr. {selectedDoctor.user?.name}</h3>
-                    <p className="text-xs text-[var(--color-theme-primary)]">{selectedDoctor.qualification}</p>
+                    <h3 className="font-bold text-foreground truncate">Dr. {selectedDoctor.user?.name}</h3>
+                    <p className="text-xs text-primary">{selectedDoctor.qualification}</p>
                   </div>
                 </div>
                 
-                <div className="space-y-1.5 text-sm text-[var(--color-theme-muted)] mb-4">
-                  <p><span className="font-medium text-[var(--color-theme-text)]">Experience:</span> {selectedDoctor.experience} years</p>
-                  <p><span className="font-medium text-[var(--color-theme-text)]">Fee:</span> ₹{selectedDoctor.feeRange?.min} - ₹{selectedDoctor.feeRange?.max}</p>
-                  <p><span className="font-medium text-[var(--color-theme-text)]">Distance:</span> {
+                <div className="space-y-1.5 text-sm text-muted-foreground mb-4">
+                  <p><span className="font-medium text-foreground">Experience:</span> {selectedDoctor.experience} years</p>
+                  <p><span className="font-medium text-foreground">Fee:</span> ₹{selectedDoctor.feeRange?.min} - ₹{selectedDoctor.feeRange?.max}</p>
+                  <p><span className="font-medium text-foreground">Distance:</span> {
                     formatDistance(calculateDistance(
                       userLocation.coordinates, 
                       selectedDoctor.user.location.coordinates
@@ -212,7 +212,7 @@ const NearbyDoctors = () => {
                   }</p>
                   <div className="flex flex-wrap gap-1 mt-2">
                     {selectedDoctor.consultationMode?.map(mode => (
-                      <span key={mode} className="text-[10px] px-2 py-0.5 rounded-full bg-[var(--color-theme-from)] border border-[var(--color-theme-border)]">
+                      <span key={mode} className="text-[10px] px-2 py-0.5 rounded-full bg-background border border-border">
                         {mode}
                       </span>
                     ))}
@@ -221,7 +221,7 @@ const NearbyDoctors = () => {
                 
                 <button 
                   onClick={() => handleRaiseRequest(selectedDoctor.user?._id)}
-                  className="w-full py-2.5 bg-[var(--color-theme-primary)] text-[var(--color-theme-button-text)] hover:opacity-90 font-bold rounded-lg transition-colors text-sm shadow-md"
+                  className="w-full py-2.5 bg-primary text-primary-foreground hover:opacity-90 font-bold rounded-lg transition-colors text-sm shadow-md"
                 >
                   Raise Request
                 </button>

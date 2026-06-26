@@ -31,20 +31,20 @@ const LocationPicker = ({ location, onLocationChange }) => {
     <div className="w-full space-y-4">
       {/* Current Location Display */}
       {location?.formattedAddress ? (
-        <div className="p-4 bg-[var(--color-theme-dropdown)] border border-[var(--color-theme-border)] rounded-xl flex items-start gap-3">
-          <MapPin className="text-[var(--color-theme-primary)] shrink-0 mt-0.5" size={20} />
+        <div className="p-4 bg-popover border border-border rounded-xl flex items-start gap-3">
+          <MapPin className="text-primary shrink-0 mt-0.5" size={20} />
           <div className="flex-1">
-            <p className="text-sm text-[var(--color-theme-text)] font-medium leading-relaxed">
+            <p className="text-sm text-foreground font-medium leading-relaxed">
               {location.formattedAddress}
             </p>
-            <p className="text-xs text-[var(--color-theme-muted)] mt-1 font-mono">
+            <p className="text-xs text-muted-foreground mt-1 font-mono">
               {location.latitude.toFixed(6)}, {location.longitude.toFixed(6)}
             </p>
           </div>
         </div>
       ) : (
-        <div className="p-4 border border-dashed border-[var(--color-theme-border)] rounded-xl bg-[var(--color-theme-panel)]/50 text-center">
-          <p className="text-sm text-[var(--color-theme-muted)]">No location selected.</p>
+        <div className="p-4 border border-dashed border-border rounded-xl bg-card/50 text-center">
+          <p className="text-sm text-muted-foreground">No location selected.</p>
         </div>
       )}
 
@@ -54,7 +54,7 @@ const LocationPicker = ({ location, onLocationChange }) => {
           type="button"
           onClick={handleUseCurrentLocation}
           disabled={isLocating}
-          className="flex items-center justify-center gap-2 px-4 py-3 bg-[var(--color-theme-panel)] hover:bg-[var(--color-theme-dropdown)] border border-[var(--color-theme-border)] rounded-xl text-sm font-bold text-[var(--color-theme-text)] transition-colors disabled:opacity-50"
+          className="flex items-center justify-center gap-2 px-4 py-3 bg-card hover:bg-popover border border-border rounded-xl text-sm font-bold text-foreground transition-colors disabled:opacity-50"
         >
           {isLocating ? <Loader2 className="animate-spin" size={18} /> : <Navigation size={18} className="text-blue-400" />}
           {isLocating ? 'Detecting...' : 'Use Current Location'}
@@ -63,7 +63,7 @@ const LocationPicker = ({ location, onLocationChange }) => {
         <button
           type="button"
           onClick={() => setShowMapModal(true)}
-          className="flex items-center justify-center gap-2 px-4 py-3 bg-[var(--color-theme-panel)] hover:bg-[var(--color-theme-dropdown)] border border-[var(--color-theme-border)] rounded-xl text-sm font-bold text-[var(--color-theme-text)] transition-colors"
+          className="flex items-center justify-center gap-2 px-4 py-3 bg-card hover:bg-popover border border-border rounded-xl text-sm font-bold text-foreground transition-colors"
         >
           <MapPin size={18} className="text-red-400" />
           Pick on Map

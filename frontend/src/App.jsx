@@ -34,7 +34,7 @@ import DoctorAvailability from './pages/Doctor/DoctorAvailability';
 import PotentialPatients from './pages/Doctor/PotentialPatients';
 
 // Admin Pages
-const AdminHome = () => <Layout><div className="text-[var(--color-theme-text)] text-2xl">Admin Dashboard Coming Soon</div></Layout>;
+const AdminHome = () => <Layout><div className="text-foreground text-2xl">Admin Dashboard Coming Soon</div></Layout>;
 
 function App() {
   const location = useLocation();

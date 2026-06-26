@@ -26,18 +26,18 @@ const PrescriptionModal = ({ prescription, isOpen, onClose }) => {
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
-        className="w-full max-w-2xl bg-[var(--color-theme-panel)] rounded-2xl border border-[var(--color-theme-border)] shadow-2xl overflow-hidden text-[var(--color-theme-text)] max-h-[90vh] flex flex-col relative"
+        className="w-full max-w-2xl bg-card rounded-2xl border border-border shadow-2xl overflow-hidden text-foreground max-h-[90vh] flex flex-col relative"
       >
-        <button onClick={onClose} className="absolute top-4 right-4 text-[var(--color-theme-muted)] hover:text-[var(--color-theme-text)] z-10 p-2">✕</button>
+        <button onClick={onClose} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground z-10 p-2">✕</button>
         
-        <div className="p-6 border-b border-[var(--color-theme-border)] bg-[var(--color-theme-dropdown)]">
+        <div className="p-6 border-b border-border bg-popover">
           <h2 className="text-2xl font-bold">Prescription Details</h2>
-          <p className="text-[var(--color-theme-muted)] mt-1">Prescribed on {new Date(prescription.createdAt).toLocaleDateString()}</p>
+          <p className="text-muted-foreground mt-1">Prescribed on {new Date(prescription.createdAt).toLocaleDateString()}</p>
         </div>
 
         <div className="p-6 overflow-y-auto space-y-8 flex-1">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-full overflow-hidden bg-neutral-800 border-2 border-[var(--color-theme-primary)]">
+            <div className="w-16 h-16 rounded-full overflow-hidden bg-neutral-800 border-2 border-primary">
                {prescription.doctor?.profileImage ? (
                  <img src={prescription.doctor.profileImage} alt="Doctor" className="w-full h-full object-cover" />
                ) : (
@@ -46,32 +46,32 @@ const PrescriptionModal = ({ prescription, isOpen, onClose }) => {
             </div>
             <div>
               <h3 className="font-bold text-xl">Dr. {prescription.doctor?.name}</h3>
-              <p className="text-[var(--color-theme-muted)]">{prescription.appointment?.mode === 'online' ? 'Online Consultation' : 'In-Person Consultation'}</p>
+              <p className="text-muted-foreground">{prescription.appointment?.mode === 'online' ? 'Online Consultation' : 'In-Person Consultation'}</p>
             </div>
           </div>
 
           {prescription.notes && (
             <div>
-              <h4 className="font-bold text-lg mb-2 text-[var(--color-theme-primary)]">Doctor's Notes</h4>
-              <div className="bg-[var(--color-theme-dropdown)] p-4 rounded-xl border border-[var(--color-theme-border)]">
-                <p className="text-[var(--color-theme-muted)] whitespace-pre-wrap">{prescription.notes}</p>
+              <h4 className="font-bold text-lg mb-2 text-primary">Doctor's Notes</h4>
+              <div className="bg-popover p-4 rounded-xl border border-border">
+                <p className="text-muted-foreground whitespace-pre-wrap">{prescription.notes}</p>
               </div>
             </div>
           )}
 
           {prescription.medicines && prescription.medicines.length > 0 && (
             <div>
-              <h4 className="font-bold text-lg mb-4 text-[var(--color-theme-primary)]">Prescribed Medicines</h4>
+              <h4 className="font-bold text-lg mb-4 text-primary">Prescribed Medicines</h4>
               <div className="space-y-3">
                 {prescription.medicines.map((med, idx) => (
-                  <div key={idx} className="bg-[var(--color-theme-dropdown)] p-4 rounded-xl border border-[var(--color-theme-border)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div key={idx} className="bg-popover p-4 rounded-xl border border-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                       <h5 className="font-bold text-lg">{med.name}</h5>
-                      <p className="text-sm text-[var(--color-theme-muted)] mt-1">{med.dosage}</p>
+                      <p className="text-sm text-muted-foreground mt-1">{med.dosage}</p>
                     </div>
                     <div className="text-left sm:text-right">
                       <span className="inline-block px-3 py-1 bg-neutral-800 rounded-lg text-sm border border-neutral-700">{med.frequency}</span>
-                      <p className="text-sm text-[var(--color-theme-muted)] mt-2">For {med.duration}</p>
+                      <p className="text-sm text-muted-foreground mt-2">For {med.duration}</p>
                     </div>
                   </div>
                 ))}
@@ -81,16 +81,16 @@ const PrescriptionModal = ({ prescription, isOpen, onClose }) => {
 
           {prescription.file?.url && (
             <div>
-              <h4 className="font-bold text-lg mb-2 text-[var(--color-theme-primary)]">Attached Document</h4>
-              <a href={prescription.file.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-3 bg-[var(--color-theme-dropdown)] hover:bg-neutral-800 border border-[var(--color-theme-border)] rounded-xl transition">
+              <h4 className="font-bold text-lg mb-2 text-primary">Attached Document</h4>
+              <a href={prescription.file.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-3 bg-popover hover:bg-neutral-800 border border-border rounded-xl transition">
                 <span>📄</span> View Original Prescription File
               </a>
             </div>
           )}
         </div>
         
-        <div className="p-4 border-t border-[var(--color-theme-border)] bg-[var(--color-theme-panel)] flex justify-end">
-           <button onClick={onClose} className="px-6 py-2 bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-[var(--color-theme-button-text)] rounded-lg font-medium transition">
+        <div className="p-4 border-t border-border bg-card flex justify-end">
+           <button onClick={onClose} className="px-6 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg font-medium transition">
              Done
            </button>
         </div>
@@ -130,7 +130,7 @@ const Prescriptions = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="w-12 h-12 border-4 border-[var(--color-theme-primary)] border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -138,8 +138,8 @@ const Prescriptions = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-[var(--color-theme-text)]">My Prescriptions</h1>
-        <p className="text-[var(--color-theme-muted)] mt-2">View and manage all your medical prescriptions.</p>
+        <h1 className="text-3xl font-bold text-foreground">My Prescriptions</h1>
+        <p className="text-muted-foreground mt-2">View and manage all your medical prescriptions.</p>
       </div>
 
       {prescriptions.length === 0 ? (
@@ -148,12 +148,12 @@ const Prescriptions = () => {
           className="space-y-12"
         >
           {/* Empty State Hero */}
-          <div className="glass-panel p-12 text-center rounded-2xl border border-[var(--color-theme-border)]">
-            <div className="w-20 h-20 bg-[var(--color-theme-dropdown)] rounded-full flex items-center justify-center mx-auto mb-6 border border-[var(--color-theme-border)]">
+          <div className="glass-panel p-12 text-center rounded-2xl border border-border">
+            <div className="w-20 h-20 bg-popover rounded-full flex items-center justify-center mx-auto mb-6 border border-border">
               <span className="text-4xl">📄</span>
             </div>
             <h2 className="text-2xl font-bold mb-4">No Prescriptions Yet</h2>
-            <p className="text-[var(--color-theme-muted)] max-w-lg mx-auto leading-relaxed">
+            <p className="text-muted-foreground max-w-lg mx-auto leading-relaxed">
               You don’t have any prescriptions yet. Consult a specialist to receive personalized treatment recommendations and medications.
             </p>
           </div>
@@ -161,8 +161,8 @@ const Prescriptions = () => {
           {/* Educational Section */}
           <div className="pt-4">
             <div className="text-center mb-10">
-              <h3 className="text-2xl font-bold text-[var(--color-theme-text)] mb-2">Most Common Hair Problems & Treatments</h3>
-              <p className="text-[var(--color-theme-muted)] max-w-2xl mx-auto">Learn about commonly used medicines, cosmetics, and treatment approaches for different hair concerns.</p>
+              <h3 className="text-2xl font-bold text-foreground mb-2">Most Common Hair Problems & Treatments</h3>
+              <p className="text-muted-foreground max-w-2xl mx-auto">Learn about commonly used medicines, cosmetics, and treatment approaches for different hair concerns.</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -207,29 +207,29 @@ const Prescriptions = () => {
                 <motion.div 
                   key={idx} 
                   whileHover={{ y: -5 }}
-                  className="bg-[var(--color-theme-panel)] p-6 rounded-2xl border border-[var(--color-theme-border)] hover:border-[var(--color-theme-primary)]/50 transition-colors group flex flex-col h-full shadow-sm"
+                  className="bg-card p-6 rounded-2xl border border-border hover:border-primary/50 transition-colors group flex flex-col h-full shadow-sm"
                 >
                   <div className="flex items-center gap-3 mb-6">
                     <span className="text-4xl group-hover:scale-110 transition-transform origin-bottom-left">{item.icon}</span>
-                    <h4 className="font-bold text-xl text-[var(--color-theme-text)]">{item.title}</h4>
+                    <h4 className="font-bold text-xl text-foreground">{item.title}</h4>
                   </div>
                   
                   <div className="space-y-5 flex-1">
                     <div>
-                      <h5 className="text-xs font-bold text-[var(--color-theme-primary)] uppercase tracking-wider mb-2 flex items-center gap-2"><span>💊</span> Common Medicines</h5>
-                      <ul className="text-sm text-[var(--color-theme-muted)] space-y-1.5 ml-1">
-                        {item.medicines.map((m, i) => <li key={i} className="flex items-start gap-2"><span className="text-[var(--color-theme-primary)] opacity-50">•</span> {m}</li>)}
+                      <h5 className="text-xs font-bold text-primary uppercase tracking-wider mb-2 flex items-center gap-2"><span>💊</span> Common Medicines</h5>
+                      <ul className="text-sm text-muted-foreground space-y-1.5 ml-1">
+                        {item.medicines.map((m, i) => <li key={i} className="flex items-start gap-2"><span className="text-primary opacity-50">•</span> {m}</li>)}
                       </ul>
                     </div>
                     <div>
                       <h5 className="text-xs font-bold text-blue-400 uppercase tracking-wider mb-2 flex items-center gap-2"><span>🧴</span> Common Cosmetics</h5>
-                      <ul className="text-sm text-[var(--color-theme-muted)] space-y-1.5 ml-1">
+                      <ul className="text-sm text-muted-foreground space-y-1.5 ml-1">
                         {item.cosmetics.map((c, i) => <li key={i} className="flex items-start gap-2"><span className="text-blue-400 opacity-50">•</span> {c}</li>)}
                       </ul>
                     </div>
                     <div>
                       <h5 className="text-xs font-bold text-green-400 uppercase tracking-wider mb-2 flex items-center gap-2"><span>🧘</span> Lifestyle Tips</h5>
-                      <ul className="text-sm text-[var(--color-theme-muted)] space-y-1.5 ml-1">
+                      <ul className="text-sm text-muted-foreground space-y-1.5 ml-1">
                         {item.lifestyle.map((l, i) => <li key={i} className="flex items-start gap-2"><span className="text-green-400 opacity-50">•</span> {l}</li>)}
                       </ul>
                     </div>
@@ -250,11 +250,11 @@ const Prescriptions = () => {
           <div className="text-center pb-8 mt-16">
             <motion.div 
               whileHover={{ scale: 1.02 }}
-              className="max-w-2xl mx-auto bg-gradient-to-br from-[var(--color-theme-panel)] to-[var(--color-theme-dropdown)] p-10 rounded-3xl border border-[var(--color-theme-primary)]/20 shadow-2xl shadow-[var(--color-theme-primary)]/5"
+              className="max-w-2xl mx-auto bg-gradient-to-br from-[var(--color-theme-panel)] to-[var(--color-theme-dropdown)] p-10 rounded-3xl border border-primary/20 shadow-2xl shadow-primary/5"
             >
-              <h3 className="text-2xl font-bold mb-3 text-[var(--color-theme-text)]">Need Personalized Treatment?</h3>
-              <p className="text-[var(--color-theme-muted)] mb-8 max-w-md mx-auto leading-relaxed">Every hair condition is unique. Consult a qualified specialist to receive a treatment plan tailored to your needs.</p>
-              <Link to="/patient/explore" className="inline-flex items-center justify-center px-10 py-4 bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-[var(--color-theme-button-text)] rounded-xl font-bold text-lg shadow-lg shadow-[var(--color-theme-primary)]/20 transition hover:-translate-y-1 w-full sm:w-auto">
+              <h3 className="text-2xl font-bold mb-3 text-foreground">Need Personalized Treatment?</h3>
+              <p className="text-muted-foreground mb-8 max-w-md mx-auto leading-relaxed">Every hair condition is unique. Consult a qualified specialist to receive a treatment plan tailored to your needs.</p>
+              <Link to="/patient/explore" className="inline-flex items-center justify-center px-10 py-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-bold text-lg shadow-lg shadow-primary/20 transition hover:-translate-y-1 w-full sm:w-auto">
                 Explore Doctors
               </Link>
             </motion.div>
@@ -267,18 +267,18 @@ const Prescriptions = () => {
               key={prescription._id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-[var(--color-theme-panel)] p-6 rounded-xl border border-[var(--color-theme-border)] hover:border-[var(--color-theme-primary)]/50 transition flex flex-col md:flex-row gap-6 justify-between items-start md:items-center"
+              className="bg-card p-6 rounded-xl border border-border hover:border-primary/50 transition flex flex-col md:flex-row gap-6 justify-between items-start md:items-center"
             >
               <div className="flex gap-4 items-center">
-                 <div className="w-14 h-14 bg-neutral-800 rounded-full flex items-center justify-center text-2xl border border-[var(--color-theme-border)] flex-shrink-0">
+                 <div className="w-14 h-14 bg-neutral-800 rounded-full flex items-center justify-center text-2xl border border-border flex-shrink-0">
                     📄
                  </div>
                  <div>
-                   <h3 className="font-bold text-lg text-[var(--color-theme-text)]">Dr. {prescription.doctor?.name}</h3>
-                   <p className="text-sm text-[var(--color-theme-primary)] font-medium mb-1">
+                   <h3 className="font-bold text-lg text-foreground">Dr. {prescription.doctor?.name}</h3>
+                   <p className="text-sm text-primary font-medium mb-1">
                      {prescription.appointment?.mode === 'online' ? 'Online Consultation' : 'In-Person Consultation'}
                    </p>
-                   <p className="text-xs text-[var(--color-theme-muted)]">
+                   <p className="text-xs text-muted-foreground">
                      Date: {new Date(prescription.createdAt).toLocaleDateString()}
                    </p>
                  </div>
@@ -290,14 +290,14 @@ const Prescriptions = () => {
                     href={prescription.file.url} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="flex-1 md:flex-none text-center px-4 py-2 bg-[var(--color-theme-dropdown)] hover:bg-neutral-800 border border-[var(--color-theme-border)] rounded-lg text-sm font-medium transition"
+                    className="flex-1 md:flex-none text-center px-4 py-2 bg-popover hover:bg-neutral-800 border border-border rounded-lg text-sm font-medium transition"
                   >
                     Download
                   </a>
                 )}
                 <button 
                   onClick={() => setSelectedPrescription(prescription)}
-                  className="flex-1 md:flex-none px-4 py-2 bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-[var(--color-theme-button-text)] rounded-lg text-sm font-medium transition"
+                  className="flex-1 md:flex-none px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg text-sm font-medium transition"
                 >
                   View Details
                 </button>

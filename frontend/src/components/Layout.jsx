@@ -13,8 +13,8 @@ const Layout = ({ children }) => {
       </div>
       
       {/* Mobile Nav Toggle */}
-      <div className="md:hidden fixed top-0 left-0 w-full glass-panel z-50 p-4 flex justify-between items-center border-b border-[var(--color-theme-border)]">
-        <h2 className="text-xl font-bold" style={{ color: 'var(--color-theme-primary)' }}>Medci</h2>
+      <div className="md:hidden fixed top-0 left-0 w-full glass-panel z-50 p-4 flex justify-between items-center border-b border-border">
+        <h2 className="text-xl font-bold text-primary">Medci</h2>
         <button onClick={() => setMobileMenuOpen(true)} className="p-2">
           ☰
         </button>
@@ -28,7 +28,7 @@ const Layout = ({ children }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-[var(--color-theme-from)]/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-background/60 backdrop-blur-sm"
             onClick={() => setMobileMenuOpen(false)}
           />
           {/* Drawer */}
@@ -37,11 +37,11 @@ const Layout = ({ children }) => {
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ type: "tween", duration: 0.3 }}
-            className="relative w-64 h-full bg-[var(--color-theme-panel)] shadow-2xl z-10"
+            className="relative w-64 h-full bg-card shadow-2xl z-10"
           >
             <button 
               onClick={() => setMobileMenuOpen(false)} 
-              className="absolute top-4 right-4 text-2xl text-[var(--color-theme-text)] z-20"
+              className="absolute top-4 right-4 text-2xl text-foreground z-20"
             >✕</button>
             <Sidebar onClose={() => setMobileMenuOpen(false)} />
           </motion.div>

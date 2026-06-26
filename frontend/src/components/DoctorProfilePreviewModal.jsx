@@ -73,16 +73,16 @@ const DoctorProfilePreviewModal = ({ doctorId, isOpen, onClose }) => {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 100, scale: 0.95 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
-        className="w-full max-w-3xl bg-[var(--color-theme-panel)] rounded-t-3xl md:rounded-2xl border border-[var(--color-theme-border)] shadow-2xl text-[var(--color-theme-text)] relative max-h-[90vh] md:max-h-[85vh] flex flex-col overflow-hidden"
+        className="w-full max-w-3xl bg-card rounded-t-3xl md:rounded-2xl border border-border shadow-2xl text-foreground relative max-h-[90vh] md:max-h-[85vh] flex flex-col overflow-hidden"
       >
         {/* Header / Draggable area indicator for mobile */}
-        <div className="md:hidden flex justify-center py-3 border-b border-[var(--color-theme-border)] bg-[var(--color-theme-panel)] z-10 sticky top-0">
+        <div className="md:hidden flex justify-center py-3 border-b border-border bg-card z-10 sticky top-0">
            <div className="w-12 h-1.5 bg-[var(--color-theme-border)] rounded-full"></div>
         </div>
 
         <button
           onClick={onClose}
-          className="hidden md:flex absolute top-4 right-4 text-[var(--color-theme-muted)] hover:text-[var(--color-theme-text)] z-20 p-2 bg-[var(--color-theme-panel)] rounded-full shadow-md"
+          className="hidden md:flex absolute top-4 right-4 text-muted-foreground hover:text-foreground z-20 p-2 bg-card rounded-full shadow-md"
           aria-label="Close modal"
         >
           ✕
@@ -107,11 +107,11 @@ const DoctorProfilePreviewModal = ({ doctorId, isOpen, onClose }) => {
               
               {/* Profile Header */}
               <div className="flex flex-col md:flex-row items-center md:items-start gap-6 text-center md:text-left">
-                <div className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden flex-shrink-0 border-4 border-[var(--color-theme-primary)] shadow-lg relative">
+                <div className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden flex-shrink-0 border-4 border-primary shadow-lg relative">
                   {profile.user?.profileImage ? (
                     <img src={profile.user.profileImage} alt={`Dr. ${profile.user?.name}`} className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full bg-neutral-800 flex items-center justify-center text-4xl text-[var(--color-theme-muted)]">?</div>
+                    <div className="w-full h-full bg-neutral-800 flex items-center justify-center text-4xl text-muted-foreground">?</div>
                   )}
                   {/* Availability Badge */}
                   <div className="absolute bottom-1 right-3 w-4 h-4 bg-green-500 border-2 border-[var(--color-theme-panel)] rounded-full"></div>
@@ -119,37 +119,37 @@ const DoctorProfilePreviewModal = ({ doctorId, isOpen, onClose }) => {
                 
                 <div className="flex-1">
                   <div className="flex flex-col md:flex-row md:items-center gap-2 mb-2">
-                    <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-theme-text)]">Dr. {profile.user?.name}</h2>
+                    <h2 className="text-2xl md:text-3xl font-bold text-foreground">Dr. {profile.user?.name}</h2>
                     <span className="px-3 py-1 bg-green-500/10 text-green-400 text-xs font-semibold rounded-full mx-auto md:mx-0 w-max border border-green-500/20">
                       Online Now
                     </span>
                   </div>
-                  <p className="text-lg text-[var(--color-theme-primary)] font-medium">{profile.qualification}</p>
-                  <p className="text-[var(--color-theme-muted)] mt-1">{profile.experience} Years of Experience</p>
+                  <p className="text-lg text-primary font-medium">{profile.qualification}</p>
+                  <p className="text-muted-foreground mt-1">{profile.experience} Years of Experience</p>
                   
                   <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mt-4">
-                    <div className="px-3 py-1.5 bg-[var(--color-theme-dropdown)] rounded-lg text-sm border border-[var(--color-theme-border)]">
-                      <span className="text-[var(--color-theme-muted)]">Fee:</span> <span className="font-semibold">₹{profile.feeRange?.min} - ₹{profile.feeRange?.max}</span>
+                    <div className="px-3 py-1.5 bg-popover rounded-lg text-sm border border-border">
+                      <span className="text-muted-foreground">Fee:</span> <span className="font-semibold">₹{profile.feeRange?.min} - ₹{profile.feeRange?.max}</span>
                     </div>
-                    <div className="px-3 py-1.5 bg-[var(--color-theme-dropdown)] rounded-lg text-sm border border-[var(--color-theme-border)]">
-                      <span className="text-[var(--color-theme-muted)]">Reg No:</span> <span className="font-semibold">{profile.medicalRegistrationNumber || 'N/A'}</span>
+                    <div className="px-3 py-1.5 bg-popover rounded-lg text-sm border border-border">
+                      <span className="text-muted-foreground">Reg No:</span> <span className="font-semibold">{profile.medicalRegistrationNumber || 'N/A'}</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <hr className="border-[var(--color-theme-border)]" />
+              <hr className="border-border" />
 
               {/* Professional Information */}
               <section>
                 <h3 className="text-xl font-bold mb-4 flex items-center">
-                  <span className="text-[var(--color-theme-primary)] mr-2">👨‍⚕️</span> Professional Bio
+                  <span className="text-primary mr-2">👨‍⚕️</span> Professional Bio
                 </h3>
-                <p className="text-[var(--color-theme-muted)] leading-relaxed bg-[var(--color-theme-dropdown)] p-4 rounded-xl border border-[var(--color-theme-border)]">
+                <p className="text-muted-foreground leading-relaxed bg-popover p-4 rounded-xl border border-border">
                   {profile.bio}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <span className="text-sm font-semibold text-[var(--color-theme-muted)] py-1">Languages Spoken:</span>
+                  <span className="text-sm font-semibold text-muted-foreground py-1">Languages Spoken:</span>
                   {profile.languagesSpoken?.map((lang, idx) => (
                     <span key={idx} className="px-3 py-1 bg-neutral-800 text-neutral-300 text-xs rounded-full border border-neutral-700">
                       {lang}
@@ -161,15 +161,15 @@ const DoctorProfilePreviewModal = ({ doctorId, isOpen, onClose }) => {
               {/* Clinic Information */}
               <section>
                 <h3 className="text-xl font-bold mb-4 flex items-center">
-                  <span className="text-[var(--color-theme-primary)] mr-2">🏥</span> Clinic Information
+                  <span className="text-primary mr-2">🏥</span> Clinic Information
                 </h3>
-                <div className="bg-[var(--color-theme-dropdown)] p-4 rounded-xl border border-[var(--color-theme-border)] flex flex-col gap-2">
+                <div className="bg-popover p-4 rounded-xl border border-border flex flex-col gap-2">
                    <div>
-                     <span className="text-[var(--color-theme-muted)] text-sm">Clinic Name</span>
+                     <span className="text-muted-foreground text-sm">Clinic Name</span>
                      <p className="font-medium text-lg">{profile.clinicName || 'Independent Practitioner'}</p>
                    </div>
                    <div>
-                     <span className="text-[var(--color-theme-muted)] text-sm">Location</span>
+                     <span className="text-muted-foreground text-sm">Location</span>
                      <p className="font-medium">{profile.clinicLocation}</p>
                    </div>
                 </div>
@@ -178,7 +178,7 @@ const DoctorProfilePreviewModal = ({ doctorId, isOpen, onClose }) => {
               {/* Consultation Information */}
               <section>
                 <h3 className="text-xl font-bold mb-4 flex items-center">
-                  <span className="text-[var(--color-theme-primary)] mr-2">🩺</span> Consultation Modes
+                  <span className="text-primary mr-2">🩺</span> Consultation Modes
                 </h3>
                 <div className="flex flex-wrap gap-3">
                   {['Video', 'Audio', 'Chat', 'In-Person'].map((mode) => {
@@ -186,7 +186,7 @@ const DoctorProfilePreviewModal = ({ doctorId, isOpen, onClose }) => {
                     return (
                       <div 
                         key={mode} 
-                        className={`px-4 py-2 rounded-lg flex items-center gap-2 border ${isAvailable ? 'bg-[var(--color-theme-primary)]/10 border-[var(--color-theme-primary)]/30 text-[var(--color-theme-primary)]' : 'bg-[var(--color-theme-dropdown)] border-[var(--color-theme-border)] text-[var(--color-theme-muted)] opacity-50'}`}
+                        className={`px-4 py-2 rounded-lg flex items-center gap-2 border ${isAvailable ? 'bg-primary/10 border-primary/30 text-primary' : 'bg-popover border-border text-muted-foreground opacity-50'}`}
                       >
                         <span className="text-lg">
                           {mode === 'Video' ? '📹' : mode === 'Audio' ? '📞' : mode === 'Chat' ? '💬' : '🏥'}
@@ -203,8 +203,8 @@ const DoctorProfilePreviewModal = ({ doctorId, isOpen, onClose }) => {
                 <h3 className="text-xl font-bold mb-4 flex items-center">
                   <span className="text-yellow-500 mr-2">⭐</span> Patient Reviews
                 </h3>
-                <div className="bg-[var(--color-theme-dropdown)] p-8 rounded-xl border border-[var(--color-theme-border)] text-center">
-                   <p className="text-[var(--color-theme-muted)] italic">"No reviews available yet"</p>
+                <div className="bg-popover p-8 rounded-xl border border-border text-center">
+                   <p className="text-muted-foreground italic">"No reviews available yet"</p>
                 </div>
               </section>
 
@@ -213,17 +213,17 @@ const DoctorProfilePreviewModal = ({ doctorId, isOpen, onClose }) => {
         </div>
 
         {/* Action Buttons - Sticky at bottom */}
-        <div className="border-t border-[var(--color-theme-border)] p-4 bg-[var(--color-theme-panel)] flex flex-col sm:flex-row gap-3">
+        <div className="border-t border-border p-4 bg-card flex flex-col sm:flex-row gap-3">
           <button
             onClick={onClose}
-            className="flex-1 py-3 px-4 rounded-xl border border-[var(--color-theme-border)] hover:bg-[var(--color-theme-dropdown)] transition font-medium text-[var(--color-theme-muted)] hover:text-[var(--color-theme-text)] order-2 sm:order-1"
+            className="flex-1 py-3 px-4 rounded-xl border border-border hover:bg-popover transition font-medium text-muted-foreground hover:text-foreground order-2 sm:order-1"
           >
             Close Profile
           </button>
           <button
             onClick={handleRaiseRequest}
             disabled={loading || !profile}
-            className="flex-1 py-3 px-4 rounded-xl bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-[var(--color-theme-button-text)] transition font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[var(--color-theme-primary)]/20 order-1 sm:order-2"
+            className="flex-1 py-3 px-4 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground transition font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-primary/20 order-1 sm:order-2"
           >
             Raise Consultation Request
           </button>

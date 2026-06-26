@@ -36,14 +36,14 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[var(--color-theme-from)] text-[var(--color-theme-text)] p-6 relative">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground p-6 relative">
       {/* Medci Logo Header */}
       <div className="absolute top-6 left-6 md:top-10 md:left-12">
         <Link to="/">
           <motion.div 
             whileHover={{ scale: 1.05 }} 
             whileTap={{ scale: 0.95 }}
-            className="text-3xl font-bold text-[var(--color-theme-text)] tracking-tight cursor-pointer"
+            className="text-3xl font-bold text-foreground tracking-tight cursor-pointer"
           >
             Medci
           </motion.div>
@@ -53,31 +53,31 @@ const LoginPage = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md bg-[var(--color-theme-panel)] p-8 rounded-2xl border border-[var(--color-theme-border)] shadow-xl z-10"
+        className="w-full max-w-md bg-card p-8 rounded-2xl border border-border shadow-xl z-10"
       >
-        <h2 className="text-3xl font-bold mb-6 text-center text-[var(--color-theme-text)]">Welcome Back</h2>
+        <h2 className="text-3xl font-bold mb-6 text-center text-foreground">Welcome Back</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-[var(--color-theme-muted)] mb-1">Email</label>
+            <label className="block text-muted-foreground mb-1">Email</label>
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={isSubmitting}
-              className="w-full bg-[var(--color-theme-from)] border border-[var(--color-theme-border)] rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--color-theme-primary)] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-background border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary disabled:opacity-50 disabled:cursor-not-allowed"
               placeholder="Enter your email"
             />
           </div>
           <div>
-            <label className="block text-[var(--color-theme-muted)] mb-1">Password</label>
+            <label className="block text-muted-foreground mb-1">Password</label>
             <input
               type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={isSubmitting}
-              className="w-full bg-[var(--color-theme-from)] border border-[var(--color-theme-border)] rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--color-theme-primary)] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-background border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary disabled:opacity-50 disabled:cursor-not-allowed"
               placeholder="Enter your password"
             />
           </div>
@@ -97,11 +97,11 @@ const LoginPage = () => {
             )}
           </button>
         </form>
-        <p className="mt-6 text-center text-[var(--color-theme-muted)]">
-          Don't have an account? <Link to="/signup" className="text-[var(--color-theme-text)] font-medium hover:underline">Sign up</Link>
+        <p className="mt-6 text-center text-muted-foreground">
+          Don't have an account? <Link to="/signup" className="text-foreground font-medium hover:underline">Sign up</Link>
         </p>
         <div className="mt-6 text-center">
-          <Link to="/" className="text-sm text-[var(--color-theme-muted)] hover:text-[var(--color-theme-text)] transition flex items-center justify-center gap-2">
+          <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition flex items-center justify-center gap-2">
             <span>←</span> Back to Home
           </Link>
         </div>

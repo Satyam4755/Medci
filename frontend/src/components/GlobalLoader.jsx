@@ -8,7 +8,7 @@ const GlobalLoader = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[var(--color-theme-from)] backdrop-blur-md"
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background backdrop-blur-md"
     >
       <div className="relative flex flex-col items-center justify-center">
         {/* Outer glowing ring */}
@@ -27,7 +27,7 @@ const GlobalLoader = () => {
         <motion.div
           animate={{ scale: [1, 1.1, 1] }}
           transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-          className="text-3xl font-extrabold text-[var(--color-theme-text)] tracking-tighter"
+          className="text-3xl font-extrabold text-foreground tracking-tighter"
         >
           M
         </motion.div>
@@ -35,7 +35,7 @@ const GlobalLoader = () => {
       <motion.p 
         animate={{ opacity: [0.5, 1, 0.5] }}
         transition={{ repeat: Infinity, duration: 1.5 }}
-        className="mt-8 text-[var(--color-theme-muted)] text-sm font-bold tracking-widest uppercase"
+        className="mt-8 text-muted-foreground text-sm font-bold tracking-widest uppercase"
       >
         Loading...
       </motion.p>

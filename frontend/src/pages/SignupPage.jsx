@@ -106,14 +106,14 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[var(--color-theme-from)] text-[var(--color-theme-text)] p-6 relative overflow-hidden">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground p-6 relative overflow-hidden">
       {/* Medci Logo Header */}
       <div className="absolute top-6 left-6 md:top-10 md:left-12">
         <Link to="/">
           <motion.div 
             whileHover={{ scale: 1.05 }} 
             whileTap={{ scale: 0.95 }}
-            className="text-3xl font-bold text-[var(--color-theme-text)] tracking-tight cursor-pointer"
+            className="text-3xl font-bold text-foreground tracking-tight cursor-pointer"
           >
             Medci
           </motion.div>
@@ -124,23 +124,23 @@ const SignupPage = () => {
         layout
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md bg-[var(--color-theme-panel)] p-8 rounded-2xl border border-[var(--color-theme-border)] shadow-xl z-10"
+        className="w-full max-w-md bg-card p-8 rounded-2xl border border-border shadow-xl z-10"
       >
         <AnimatePresence mode="wait">
           {step === 1 && (
             <motion.div key="step1" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}>
-              <h2 className="text-3xl font-bold mb-2 text-center text-[var(--color-theme-text)]">Create Account</h2>
-              <p className="text-center text-[var(--color-theme-muted)] mb-6">First, let's verify your email address</p>
+              <h2 className="text-3xl font-bold mb-2 text-center text-foreground">Create Account</h2>
+              <p className="text-center text-muted-foreground mb-6">First, let's verify your email address</p>
               <form onSubmit={handleSendOtp} className="space-y-4">
                 <div>
-                  <label className="block text-[var(--color-theme-muted)] mb-1">Email</label>
+                  <label className="block text-muted-foreground mb-1">Email</label>
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={isSubmitting}
-                    className="w-full bg-[var(--color-theme-from)] border border-[var(--color-theme-border)] rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--color-theme-primary)] disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-background border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="Enter your email"
                   />
                 </div>
@@ -164,9 +164,9 @@ const SignupPage = () => {
 
           {step === 2 && (
             <motion.div key="step2" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}>
-              <h2 className="text-3xl font-bold mb-2 text-center text-[var(--color-theme-text)]">Verify Email</h2>
-              <p className="text-center text-[var(--color-theme-muted)] mb-6">
-                Enter the 6-digit code sent to <br/><span className="font-semibold text-[var(--color-theme-text)]">{email}</span>
+              <h2 className="text-3xl font-bold mb-2 text-center text-foreground">Verify Email</h2>
+              <p className="text-center text-muted-foreground mb-6">
+                Enter the 6-digit code sent to <br/><span className="font-semibold text-foreground">{email}</span>
               </p>
               <form onSubmit={handleVerifyOtp} className="space-y-6">
                 <div className="flex justify-center gap-2">
@@ -180,7 +180,7 @@ const SignupPage = () => {
                       onChange={(e) => handleOtpChange(index, e.target.value)}
                       onKeyDown={(e) => handleOtpKeyDown(index, e)}
                       disabled={isSubmitting}
-                      className="w-12 h-14 text-center text-xl font-bold bg-[var(--color-theme-from)] border border-[var(--color-theme-border)] rounded-lg focus:outline-none focus:border-[var(--color-theme-primary)] focus:ring-1 focus:ring-[var(--color-theme-primary)] disabled:opacity-50"
+                      className="w-12 h-14 text-center text-xl font-bold bg-background border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-[var(--color-theme-primary)] disabled:opacity-50"
                     />
                   ))}
                 </div>
@@ -200,13 +200,13 @@ const SignupPage = () => {
                 </button>
               </form>
               <div className="mt-6 text-center">
-                <p className="text-[var(--color-theme-muted)] text-sm mb-2">
+                <p className="text-muted-foreground text-sm mb-2">
                   Didn't receive the code?
                 </p>
                 <button
                   onClick={() => handleSendOtp()}
                   disabled={timer > 0 || isSubmitting}
-                  className="text-[var(--color-theme-text)] font-medium hover:underline disabled:opacity-50 disabled:no-underline disabled:cursor-not-allowed"
+                  className="text-foreground font-medium hover:underline disabled:opacity-50 disabled:no-underline disabled:cursor-not-allowed"
                 >
                   {timer > 0 ? `Resend Code in ${timer}s` : 'Resend Code'}
                 </button>
@@ -216,47 +216,47 @@ const SignupPage = () => {
 
           {step === 3 && (
             <motion.div key="step3" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}>
-              <h2 className="text-3xl font-bold mb-2 text-center text-[var(--color-theme-text)]">Complete Profile</h2>
-              <p className="text-center text-[var(--color-theme-muted)] mb-6">Your email is verified. Let's finish setting up.</p>
+              <h2 className="text-3xl font-bold mb-2 text-center text-foreground">Complete Profile</h2>
+              <p className="text-center text-muted-foreground mb-6">Your email is verified. Let's finish setting up.</p>
               <form onSubmit={handleRegister} className="space-y-4">
                 <div>
-                  <label className="block text-[var(--color-theme-muted)] mb-1">Full Name</label>
+                  <label className="block text-muted-foreground mb-1">Full Name</label>
                   <input
                     type="text"
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     disabled={isSubmitting}
-                    className="w-full bg-[var(--color-theme-from)] border border-[var(--color-theme-border)] rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--color-theme-primary)] disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-background border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="John Doe"
                   />
                 </div>
                 <div>
-                  <label className="block text-[var(--color-theme-muted)] mb-1">Password</label>
+                  <label className="block text-muted-foreground mb-1">Password</label>
                   <input
                     type="password"
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={isSubmitting}
-                    className="w-full bg-[var(--color-theme-from)] border border-[var(--color-theme-border)] rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--color-theme-primary)] disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-background border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="Create a password"
                   />
                 </div>
                 <div>
-                  <label className="block text-[var(--color-theme-muted)] mb-1">I am a...</label>
+                  <label className="block text-muted-foreground mb-1">I am a...</label>
                   <select
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
                     disabled={isSubmitting}
-                    className="w-full bg-[var(--color-theme-from)] border border-[var(--color-theme-border)] rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--color-theme-primary)] disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-background border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <option value="Patient">Patient</option>
                     <option value="Doctor">Doctor</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[var(--color-theme-muted)] mb-1">Set Your Location</label>
+                  <label className="block text-muted-foreground mb-1">Set Your Location</label>
                   <LocationPicker location={location} onLocationChange={setLocation} />
                 </div>
                 <button
@@ -279,12 +279,12 @@ const SignupPage = () => {
         </AnimatePresence>
 
         {step === 1 && (
-          <p className="mt-6 text-center text-[var(--color-theme-muted)]">
-            Already have an account? <Link to="/login" className="text-[var(--color-theme-text)] font-medium hover:underline">Log in</Link>
+          <p className="mt-6 text-center text-muted-foreground">
+            Already have an account? <Link to="/login" className="text-foreground font-medium hover:underline">Log in</Link>
           </p>
         )}
         <div className="mt-6 text-center">
-          <Link to="/" className="text-sm text-[var(--color-theme-muted)] hover:text-[var(--color-theme-text)] transition flex items-center justify-center gap-2">
+          <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition flex items-center justify-center gap-2">
             <span>←</span> Back to Home
           </Link>
         </div>

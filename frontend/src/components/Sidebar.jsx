@@ -57,10 +57,10 @@ const Sidebar = ({ onClose }) => {
   ];
 
   return (
-    <div className="w-64 h-full glass-panel flex flex-col justify-between border-r border-[var(--color-theme-border)]">
+    <div className="w-64 h-full glass-panel flex flex-col justify-between border-r border-border">
       <div>
         <div className="p-6">
-          <h2 className="text-2xl font-bold" style={{ color: 'var(--color-theme-primary)' }}>Medci</h2>
+          <h2 className="text-2xl font-bold" className="text-primary">Medci</h2>
           <p className="text-sm mt-2 opacity-70">Welcome, {user?.name}</p>
         </div>
         <nav className="mt-6 flex flex-col gap-2 px-4">
@@ -69,7 +69,7 @@ const Sidebar = ({ onClose }) => {
               key={link.name} 
               to={link.path}
               onClick={() => { if (onClose) onClose(); }}
-              className={({ isActive }) => `px-4 py-3 rounded-lg transition-all font-medium ${isActive ? 'bg-[var(--color-theme-primary)] text-[var(--color-theme-active-nav-text)] shadow-lg' : 'hover:bg-[var(--color-theme-primary)] hover:bg-opacity-20 hover:text-[var(--color-theme-text)]'}`}
+              className={({ isActive }) => `px-4 py-3 rounded-lg transition-all font-medium ${isActive ? 'bg-primary text-primary-foreground shadow-lg' : 'hover:bg-primary hover:bg-opacity-20 hover:text-foreground'}`}
               style={({ isActive }) => isActive ? {} : { color: 'var(--color-theme-muted)' }}
             >
               {link.name}
@@ -78,24 +78,24 @@ const Sidebar = ({ onClose }) => {
         </nav>
       </div>
 
-      <div className="p-6 border-t border-[var(--color-theme-border)]">
+      <div className="p-6 border-t border-border">
         <p className="text-sm font-semibold mb-3 opacity-80">Choose your hair color theme</p>
         <select 
           value={theme} 
           onChange={(e) => changeTheme(e.target.value)}
-          className="w-full bg-[var(--color-theme-panel)] border border-[var(--color-theme-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-theme-primary)] mb-6 text-[var(--color-theme-text)]"
+          className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary mb-6 text-foreground"
         >
-          {themes.map(t => <option key={t.id} value={t.id} className="bg-[var(--color-theme-panel)]">{t.name}</option>)}
+          {themes.map(t => <option key={t.id} value={t.id} className="bg-card">{t.name}</option>)}
         </select>
         <button 
           onClick={handleLogout}
-          className="w-full py-2 rounded-lg border border-[var(--color-theme-border)] hover:bg-neutral-500/20 hover:text-neutral-400 transition mb-2"
+          className="w-full py-2 rounded-lg border border-border hover:bg-neutral-500/20 hover:text-neutral-400 transition mb-2"
         >
           Logout
         </button>
         <button 
           onClick={() => setIsDeleteModalOpen(true)}
-          className="w-full py-2 rounded-lg bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white border border-red-600/20 transition"
+          className="w-full py-2 rounded-lg bg-destructive/10 text-destructive hover:bg-destructive hover:text-primary-foreground border border-destructive/20 transition"
         >
           Delete My Account
         </button>
