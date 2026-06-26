@@ -11,6 +11,40 @@ export const getAllDoctors = async (req, res) => {
   }
 };
 
+import User from '../models/User.js';
+
+export const getNearbyDoctors = async (req, res) => {
+  try {
+    const { lat, lng, radius = 10 } = req.query;
+
+    if (!lat || !lng) {
+      return res.status(400).json({ message: 'Latitude and Longitude are required' });
+    }
+
+    const radiusInRadians = parseFloat(radius) / 6371; // Earth radius in km
+
+    // Find all users who are Doctors within the radius
+    const nearbyUsers = await User.find({
+      role: 'Doctor',
+      'location.coordinates': {
+        $geoWithin: {
+          $centerSphere: [[parseFloat(lng), parseFloat(lat)], radiusInRadians]
+        }
+      }
+    });
+
+    const userIds = nearbyUsers.map(user => user._id);
+
+    // Fetch their profiles
+    const doctors = await DoctorProfile.find({ user: { $in: userIds } })
+      .populate('user', 'name profileImage email location');
+
+    res.json(doctors);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const getDoctorProfile = async (req, res) => {
   try {
     const profile = await DoctorProfile.findOne({ user: req.user._id });

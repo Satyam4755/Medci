@@ -5,6 +5,7 @@ import { useGlobalLoading } from '../../context/GlobalLoadingContext';
 import { theme } from '../../utils/theme';
 import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
+import LocationPicker from '../../components/LocationPicker';
 
 const DoctorProfileSettings = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -19,9 +20,9 @@ const DoctorProfileSettings = () => {
     feeMin: '',
     feeMax: '',
     clinicName: '',
-    clinicLocation: '',
     medicalRegistrationNumber: '',
-    consultationMode: [] // array of modes
+    consultationMode: [], // array of modes
+    location: null
   });
   
   const [passwordData, setPasswordData] = useState({
@@ -55,9 +56,19 @@ const token = userInfo?.token;
         feeMin: data.profile?.feeRange?.min || '',
         feeMax: data.profile?.feeRange?.max || '',
         clinicName: data.profile?.clinicName || '',
-        clinicLocation: data.profile?.clinicLocation || '',
         medicalRegistrationNumber: data.profile?.medicalRegistrationNumber || '',
-        consultationMode: Array.isArray(data.profile?.consultationMode) ? data.profile.consultationMode : ['Video']
+        consultationMode: Array.isArray(data.profile?.consultationMode) ? data.profile.consultationMode : ['Video'],
+        location: data.user.location?.coordinates?.[0] !== 0 ? {
+          latitude: data.user.location.coordinates[1],
+          longitude: data.user.location.coordinates[0],
+          formattedAddress: data.user.location.formattedAddress,
+          address: data.user.location.address,
+          city: data.user.location.city,
+          state: data.user.location.state,
+          country: data.user.location.country,
+          pincode: data.user.location.pincode,
+          placeId: data.user.location.placeId
+        } : null
       });
       setImagePreview(data.user.profileImage || '');
     } catch (error) {
@@ -97,8 +108,11 @@ const token = userInfo?.token;
       form.append('feeMin', formData.feeMin);
       form.append('feeMax', formData.feeMax);
       form.append('clinicName', formData.clinicName);
-      form.append('clinicLocation', formData.clinicLocation);
       form.append('medicalRegistrationNumber', formData.medicalRegistrationNumber);
+      
+      if (formData.location) {
+        form.append('location', JSON.stringify(formData.location));
+      }
       
       formData.consultationMode.forEach(mode => form.append('consultationMode[]', mode));
 
@@ -155,7 +169,7 @@ const token = userInfo?.token;
   };
 
   const calculateCompletion = () => {
-    const fields = [formData.name, formData.qualification, formData.experience, formData.feeMin, formData.clinicName, formData.clinicLocation, formData.medicalRegistrationNumber, imagePreview];
+    const fields = [formData.name, formData.qualification, formData.experience, formData.feeMin, formData.clinicName, formData.location, formData.medicalRegistrationNumber, imagePreview];
     const filled = fields.filter(f => f && f.toString().trim() !== '').length;
     return Math.round((filled / fields.length) * 100);
   };
@@ -244,9 +258,12 @@ const token = userInfo?.token;
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Clinic Name</label>
               <input type="text" required value={formData.clinicName} onChange={e => setFormData({...formData, clinicName: e.target.value})} className="w-full bg-[var(--color-theme-from)] border border-[var(--color-theme-border)] rounded-lg px-4 py-2 focus:outline-none focus:border-[var(--color-theme-primary)]" />
             </div>
-            <div>
-              <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Clinic Location / City</label>
-              <input type="text" required value={formData.clinicLocation} onChange={e => setFormData({...formData, clinicLocation: e.target.value})} className="w-full bg-[var(--color-theme-from)] border border-[var(--color-theme-border)] rounded-lg px-4 py-2 focus:outline-none focus:border-[var(--color-theme-primary)]" />
+            <div className="md:col-span-2">
+              <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Clinic Location</label>
+              <LocationPicker 
+                location={formData.location} 
+                onLocationChange={(loc) => setFormData({...formData, location: loc})} 
+              />
             </div>
             <div className="md:col-span-2">
               <label className={`block text-sm mb-2 ${theme.textSecondary}`}>Consultation Modes</label>

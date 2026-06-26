@@ -108,7 +108,15 @@ export const verifyOtp = async (req, res) => {
 
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, location } = req.body;
+
+    if (!name || !email || !password || !role) {
+      return res.status(400).json({ message: 'Please provide all required fields' });
+    }
+    
+    if (!location || !location.latitude || !location.longitude) {
+      return res.status(400).json({ message: 'Location is required to complete registration.' });
+    }
 
     const userExists = await User.findOne({ email });
 
@@ -121,12 +129,27 @@ export const registerUser = async (req, res) => {
       return res.status(400).json({ message: 'Email not verified. Please complete OTP verification.' });
     }
 
+    // Format location for saving
+    const userLocation = {
+      address: location.address || '',
+      city: location.city || '',
+      state: location.state || '',
+      country: location.country || '',
+      pincode: location.pincode || '',
+      formattedAddress: location.formattedAddress || '',
+      placeId: location.placeId || '',
+      lastUpdated: new Date(),
+      type: 'Point',
+      coordinates: [Number(location.longitude), Number(location.latitude)]
+    };
+
     const user = await User.create({
       name,
       email,
       password,
       role,
       emailVerified: true,
+      location: userLocation
     });
 
     if (user) {

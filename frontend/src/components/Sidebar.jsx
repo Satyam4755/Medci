@@ -19,6 +19,7 @@ const Sidebar = ({ onClose }) => {
   const patientLinks = [
     { name: 'Home', path: '/patient/home' },
     { name: 'Explore Doctors', path: '/patient/explore' },
+    { name: 'Nearby Doctors', path: '/patient/map' },
     { name: 'Raise Request', path: '/patient/request' },
     { name: 'Appointments', path: '/patient/appointments' },
     { name: 'Prescriptions', path: '/patient/prescriptions' },
@@ -29,6 +30,7 @@ const Sidebar = ({ onClose }) => {
   const doctorLinks = [
     { name: 'Home', path: '/doctor/home' },
     { name: 'Incoming Requests', path: '/doctor/requests' },
+    { name: 'Potential Patients', path: '/doctor/map' },
     { name: 'Appointments', path: '/doctor/appointments' },
     { name: 'Earnings', path: '/doctor/earnings' },
     { name: 'Availability', path: '/doctor/availability' },

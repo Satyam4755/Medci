@@ -1,6 +1,7 @@
 import ConsultationRequest from '../models/ConsultationRequest.js';
 import DoctorProfile from '../models/DoctorProfile.js';
 import Appointment from '../models/Appointment.js';
+import User from '../models/User.js';
 
 export const createRequest = async (req, res) => {
   try {
@@ -226,6 +227,31 @@ export const acceptRequest = async (req, res) => {
     }
 
     res.json({ message: 'Request accepted successfully', appointment: newAppointment });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getNearbyConsultations = async (req, res) => {
+  try {
+    const { lat, lng, radius = 10, mode = 'nearby' } = req.query;
+
+    let query = { status: 'pending' };
+
+    if (mode === 'nearby' && lat && lng) {
+      const radiusInRadians = parseFloat(radius) / 6371; // km
+      query['location.coordinates'] = {
+        $geoWithin: {
+          $centerSphere: [[parseFloat(lng), parseFloat(lat)], radiusInRadians]
+        }
+      };
+    }
+
+    const requests = await ConsultationRequest.find(query)
+      .populate('patient', 'name profileImage email location')
+      .sort('-createdAt');
+
+    res.json(requests);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -28,7 +28,29 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: '',
   },
+  location: {
+    address: { type: String, default: '' },
+    city: { type: String, default: '' },
+    state: { type: String, default: '' },
+    country: { type: String, default: '' },
+    pincode: { type: String, default: '' },
+    formattedAddress: { type: String, default: '' },
+    placeId: { type: String, default: '' },
+    lastUpdated: { type: Date },
+    type: {
+      type: String,
+      enum: ['Point'],
+      default: 'Point',
+    },
+    coordinates: {
+      type: [Number], // [longitude, latitude]
+      default: [0, 0],
+    }
+  },
 }, { timestamps: true });
+
+// Geospatial index on User's location.coordinates
+userSchema.index({ 'location.coordinates': '2dsphere' });
 
 // Hash password before saving
 userSchema.pre('save', async function () {

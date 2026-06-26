@@ -4,6 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import { useGlobalLoading } from '../context/GlobalLoadingContext';
 import { toast } from 'react-toastify';
 import { motion, AnimatePresence } from 'framer-motion';
+import LocationPicker from '../components/LocationPicker';
 
 const SignupPage = () => {
   const [step, setStep] = useState(1);
@@ -12,6 +13,7 @@ const SignupPage = () => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('Patient');
+  const [location, setLocation] = useState(null);
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [timer, setTimer] = useState(0);
@@ -69,7 +71,10 @@ const SignupPage = () => {
 
     setIsSubmitting(true);
     try {
-      const data = await register(name, email, password, role);
+      if (!location) {
+        throw new Error('Please select your location to continue.');
+      }
+      const data = await register(name, email, password, role, location);
       toast.success('Account created successfully');
       if (data.role === 'Doctor') navigate('/doctor');
       else if (data.role === 'Patient') navigate('/patient');
@@ -248,6 +253,10 @@ const SignupPage = () => {
                     <option value="Patient">Patient</option>
                     <option value="Doctor">Doctor</option>
                   </select>
+                </div>
+                <div>
+                  <label className="block text-[var(--color-theme-muted)] mb-1">Set Your Location</label>
+                  <LocationPicker location={location} onLocationChange={setLocation} />
                 </div>
                 <button
                   type="submit"

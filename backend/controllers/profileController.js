@@ -47,6 +47,27 @@ export const updateProfile = async (req, res) => {
       user.profileImage = req.file.path; // Cloudinary URL
     }
     
+    // Handle location update
+    if (req.body.location) {
+      try {
+        const locationData = JSON.parse(req.body.location);
+        user.location = {
+          address: locationData.address || '',
+          city: locationData.city || '',
+          state: locationData.state || '',
+          country: locationData.country || '',
+          pincode: locationData.pincode || '',
+          formattedAddress: locationData.formattedAddress || '',
+          placeId: locationData.placeId || '',
+          lastUpdated: new Date(),
+          type: 'Point',
+          coordinates: [Number(locationData.longitude), Number(locationData.latitude)]
+        };
+      } catch (err) {
+        console.error('Failed to parse location JSON', err);
+      }
+    }
+    
     await user.save();
 
     // Update specific profile info based on role
@@ -57,7 +78,7 @@ export const updateProfile = async (req, res) => {
         patientProfile = new PatientProfile({ user: user._id });
       }
       
-      const pFields = ['age', 'gender', 'contactNumber', 'preferredMode', 'emergencyContact', 'address'];
+      const pFields = ['age', 'gender', 'contactNumber', 'preferredMode', 'emergencyContact'];
       pFields.forEach(field => {
         if (req.body[field] !== undefined) patientProfile[field] = req.body[field];
       });
@@ -88,7 +109,6 @@ export const updateProfile = async (req, res) => {
 
       doctorProfile.qualification = req.body.qualification || doctorProfile.qualification || 'Not provided';
       doctorProfile.experience = req.body.experience || doctorProfile.experience || 0;
-      doctorProfile.clinicLocation = req.body.clinicLocation || doctorProfile.clinicLocation || 'Not provided';
 
       doctorProfile.feeRange = { 
         min: req.body.feeMin || doctorProfile.feeRange?.min || 0, 
@@ -96,6 +116,16 @@ export const updateProfile = async (req, res) => {
       };
 
       updatedProfile = await doctorProfile.save();
+    }
+    
+    // Broadcast location update
+    const io = req.app.get('io');
+    if (io && req.body.location) {
+      io.emit('location_updated', {
+        userId: user._id,
+        role: user.role,
+        location: user.location
+      });
     }
 
     res.json({
@@ -106,6 +136,7 @@ export const updateProfile = async (req, res) => {
         email: user.email,
         role: user.role,
         profileImage: user.profileImage,
+        location: user.location
       },
       profile: updatedProfile
     });

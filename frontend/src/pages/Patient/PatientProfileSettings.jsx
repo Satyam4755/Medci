@@ -5,6 +5,7 @@ import { useGlobalLoading } from '../../context/GlobalLoadingContext';
 import { theme } from '../../utils/theme';
 import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
+import LocationPicker from '../../components/LocationPicker';
 
 const PatientProfileSettings = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -17,10 +18,10 @@ const PatientProfileSettings = () => {
     age: '',
     gender: 'Other',
     contactNumber: '',
-    address: '',
     emergencyContact: '',
     hairConcerns: '', // comma separated string for UI
-    preferredMode: 'Video'
+    preferredMode: 'Video',
+    location: null
   });
   
   const [passwordData, setPasswordData] = useState({
@@ -52,10 +53,20 @@ const token = userInfo?.token;
         age: data.profile?.age || '',
         gender: data.profile?.gender || 'Other',
         contactNumber: data.profile?.contactNumber || '',
-        address: data.profile?.address || '',
         emergencyContact: data.profile?.emergencyContact || '',
         hairConcerns: data.profile?.hairConcerns?.join(', ') || '',
-        preferredMode: data.profile?.preferredMode || 'Video'
+        preferredMode: data.profile?.preferredMode || 'Video',
+        location: data.user.location?.coordinates?.[0] !== 0 ? {
+          latitude: data.user.location.coordinates[1],
+          longitude: data.user.location.coordinates[0],
+          formattedAddress: data.user.location.formattedAddress,
+          address: data.user.location.address,
+          city: data.user.location.city,
+          state: data.user.location.state,
+          country: data.user.location.country,
+          pincode: data.user.location.pincode,
+          placeId: data.user.location.placeId
+        } : null
       });
       setImagePreview(data.user.profileImage || '');
     } catch (error) {
@@ -85,9 +96,12 @@ const token = userInfo?.token;
       form.append('age', formData.age);
       form.append('gender', formData.gender);
       form.append('contactNumber', formData.contactNumber);
-      form.append('address', formData.address);
       form.append('emergencyContact', formData.emergencyContact);
       form.append('preferredMode', formData.preferredMode);
+      
+      if (formData.location) {
+        form.append('location', JSON.stringify(formData.location));
+      }
       
       // Convert comma separated string back to array
       const concernsArray = formData.hairConcerns.split(',').map(s => s.trim()).filter(s => s);
@@ -140,7 +154,7 @@ const token = userInfo?.token;
   };
 
   const calculateCompletion = () => {
-    const fields = [formData.name, formData.age, formData.gender, formData.contactNumber, formData.address, formData.emergencyContact, formData.hairConcerns, imagePreview];
+    const fields = [formData.name, formData.age, formData.gender, formData.contactNumber, formData.location, formData.emergencyContact, formData.hairConcerns, imagePreview];
     const filled = fields.filter(f => f && f.toString().trim() !== '').length;
     return Math.round((filled / fields.length) * 100);
   };
@@ -224,8 +238,11 @@ const token = userInfo?.token;
               <input type="text" value={formData.emergencyContact} onChange={e => setFormData({...formData, emergencyContact: e.target.value})} className="w-full bg-[var(--color-theme-from)] border border-[var(--color-theme-border)] rounded-lg px-4 py-2 focus:outline-none focus:border-[var(--color-theme-primary)]" />
             </div>
             <div className="md:col-span-2">
-              <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Address</label>
-              <textarea value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} rows="2" className="w-full bg-[var(--color-theme-from)] border border-[var(--color-theme-border)] rounded-lg px-4 py-2 focus:outline-none focus:border-[var(--color-theme-primary)]"></textarea>
+              <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Location</label>
+              <LocationPicker 
+                location={formData.location} 
+                onLocationChange={(loc) => setFormData({...formData, location: loc})} 
+              />
             </div>
             <div className="md:col-span-2">
               <label className={`block text-sm mb-1 ${theme.textSecondary}`}>Hair Concerns (comma separated)</label>
