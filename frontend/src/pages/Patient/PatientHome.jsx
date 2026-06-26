@@ -4,6 +4,7 @@ import { useGlobalLoading } from '../../context/GlobalLoadingContext';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import SkeletonLoader from '../../components/SkeletonLoader';
+import { theme } from '../../utils/theme';
 
 const PatientHome = () => {
   const { user } = useContext(AuthContext);
@@ -43,7 +44,7 @@ const PatientHome = () => {
           Manage your hair treatment journey and upcoming consultations from here.
         </p>
         <div className="mt-6 flex gap-4 flex-wrap">
-          <Link to="/patient/explore" className="px-6 py-3 bg-[var(--color-theme-primary)] text-black rounded-xl font-semibold hover:bg-[var(--color-theme-primary-hover)] transition shadow-lg">
+          <Link to="/patient/explore" className={`px-6 py-3 rounded-xl font-semibold transition shadow-lg ${theme.buttonPrimary}`}>
             Find Doctors
           </Link>
           <Link to="/patient/request" className="px-6 py-3 glass-panel text-[var(--color-theme-text)] rounded-xl font-semibold hover:bg-[var(--color-theme-primary)] hover:bg-opacity-20 transition">

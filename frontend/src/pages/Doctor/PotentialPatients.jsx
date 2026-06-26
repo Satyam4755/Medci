@@ -144,11 +144,11 @@ const PotentialPatients = () => {
             latitude={userLocation.coordinates[1]}
             anchor="bottom"
           >
-            <div className="relative flex flex-col items-center group cursor-pointer">
-              <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center shadow-lg shadow-emerald-500/50 border-2 border-white z-10">
+            <div className="relative flex flex-col items-center justify-center -translate-y-1/2 group cursor-pointer">
+              <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center shadow-lg shadow-green-500/40 border-2 border-white animate-pulse">
                 <MapPin size={20} className="text-white" />
               </div>
-              <div className="absolute -bottom-2 w-4 h-4 bg-black/30 rounded-full blur-[3px]"></div>
+              <div className="absolute -bottom-1 w-3 h-1 bg-black/30 rounded-[100%] blur-[1px]"></div>
               
               <div className="absolute bottom-12 bg-[var(--color-theme-dropdown)] text-[var(--color-theme-text)] px-3 py-1.5 rounded-lg border border-[var(--color-theme-border)] shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                 Your Clinic
@@ -173,11 +173,11 @@ const PotentialPatients = () => {
                   setSelectedRequest(req);
                 }}
               >
-                <div className="relative flex flex-col items-center hover:scale-110 transition-transform cursor-pointer">
-                  <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center shadow-lg shadow-orange-500/50 border-2 border-[var(--color-theme-from)] z-10">
+                <div className="relative flex flex-col items-center justify-center -translate-y-1/2 hover:scale-110 transition-transform cursor-pointer">
+                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-blue-600/50 border-2 border-white z-10">
                     <UserIcon size={16} className="text-white" />
                   </div>
-                  <div className="absolute -bottom-1 w-3 h-3 bg-black/30 rounded-full blur-[2px]"></div>
+                  <div className="absolute -bottom-1 w-3 h-1 bg-black/30 rounded-[100%] blur-[1px]"></div>
                 </div>
               </MapMarker>
             );

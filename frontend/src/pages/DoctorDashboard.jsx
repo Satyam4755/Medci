@@ -3,6 +3,7 @@ import { AuthContext } from '../context/AuthContext';
 import { SocketContext } from '../context/SocketContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { theme } from '../utils/theme';
 
 const DoctorDashboard = () => {
   const { user } = useContext(AuthContext);
@@ -78,8 +79,8 @@ const DoctorDashboard = () => {
           <div className="space-y-4">
             <h2 className="text-xl font-semibold mb-4 text-[var(--color-theme-muted)] flex items-center">
               <span className="relative flex h-3 w-3 mr-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-theme-primary)] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-[var(--color-theme-primary)]"></span>
               </span>
               Incoming Live Requests
             </h2>
@@ -92,7 +93,7 @@ const DoctorDashboard = () => {
                       <h3 className="font-semibold text-lg text-[var(--color-theme-text)]">Patient: {req.patient?.name || 'Anonymous'}</h3>
                       <p className="text-[var(--color-theme-muted)] mt-1">{req.problemDescription}</p>
                     </div>
-                    <span className="px-3 py-1 bg-neutral-800 rounded-lg text-sm">{req.mode}</span>
+                    <span className="px-3 py-1 bg-[var(--color-theme-dropdown)] rounded-lg text-sm">{req.mode}</span>
                   </div>
                   <div className="text-sm text-[var(--color-theme-muted)] mb-6 space-y-1">
                     <p>Timing: {req.preferredTiming}</p>
@@ -100,7 +101,7 @@ const DoctorDashboard = () => {
                   </div>
                   <button
                     onClick={() => handleAccept(req._id)}
-                    className="w-full bg-white hover:opacity-90 py-3 rounded-lg font-semibold transition"
+                    className={`w-full ${theme.buttonPrimary} py-3 rounded-lg font-semibold transition`}
                   >
                     Accept Request
                   </button>

@@ -128,11 +128,11 @@ const NearbyDoctors = () => {
             latitude={userLocation.coordinates[1]}
             anchor="bottom"
           >
-            <div className="relative flex flex-col items-center group cursor-pointer">
-              <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center shadow-lg shadow-blue-500/50 border-2 border-white z-10">
-                <UserIcon size={20} className="text-white" />
+            <div className="relative flex flex-col items-center justify-center -translate-y-1/2 group cursor-pointer">
+              <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-blue-600/40 border-2 border-white animate-pulse">
+                <MapPin size={20} className="text-white" />
               </div>
-              <div className="absolute -bottom-2 w-4 h-4 bg-black/30 rounded-full blur-[3px]"></div>
+              <div className="absolute -bottom-1 w-3 h-1 bg-black/30 rounded-[100%] blur-[1px]"></div>
               
               <div className="absolute bottom-12 bg-[var(--color-theme-dropdown)] text-[var(--color-theme-text)] px-3 py-1.5 rounded-lg border border-[var(--color-theme-border)] shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                 You are here
@@ -156,17 +156,17 @@ const NearbyDoctors = () => {
                   setSelectedDoctor(doc);
                 }}
               >
-                <div className="relative flex flex-col items-center hover:scale-110 transition-transform cursor-pointer">
-                  <div className="w-10 h-10 bg-[var(--color-theme-primary)] rounded-full overflow-hidden shadow-lg shadow-[var(--color-theme-primary)]/50 border-2 border-[var(--color-theme-from)] z-10">
+                <div className="relative flex flex-col items-center justify-center -translate-y-1/2 hover:scale-110 transition-transform cursor-pointer group">
+                  <div className="w-12 h-12 bg-[#22c55e] rounded-full overflow-hidden shadow-lg shadow-green-500/50 border-2 border-white z-10">
                     {doc.user?.profileImage ? (
                       <img src={doc.user.profileImage} alt={doc.user?.name} className="w-full h-full object-cover" />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-[var(--color-theme-primary)] text-white">
+                      <div className="w-full h-full flex items-center justify-center bg-[#22c55e] text-white">
                         <BriefcaseMedical size={20} />
                       </div>
                     )}
                   </div>
-                  <div className="absolute -bottom-2 w-4 h-4 bg-black/30 rounded-full blur-[3px]"></div>
+                  <div className="absolute -bottom-1 w-3 h-1 bg-black/30 rounded-[100%] blur-[1px]"></div>
                 </div>
               </MapMarker>
             );
@@ -221,7 +221,7 @@ const NearbyDoctors = () => {
                 
                 <button 
                   onClick={() => handleRaiseRequest(selectedDoctor.user?._id)}
-                  className="w-full py-2 bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-white font-bold rounded-lg transition-colors text-sm"
+                  className="w-full py-2.5 bg-[var(--color-theme-primary)] text-[var(--color-theme-button-text)] hover:opacity-90 font-bold rounded-lg transition-colors text-sm shadow-md"
                 >
                   Raise Request
                 </button>

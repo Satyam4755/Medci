@@ -90,7 +90,7 @@ const PrescriptionModal = ({ prescription, isOpen, onClose }) => {
         </div>
         
         <div className="p-4 border-t border-[var(--color-theme-border)] bg-[var(--color-theme-panel)] flex justify-end">
-           <button onClick={onClose} className="px-6 py-2 bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-white rounded-lg font-medium transition">
+           <button onClick={onClose} className="px-6 py-2 bg-[var(--color-theme-primary)] hover:bg-[var(--color-theme-primary-hover)] text-[var(--color-theme-button-text)] rounded-lg font-medium transition">
              Done
            </button>
         </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { theme } from '../utils/theme';
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const LandingPage = () => {
         </div>
         <div className="flex items-center gap-2 md:gap-4">
           <button onClick={() => navigate('/login')} className="px-2 py-2 md:px-4 md:py-2 text-sm md:text-base rounded-lg text-[var(--color-theme-muted)] hover:text-[var(--color-theme-text)] transition whitespace-nowrap">Login</button>
-          <button onClick={() => navigate('/signup')} className="px-3 py-2 md:px-5 md:py-2 text-sm md:text-base rounded-lg bg-white hover:bg-gray-200 text-black transition font-medium whitespace-nowrap shadow-sm">Get Started</button>
+          <button onClick={() => navigate('/signup')} className={`px-3 py-2 md:px-5 md:py-2 text-sm md:text-base rounded-lg ${theme.buttonPrimary} font-medium whitespace-nowrap shadow-sm`}>Get Started</button>
         </div>
       </nav>
 
@@ -26,7 +27,7 @@ const LandingPage = () => {
           className="max-w-4xl"
         >
           <h1 className="text-5xl lg:text-7xl font-extrabold tracking-tight mb-6 text-[var(--color-theme-text)]">
-            Real-Time <span className="text-gray-400">Hair Treatment</span> Consultations
+            Real-Time <span className="text-[var(--color-theme-primary)]">Hair Treatment</span> Consultations
           </h1>
           <p className="text-xl text-[var(--color-theme-muted)] mb-10 max-w-2xl mx-auto">
             Connect with top specialists instantly. Get personalized treatment plans, book appointments, and start your journey to healthier hair today.
@@ -65,7 +66,7 @@ const LandingPage = () => {
             animate={{ opacity: 1, y: 0 }}
             whileHover={{ y: -5, borderColor: 'rgba(255,255,255,0.2)' }}
             transition={{ duration: 0.3, delay: i * 0.1 }}
-            className="p-8 rounded-2xl bg-[var(--color-theme-from)] border border-neutral-900 shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:shadow-[0_4px_30px_rgba(255,255,255,0.03)] transition-all"
+            className="p-8 rounded-2xl bg-[var(--color-theme-panel)] border border-[var(--color-theme-border)] shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:shadow-[0_4px_30px_rgba(255,255,255,0.03)] transition-all"
           >
             <h3 className="text-2xl font-semibold mb-3 text-[var(--color-theme-text)]">{feature.title}</h3>
             <p className="text-[var(--color-theme-muted)]">{feature.desc}</p>

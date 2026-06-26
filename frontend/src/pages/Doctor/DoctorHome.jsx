@@ -39,16 +39,16 @@ const DoctorHome = () => {
             </p>
           </div>
           <div className="flex items-center gap-3 glass-panel px-4 py-2 rounded-full border border-[var(--color-theme-border)]">
-            <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
-            </span>
+              <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-theme-primary)] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-[var(--color-theme-primary)]"></span>
+              </span>
             <span className="text-sm font-medium text-[var(--color-theme-text)]">Available</span>
           </div>
         </div>
         <div className="mt-6 flex gap-4 flex-wrap">
           <Link to="/doctor/requests" className="px-6 py-3 bg-[var(--color-theme-primary)] text-[var(--color-theme-button-text)] rounded-xl font-semibold hover:bg-[var(--color-theme-primary-hover)] transition shadow-lg flex items-center gap-2">
-            View Live Requests <span className="bg-white/20 px-2 py-0.5 rounded text-sm">{stats.requests}</span>
+            View Live Requests <span className="bg-[var(--color-theme-primary)]/20 text-[var(--color-theme-primary)] px-2 py-0.5 rounded text-sm">{stats.requests}</span>
           </Link>
         </div> 
       </div>

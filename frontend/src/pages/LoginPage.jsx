@@ -4,6 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import { useGlobalLoading } from '../context/GlobalLoadingContext';
 import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
+import { theme } from '../utils/theme';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -83,13 +84,13 @@ const LoginPage = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-white hover:bg-gray-200 disabled:bg-gray-400 disabled:cursor-not-allowed text-black font-semibold py-3 rounded-lg transition flex items-center justify-center shadow-sm"
+            className={`w-full ${theme.buttonPrimary} disabled:opacity-50 disabled:cursor-not-allowed font-semibold py-3 rounded-lg transition flex items-center justify-center`}
           >
             {isSubmitting ? (
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                className="w-5 h-5 border-2 border-black border-t-transparent rounded-full"
+                className="w-5 h-5 border-2 border-current border-t-transparent rounded-full"
               />
             ) : (
               'Log In'
@@ -100,7 +101,7 @@ const LoginPage = () => {
           Don't have an account? <Link to="/signup" className="text-[var(--color-theme-text)] font-medium hover:underline">Sign up</Link>
         </p>
         <div className="mt-6 text-center">
-          <Link to="/" className="text-sm text-neutral-500 hover:text-[var(--color-theme-text)] transition flex items-center justify-center gap-2">
+          <Link to="/" className="text-sm text-[var(--color-theme-muted)] hover:text-[var(--color-theme-text)] transition flex items-center justify-center gap-2">
             <span>←</span> Back to Home
           </Link>
         </div>
