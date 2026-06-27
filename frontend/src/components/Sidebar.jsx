@@ -65,8 +65,7 @@ const Sidebar = ({ onClose }) => {
               key={link.name} 
               to={link.path}
               onClick={() => { if (onClose) onClose(); }}
-              className={({ isActive }) => `px-4 py-3 rounded-lg transition-all font-medium ${isActive ? 'bg-primary text-primary-foreground shadow-lg' : 'hover:bg-primary hover:bg-opacity-20 hover:text-foreground'}`}
-              style={({ isActive }) => isActive ? {} : { color: 'var(--color-theme-muted)' }}
+              className={({ isActive }) => `px-4 py-3 rounded-lg transition-all font-medium flex items-center gap-3 group ${isActive ? 'bg-primary text-primary-foreground shadow-lg [&_*]:text-primary-foreground' : 'text-muted-foreground hover:bg-primary hover:text-primary-foreground hover:[&_*]:text-primary-foreground'}`}
             >
               {link.name}
             </NavLink>
@@ -77,9 +76,9 @@ const Sidebar = ({ onClose }) => {
       <div className="p-6 border-t border-border">
         <button
           onClick={toggleTheme}
-          className="w-full flex items-center justify-between bg-card border border-border rounded-lg px-4 py-3 mb-6 transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring"
+          className="w-full flex items-center justify-between bg-card border border-border rounded-lg px-4 py-3 mb-6 transition-all text-muted-foreground hover:bg-muted hover:text-foreground hover:[&_*]:text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
         >
-          <span className="text-sm font-semibold text-foreground">
+          <span className="text-sm font-semibold transition-colors">
             {theme === 'light' ? 'Beige Theme' : 'Black Theme'}
           </span>
           <div className="relative w-6 h-6 flex items-center justify-center">
@@ -112,13 +111,13 @@ const Sidebar = ({ onClose }) => {
         </button>
         <button 
           onClick={handleLogout}
-          className="w-full py-2 rounded-lg border border-border hover:bg-neutral-500/20 hover:text-neutral-400 transition mb-2"
+          className="w-full py-2 rounded-lg border border-border text-muted-foreground hover:bg-primary hover:text-primary-foreground hover:[&_*]:text-primary-foreground transition mb-2"
         >
           Logout
         </button>
         <button 
           onClick={() => setIsDeleteModalOpen(true)}
-          className="w-full py-2 rounded-lg bg-destructive/10 text-destructive hover:bg-destructive hover:text-primary-foreground border border-destructive/20 transition"
+          className="w-full py-2 rounded-lg bg-destructive/10 text-destructive hover:bg-destructive hover:text-destructive-foreground hover:[&_*]:text-destructive-foreground border border-destructive/20 transition"
         >
           Delete My Account
         </button>
