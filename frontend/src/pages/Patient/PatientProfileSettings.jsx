@@ -6,11 +6,13 @@ import { theme } from '../../utils/theme';
 import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
 import LocationPicker from '../../components/LocationPicker';
+import DeleteAccountModal from '../../components/DeleteAccountModal';
 
 const PatientProfileSettings = () => {
   const { user, setUser } = useContext(AuthContext);
   const { startLoading, stopLoading } = useGlobalLoading();
   const [activeTab, setActiveTab] = useState('personal'); // 'personal' or 'account'
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -282,12 +284,29 @@ const PatientProfileSettings = () => {
             <input type="password" required value={passwordData.confirmPassword} onChange={e => setPasswordData({ ...passwordData, confirmPassword: e.target.value })} className="w-full bg-background border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary" />
           </div>
           <div className="pt-4">
-            <button type="submit" className={`w-full py-2 rounded-lg font-semibold ${theme.buttonPrimary}`}>
+            <button type="submit" className={`w-full py-2 rounded-lg font-semibold bg-primary text-primary-foreground hover:opacity-90 transition shadow-sm`}>
               Update Password
+            </button>
+          </div>
+          
+          <div className="pt-8 border-t border-border mt-8">
+            <h4 className="text-lg font-semibold text-destructive mb-2">Danger Zone</h4>
+            <p className="text-sm text-muted-foreground mb-4">Once you delete your account, there is no going back. Please be certain.</p>
+            <button 
+              type="button"
+              onClick={() => setIsDeleteModalOpen(true)}
+              className="w-full py-2 rounded-lg bg-destructive/10 text-destructive hover:bg-destructive hover:text-destructive-foreground border border-destructive/20 transition font-semibold"
+            >
+              Delete My Account
             </button>
           </div>
         </form>
       )}
+
+      <DeleteAccountModal 
+        isOpen={isDeleteModalOpen} 
+        onClose={() => setIsDeleteModalOpen(false)} 
+      />
     </div>
   );
 };

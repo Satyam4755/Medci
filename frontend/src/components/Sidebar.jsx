@@ -4,47 +4,19 @@ import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sun, Moon } from 'lucide-react';
-import DeleteAccountModal from './DeleteAccountModal';
+import { patientLinks, doctorLinks, adminLinks } from '../config/navigation';
 
 const Sidebar = ({ onClose }) => {
   const { user, logout } = useContext(AuthContext);
   const { theme, toggleTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate('/');
   };
 
-  const patientLinks = [
-    { name: 'Home', path: '/patient/home' },
-    { name: 'Explore Doctors', path: '/patient/explore' },
-    { name: 'Nearby Doctors', path: '/patient/map' },
-    { name: 'Raise Request', path: '/patient/request' },
-    { name: 'Appointments', path: '/patient/appointments' },
-    { name: 'Prescriptions', path: '/patient/prescriptions' },
-    { name: 'Notifications', path: '/patient/notifications' },
-    { name: 'Profile Settings', path: '/patient/profile' },
-  ];
-
-  const doctorLinks = [
-    { name: 'Home', path: '/doctor/home' },
-    { name: 'Incoming Requests', path: '/doctor/requests' },
-    { name: 'Potential Patients', path: '/doctor/map' },
-    { name: 'Appointments', path: '/doctor/appointments' },
-    { name: 'Earnings', path: '/doctor/earnings' },
-    { name: 'Availability', path: '/doctor/availability' },
-    { name: 'Profile Settings', path: '/doctor/profile' },
-  ];
-
-  const adminLinks = [
-    { name: 'Dashboard', path: '/admin/dashboard' },
-    { name: 'Users', path: '/admin/users' },
-    { name: 'Doctors', path: '/admin/doctors' },
-    { name: 'Revenue', path: '/admin/revenue' },
-  ];
-
+  // The links arrays are now imported from config/navigation.js
   let links = [];
   if (user?.role === 'Patient') links = patientLinks;
   else if (user?.role === 'Doctor') links = doctorLinks;
@@ -67,9 +39,23 @@ const Sidebar = ({ onClose }) => {
               onClick={() => { if (onClose) onClose(); }}
               className={({ isActive }) => `px-4 py-3 rounded-lg transition-all font-medium flex items-center gap-3 group ${isActive ? 'bg-primary text-primary-foreground shadow-lg [&_*]:text-primary-foreground' : 'text-muted-foreground hover:bg-primary hover:text-primary-foreground hover:[&_*]:text-primary-foreground'}`}
             >
+              <link.icon size={20} className="shrink-0 transition-colors" />
               {link.name}
             </NavLink>
           ))}
+          {/* Append Profile Settings to the desktop sidebar to keep it unchanged */}
+          {user?.role === 'Patient' && (
+            <NavLink to="/patient/profile" onClick={() => { if (onClose) onClose(); }} className={({ isActive }) => `px-4 py-3 rounded-lg transition-all font-medium flex items-center gap-3 group ${isActive ? 'bg-primary text-primary-foreground shadow-lg [&_*]:text-primary-foreground' : 'text-muted-foreground hover:bg-primary hover:text-primary-foreground hover:[&_*]:text-primary-foreground'}`}>
+              <Sun size={20} className="shrink-0 opacity-0 w-0 hidden" />
+              Profile Settings
+            </NavLink>
+          )}
+          {user?.role === 'Doctor' && (
+            <NavLink to="/doctor/profile" onClick={() => { if (onClose) onClose(); }} className={({ isActive }) => `px-4 py-3 rounded-lg transition-all font-medium flex items-center gap-3 group ${isActive ? 'bg-primary text-primary-foreground shadow-lg [&_*]:text-primary-foreground' : 'text-muted-foreground hover:bg-primary hover:text-primary-foreground hover:[&_*]:text-primary-foreground'}`}>
+              <Sun size={20} className="shrink-0 opacity-0 w-0 hidden" />
+              Profile Settings
+            </NavLink>
+          )}
         </nav>
       </div>
 
@@ -115,18 +101,7 @@ const Sidebar = ({ onClose }) => {
         >
           Logout
         </button>
-        <button 
-          onClick={() => setIsDeleteModalOpen(true)}
-          className="w-full py-2 rounded-lg bg-destructive/10 text-destructive hover:bg-destructive hover:text-destructive-foreground hover:[&_*]:text-destructive-foreground border border-destructive/20 transition"
-        >
-          Delete My Account
-        </button>
       </div>
-
-      <DeleteAccountModal 
-        isOpen={isDeleteModalOpen} 
-        onClose={() => setIsDeleteModalOpen(false)} 
-      />
     </div>
   );
 };
