@@ -3,10 +3,12 @@ import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
 import { useGlobalLoading } from '../../context/GlobalLoadingContext';
 import { SocketContext } from '../../context/SocketContext';
-import { Map, MapMarker, MapPopup, MapControls, MarkerContent, MapGeoJSON } from '../../components/ui/map';
+import { Map, MapMarker, MapControls, MarkerContent, MapGeoJSON } from '../../components/ui/map';
+import SmartMapPopup from '../../components/SmartMapPopup';
 import { calculateDistance, formatDistance, createGeoJSONCircle } from '../../utils/GeoUtils';
 import { toast } from 'react-toastify';
 import { User as UserIcon, MapPin, Eye } from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
 
 const PotentialPatients = () => {
   const { user, loading } = useContext(AuthContext);
@@ -212,48 +214,53 @@ const PotentialPatients = () => {
           })}
 
           {/* Patient Popup */}
+          <AnimatePresence>
           {selectedRequest && (
-            <MapPopup
+            <SmartMapPopup
               longitude={(selectedRequest.location?.coordinates || selectedRequest.patient?.location?.coordinates)[0]}
               latitude={(selectedRequest.location?.coordinates || selectedRequest.patient?.location?.coordinates)[1]}
-              anchor="bottom"
               onClose={() => setSelectedRequest(null)}
-              closeButton={true}
-              closeOnClick={false}
-              offset={[0, -32]}
-              className="z-50"
+              offset={32}
             >
-              <div className="p-4 bg-card text-foreground rounded-xl w-64 shadow-2xl border border-border">
-                <div className="flex items-center gap-3 mb-3">
+              <div className="p-3 bg-card text-foreground rounded-xl w-[260px] md:w-[280px] shadow-2xl border border-border">
+                <div className="flex items-center gap-3 mb-2">
                   <div className="w-10 h-10 rounded-full bg-background flex items-center justify-center shrink-0 border border-border">
                     <UserIcon size={20} className="text-muted-foreground" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-foreground truncate">{selectedRequest.patient?.name}</h3>
-                    <p className="text-xs text-muted-foreground capitalize">{selectedRequest.status}</p>
+                  <div className="flex-1 min-w-0 overflow-hidden">
+                    <h3 className="font-bold text-foreground text-sm truncate">{selectedRequest.patient?.name}</h3>
+                    <p className="text-[11px] text-muted-foreground capitalize truncate">{selectedRequest.status}</p>
                   </div>
                 </div>
 
-                <div className="space-y-1.5 text-sm text-muted-foreground mb-4">
-                  <p className="truncate"><span className="font-medium text-foreground">Issue:</span> {selectedRequest.problemDescription}</p>
-                  <p><span className="font-medium text-foreground">Budget:</span> ₹{selectedRequest.budgetRange?.min} - ₹{selectedRequest.budgetRange?.max}</p>
-                  <p><span className="font-medium text-foreground">Distance:</span> {
-                    formatDistance(calculateDistance(
-                      userLocation.coordinates,
-                      selectedRequest.location?.coordinates || selectedRequest.patient?.location?.coordinates
-                    ))
-                  }</p>
-                  <div className="flex flex-wrap gap-1 mt-2">
-                    {selectedRequest.consultationModes?.map(m => (
-                      <span key={m} className="text-[10px] px-2 py-0.5 rounded-full bg-background border border-border text-orange-400">
-                        {m}
-                      </span>
-                    ))}
+                <div className="space-y-1 text-xs text-muted-foreground mb-3">
+                  <div className="truncate"><span className="font-medium text-foreground">Issue:</span> {selectedRequest.problemDescription}</div>
+                  <div className="flex justify-between">
+                    <span className="font-medium text-foreground">Budget:</span> 
+                    <span>₹{selectedRequest.budgetRange?.min} - ₹{selectedRequest.budgetRange?.max}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-medium text-foreground">Distance:</span> 
+                    <span>{
+                      formatDistance(calculateDistance(
+                        userLocation.coordinates,
+                        selectedRequest.location?.coordinates || selectedRequest.patient?.location?.coordinates
+                      ))
+                    }</span>
                   </div>
                 </div>
+
+                <div className="flex flex-wrap gap-1 mt-2 mb-2">
+                  {selectedRequest.consultationModes?.map(m => (
+                    <span key={m} className="text-[10px] px-2 py-0.5 rounded-full bg-background border border-border text-orange-400">
+                      {m}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </MapPopup>
+            </SmartMapPopup>
           )}
+          </AnimatePresence>
 
           <div className="absolute bottom-6 right-6">
             <MapControls showCompass={true} />
