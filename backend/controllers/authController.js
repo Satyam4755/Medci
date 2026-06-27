@@ -36,18 +36,14 @@ export const sendOtp = async (req, res) => {
     const hashedOtp = await bcrypt.hash(otp, salt);
 
     if (existingOtp) {
-      existingOtp.otp = hashedOtp;
-      existingOtp.expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 mins
-      existingOtp.verified = false;
-      existingOtp.attempts = 0;
-      await existingOtp.save();
-    } else {
-      await EmailOTP.create({
-        email,
-        otp: hashedOtp,
-        expiresAt: new Date(Date.now() + 5 * 60 * 1000),
-      });
+      await EmailOTP.deleteMany({ email });
     }
+    
+    await EmailOTP.create({
+      email,
+      otp: hashedOtp,
+      expiresAt: new Date(Date.now() + 5 * 60 * 1000),
+    });
 
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee; padding: 20px; border-radius: 10px;">
