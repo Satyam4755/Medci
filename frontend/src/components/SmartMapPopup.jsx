@@ -7,7 +7,7 @@ const SmartMapPopup = ({ longitude, latitude, children, onClose, offset = 16, cl
   const { map } = useMap();
   const popupRef = useRef(null);
   
-  const [position, setPosition] = useState({ x: -9999, y: -9999, anchor: 'bottom', isReady: false });
+  const [position, setPosition] = useState({ x: -9999, y: -9999, anchor: 'bottom', arrowDx: 0, isReady: false });
 
   useEffect(() => {
     if (!map) return;
@@ -59,7 +59,7 @@ const SmartMapPopup = ({ longitude, latitude, children, onClose, offset = 16, cl
          finalX = pt.x;
       }
 
-      setPosition({ x: finalX, y: finalY, anchor, isReady: true });
+      setPosition({ x: finalX, y: finalY, anchor, arrowDx: pt.x - finalX, isReady: true });
     };
 
     const scheduleUpdate = () => {
@@ -114,6 +114,24 @@ const SmartMapPopup = ({ longitude, latitude, children, onClose, offset = 16, cl
         className={`pointer-events-auto relative ${className}`}
         style={{ visibility: position.isReady ? 'visible' : 'hidden' }}
       >
+        {position.isReady && (
+          <div 
+            className="absolute w-4 h-4 bg-card border-border shadow-md transform rotate-45 pointer-events-none z-[-1]"
+            style={{
+              left: `calc(50% + ${position.arrowDx}px)`,
+              marginLeft: '-8px',
+              ...(position.anchor === 'bottom' ? {
+                bottom: '-7px',
+                borderBottomWidth: '1px',
+                borderRightWidth: '1px'
+              } : {
+                top: '-7px',
+                borderTopWidth: '1px',
+                borderLeftWidth: '1px'
+              })
+            }}
+          />
+        )}
         {onClose && (
           <button 
             onClick={(e) => { e.stopPropagation(); onClose(); }}

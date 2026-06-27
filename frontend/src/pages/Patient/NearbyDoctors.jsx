@@ -182,8 +182,8 @@ const NearbyDoctors = () => {
                 }}
               >
                 <MarkerContent>
-                  <div className="relative flex flex-col items-center justify-center -translate-y-1/2 hover:scale-110 transition-transform cursor-pointer group">
-                    <div className="w-12 h-12 bg-[#22c55e] rounded-full overflow-hidden shadow-lg shadow-green-500/50 border-2 border-white z-10">
+                  <div className={`relative flex flex-col items-center justify-center -translate-y-1/2 transition-transform cursor-pointer group ${selectedDoctor?._id === doc._id ? 'scale-110 z-20' : 'hover:scale-110 z-10'}`}>
+                    <div className={`w-12 h-12 bg-[#22c55e] rounded-full overflow-hidden shadow-lg border-2 border-white transition-all ${selectedDoctor?._id === doc._id ? 'shadow-green-500/80 ring-4 ring-green-500/30' : 'shadow-green-500/50'}`}>
                       {doc.user?.profileImage ? (
                         <img src={doc.user.profileImage} alt={doc.user?.name} className="w-full h-full object-cover" />
                       ) : (

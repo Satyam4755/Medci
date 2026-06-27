@@ -202,8 +202,8 @@ const PotentialPatients = () => {
                 }}
               >
                 <MarkerContent>
-                  <div className="relative flex flex-col items-center justify-center -translate-y-1/2 hover:scale-110 transition-transform cursor-pointer">
-                    <div className="w-8 h-8 bg-destructive rounded-full flex items-center justify-center shadow-lg shadow-red-600/50 border-2 border-white z-10">
+                  <div className={`relative flex flex-col items-center justify-center -translate-y-1/2 transition-transform cursor-pointer ${selectedRequest?._id === req._id ? 'scale-125 z-20' : 'hover:scale-110 z-10'}`}>
+                    <div className={`w-8 h-8 bg-destructive rounded-full flex items-center justify-center shadow-lg border-2 border-white transition-all ${selectedRequest?._id === req._id ? 'shadow-red-600/80 ring-4 ring-red-600/30' : 'shadow-red-600/50'}`}>
                       <UserIcon size={16} className="text-destructive-foreground" />
                     </div>
                     <div className="absolute -bottom-1 w-3 h-1 bg-black/30 rounded-[100%] blur-[1px]"></div>
