@@ -110,3 +110,35 @@ export const formatDistance = (distanceInKm) => {
   }
   return `${distanceInKm.toFixed(1)} km`;
 };
+
+// Create a GeoJSON Polygon for a circle
+export const createGeoJSONCircle = (center, radiusInKm, points = 64) => {
+  if (!center || center.length !== 2) return null;
+  
+  const coords = { latitude: center[1], longitude: center[0] };
+  const km = radiusInKm;
+  const ret = [];
+  
+  // Approximate conversion: 1 degree latitude = ~111.32 km
+  const distanceX = km / (111.320 * Math.cos(coords.latitude * (Math.PI / 180)));
+  const distanceY = km / 110.574;
+
+  for (let i = 0; i < points; i++) {
+    const theta = (i / points) * (2 * Math.PI);
+    const x = distanceX * Math.cos(theta);
+    const y = distanceY * Math.sin(theta);
+    ret.push([coords.longitude + x, coords.latitude + y]);
+  }
+  ret.push(ret[0]); // close the polygon
+
+  return {
+    type: "FeatureCollection",
+    features: [{
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [ret]
+      }
+    }]
+  };
+};

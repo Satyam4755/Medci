@@ -3,14 +3,14 @@ import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
 import { useGlobalLoading } from '../../context/GlobalLoadingContext';
 import { SocketContext } from '../../context/SocketContext';
-import { Map, MapMarker, MapPopup, MapControls } from '../../components/ui/map';
-import { calculateDistance, formatDistance } from '../../utils/GeoUtils';
+import { Map, MapMarker, MapPopup, MapControls, MarkerContent, MapGeoJSON } from '../../components/ui/map';
+import { calculateDistance, formatDistance, createGeoJSONCircle } from '../../utils/GeoUtils';
 import { toast } from 'react-toastify';
 import { User as UserIcon, MapPin, BriefcaseMedical } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const NearbyDoctors = () => {
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
   const { socket } = useContext(SocketContext);
   const { startLoading, stopLoading } = useGlobalLoading();
   const navigate = useNavigate();
@@ -21,9 +21,11 @@ const NearbyDoctors = () => {
 
   const userLocation = user?.location;
 
-  const [viewState, setViewState] = useState({
-    longitude: userLocation?.coordinates?.[0] || 77.2090,
-    latitude: userLocation?.coordinates?.[1] || 28.6139,
+  const [viewport, setViewport] = useState({
+    center: [
+      userLocation?.coordinates?.[0] || 77.2090,
+      userLocation?.coordinates?.[1] || 28.6139
+    ],
     zoom: 11
   });
 
@@ -70,6 +72,15 @@ const NearbyDoctors = () => {
   const handleRaiseRequest = (doctorId) => {
     navigate('/patient/request', { state: { preferredDoctorId: doctorId } });
   };
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] bg-background">
+        <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+        <p className="mt-4 text-muted-foreground font-medium">Loading map...</p>
+      </div>
+    );
+  }
 
   if (!userLocation || userLocation.coordinates[0] === 0) {
     return (
@@ -118,26 +129,38 @@ const NearbyDoctors = () => {
       {/* Map Area */}
       <div className="flex-1 relative">
         <Map
-          viewState={viewState}
-          onMove={e => setViewState(e.viewState)}
+          viewport={viewport}
+          onViewportChange={setViewport}
           mapStyle="dark"
         >
+          {/* Visual Search Radius */}
+          {userLocation.coordinates[0] !== 0 && (
+            <MapGeoJSON
+              id="search-radius"
+              data={createGeoJSONCircle(userLocation.coordinates, radius)}
+              fillPaint={{ "fill-color": "#3b82f6", "fill-opacity": 0.15 }}
+              linePaint={{ "line-color": "#3b82f6", "line-width": 2, "line-opacity": 0.5 }}
+            />
+          )}
+
           {/* Current User Marker */}
           <MapMarker
             longitude={userLocation.coordinates[0]}
             latitude={userLocation.coordinates[1]}
             anchor="bottom"
           >
-            <div className="relative flex flex-col items-center justify-center -translate-y-1/2 group cursor-pointer">
-              <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/40 border-2 border-white animate-pulse">
-                <MapPin size={20} className="text-primary-foreground" />
-              </div>
-              <div className="absolute -bottom-1 w-3 h-1 bg-black/30 rounded-[100%] blur-[1px]"></div>
+            <MarkerContent>
+              <div className="relative flex flex-col items-center justify-center -translate-y-1/2 group cursor-pointer">
+                <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/40 border-2 border-white animate-pulse">
+                  <MapPin size={20} className="text-primary-foreground" />
+                </div>
+                <div className="absolute -bottom-1 w-3 h-1 bg-black/30 rounded-[100%] blur-[1px]"></div>
 
-              <div className="absolute bottom-12 bg-popover text-foreground px-3 py-1.5 rounded-lg border border-border shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                You are here
+                <div className="absolute bottom-12 bg-popover text-foreground px-3 py-1.5 rounded-lg border border-border shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                  You are here
+                </div>
               </div>
-            </div>
+            </MarkerContent>
           </MapMarker>
 
           {/* Doctor Markers */}
@@ -156,18 +179,20 @@ const NearbyDoctors = () => {
                   setSelectedDoctor(doc);
                 }}
               >
-                <div className="relative flex flex-col items-center justify-center -translate-y-1/2 hover:scale-110 transition-transform cursor-pointer group">
-                  <div className="w-12 h-12 bg-[#22c55e] rounded-full overflow-hidden shadow-lg shadow-green-500/50 border-2 border-white z-10">
-                    {doc.user?.profileImage ? (
-                      <img src={doc.user.profileImage} alt={doc.user?.name} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-[#22c55e] text-primary-foreground">
-                        <BriefcaseMedical size={20} />
-                      </div>
-                    )}
+                <MarkerContent>
+                  <div className="relative flex flex-col items-center justify-center -translate-y-1/2 hover:scale-110 transition-transform cursor-pointer group">
+                    <div className="w-12 h-12 bg-[#22c55e] rounded-full overflow-hidden shadow-lg shadow-green-500/50 border-2 border-white z-10">
+                      {doc.user?.profileImage ? (
+                        <img src={doc.user.profileImage} alt={doc.user?.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-[#22c55e] text-primary-foreground">
+                          <BriefcaseMedical size={20} />
+                        </div>
+                      )}
+                    </div>
+                    <div className="absolute -bottom-1 w-3 h-1 bg-black/30 rounded-[100%] blur-[1px]"></div>
                   </div>
-                  <div className="absolute -bottom-1 w-3 h-1 bg-black/30 rounded-[100%] blur-[1px]"></div>
-                </div>
+                </MarkerContent>
               </MapMarker>
             );
           })}

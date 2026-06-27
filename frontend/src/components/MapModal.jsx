@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Map, MapMarker, MapControls } from './ui/map';
+import { Map, MapMarker, MapControls, MarkerContent } from './ui/map';
 import { reverseGeocode, searchLocation, getCurrentLocation } from '../utils/GeoUtils';
 import { toast } from 'react-toastify';
 import { Search, MapPin, Check, ChevronLeft, Loader2, Navigation, Focus } from 'lucide-react';
@@ -11,9 +11,11 @@ const MapModal = ({ isOpen, onClose, onConfirm, initialLocation }) => {
   const { theme } = useContext(ThemeContext);
   const isDark = theme === 'dark';
 
-  const [viewState, setViewState] = useState({
-    longitude: initialLocation?.longitude || 77.2090, // Default to New Delhi
-    latitude: initialLocation?.latitude || 28.6139,
+  const [viewport, setViewport] = useState({
+    center: [
+      initialLocation?.longitude || 77.2090, // Default to New Delhi
+      initialLocation?.latitude || 28.6139
+    ],
     zoom: 14
   });
   
@@ -32,10 +34,9 @@ const MapModal = ({ isOpen, onClose, onConfirm, initialLocation }) => {
 
   useEffect(() => {
     if (isOpen && initialLocation?.longitude && initialLocation?.latitude) {
-      setViewState(prev => ({
+      setViewport(prev => ({
         ...prev,
-        longitude: initialLocation.longitude,
-        latitude: initialLocation.latitude
+        center: [initialLocation.longitude, initialLocation.latitude]
       }));
       setMarkerState({
         longitude: initialLocation.longitude,
@@ -88,10 +89,9 @@ const MapModal = ({ isOpen, onClose, onConfirm, initialLocation }) => {
   };
 
   const handleSelectSearchResult = (result) => {
-    setViewState(prev => ({
+    setViewport(prev => ({
       ...prev,
-      longitude: result.longitude,
-      latitude: result.latitude,
+      center: [result.longitude, result.latitude],
       zoom: 15
     }));
     setMarkerState({
@@ -108,10 +108,9 @@ const MapModal = ({ isOpen, onClose, onConfirm, initialLocation }) => {
     setIsGeocoding(true);
     try {
       const { latitude, longitude } = await getCurrentLocation();
-      setViewState(prev => ({
+      setViewport(prev => ({
         ...prev,
-        longitude,
-        latitude,
+        center: [longitude, latitude],
         zoom: 15
       }));
       setMarkerState({ longitude, latitude });
@@ -146,8 +145,8 @@ const MapModal = ({ isOpen, onClose, onConfirm, initialLocation }) => {
         >
           <Map
             ref={mapRef}
-            viewState={viewState}
-            onMove={e => setViewState(e.viewState)}
+            viewport={viewport}
+            onViewportChange={setViewport}
             mapStyle={isDark ? 'dark' : 'light'}
             className="w-full h-full"
           >
@@ -158,12 +157,14 @@ const MapModal = ({ isOpen, onClose, onConfirm, initialLocation }) => {
               draggable={true}
               onDragEnd={handleDragEnd}
             >
-              <div className="relative flex flex-col items-center justify-center -translate-y-1/2 cursor-grab active:cursor-grabbing">
-                <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/40 border-2 border-white animate-bounce-short">
-                  <MapPin size={20} className="text-primary-foreground" />
+              <MarkerContent>
+                <div className="relative flex flex-col items-center justify-center -translate-y-1/2 cursor-grab active:cursor-grabbing">
+                  <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/40 border-2 border-white animate-bounce-short">
+                    <MapPin size={20} className="text-primary-foreground" />
+                  </div>
+                  <div className="absolute -bottom-1 w-3 h-1 bg-black/30 rounded-[100%] blur-[1px]"></div>
                 </div>
-                <div className="absolute -bottom-1 w-3 h-1 bg-black/30 rounded-[100%] blur-[1px]"></div>
-              </div>
+              </MarkerContent>
             </MapMarker>
             
             {/* Map Controls */}
