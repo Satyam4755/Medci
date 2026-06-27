@@ -2,12 +2,13 @@ import React, { useContext, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Sun, Moon } from 'lucide-react';
 import DeleteAccountModal from './DeleteAccountModal';
 
 const Sidebar = ({ onClose }) => {
   const { user, logout } = useContext(AuthContext);
-  const { theme, changeTheme } = useContext(ThemeContext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -49,18 +50,13 @@ const Sidebar = ({ onClose }) => {
   else if (user?.role === 'Doctor') links = doctorLinks;
   else if (user?.role === 'Admin') links = adminLinks;
 
-  const themes = [
-    { id: 'theme-black', name: 'Black Hair' },
-    { id: 'theme-brown', name: 'Brown Hair' },
-    { id: 'theme-blonde', name: 'Blonde Hair' },
-    { id: 'theme-grey', name: 'Grey Hair' },
-  ];
+
 
   return (
     <div className="w-64 h-full glass-panel flex flex-col justify-between border-r border-border">
       <div>
         <div className="p-6">
-          <h2 className="text-2xl font-bold" className="text-primary">Medci</h2>
+          <h2 className="text-3xl font-bold tracking-tight text-primary">Medcii</h2>
           <p className="text-sm mt-2 opacity-70">Welcome, {user?.name}</p>
         </div>
         <nav className="mt-6 flex flex-col gap-2 px-4">
@@ -79,14 +75,41 @@ const Sidebar = ({ onClose }) => {
       </div>
 
       <div className="p-6 border-t border-border">
-        <p className="text-sm font-semibold mb-3 opacity-80">Choose your hair color theme</p>
-        <select 
-          value={theme} 
-          onChange={(e) => changeTheme(e.target.value)}
-          className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary mb-6 text-foreground"
+        <button
+          onClick={toggleTheme}
+          className="w-full flex items-center justify-between bg-card border border-border rounded-lg px-4 py-3 mb-6 transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring"
         >
-          {themes.map(t => <option key={t.id} value={t.id} className="bg-card">{t.name}</option>)}
-        </select>
+          <span className="text-sm font-semibold text-foreground">
+            {theme === 'light' ? 'Beige Theme' : 'Black Theme'}
+          </span>
+          <div className="relative w-6 h-6 flex items-center justify-center">
+            <AnimatePresence mode="wait">
+              {theme === 'light' ? (
+                <motion.div
+                  key="sun"
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute text-primary"
+                >
+                  <Sun size={20} />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="moon"
+                  initial={{ rotate: 90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute text-primary"
+                >
+                  <Moon size={20} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </button>
         <button 
           onClick={handleLogout}
           className="w-full py-2 rounded-lg border border-border hover:bg-neutral-500/20 hover:text-neutral-400 transition mb-2"

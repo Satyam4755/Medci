@@ -9,7 +9,7 @@ import { theme as appTheme } from '../utils/theme';
 
 const MapModal = ({ isOpen, onClose, onConfirm, initialLocation }) => {
   const { theme } = useContext(ThemeContext);
-  const isDark = theme === 'theme-black' || theme === 'theme-grey' || theme === 'theme-brown';
+  const isDark = theme === 'dark';
 
   const [viewState, setViewState] = useState({
     longitude: initialLocation?.longitude || 77.2090, // Default to New Delhi
@@ -228,7 +228,7 @@ const MapModal = ({ isOpen, onClose, onConfirm, initialLocation }) => {
           >
             <div className="w-full max-w-2xl bg-card/95 backdrop-blur-xl border-t border-border rounded-t-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.2)] p-6 pt-8 pb-10 flex flex-col gap-6">
               
-              <div className="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-[var(--color-theme-border)] rounded-full"></div>
+              <div className="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-border rounded-full"></div>
 
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0 border border-primary/20">

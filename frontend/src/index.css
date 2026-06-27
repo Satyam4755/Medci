@@ -14,108 +14,74 @@
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-}
 
-/* 1. Black Theme (Pure dark) */
-.theme-black {
-  color-scheme: dark;
-  --background: #000000;
-  --foreground: #ffffff;
-  --card: #111111;
-  --card-foreground: #ffffff;
-  --popover: #111111;
-  --popover-foreground: #ffffff;
-  --primary: #ffffff;
-  --primary-foreground: #000000;
-  --secondary: #27272a;
-  --secondary-foreground: #ffffff;
-  --muted: #27272a;
-  --muted-foreground: #a1a1aa;
-  --accent: #27272a;
-  --accent-foreground: #ffffff;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: rgba(39, 39, 42, 0.8);
-  --input: rgba(24, 24, 27, 0.9);
-  --ring: #ffffff;
-}
-
-/* 2. Brown Theme (Warm dark) */
-.theme-brown {
-  color-scheme: dark;
-  --background: #2c1e16;
-  --foreground: #fdfbf7;
-  --card: rgba(74, 51, 37, 0.75);
-  --card-foreground: #fdfbf7;
-  --popover: #3a251a;
-  --popover-foreground: #fdfbf7;
-  --primary: #d97706;
-  --primary-foreground: #ffffff;
-  --secondary: #4a3325;
-  --secondary-foreground: #fdfbf7;
-  --muted: #4a3325;
-  --muted-foreground: #d6d3d1;
-  --accent: #4a3325;
-  --accent-foreground: #fdfbf7;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: rgba(120, 80, 60, 0.5);
-  --input: rgba(60, 40, 25, 0.9);
-  --ring: #d97706;
-}
-
-/* 3. Blonde Theme (Warm light) */
-.theme-blonde {
+  /* BEIGE THEME (Default Light Mode) */
   color-scheme: light;
-  --background: #fdfbf7;
-  --foreground: #1c1917;
-  --card: #ffffff;
-  --card-foreground: #1c1917;
-  --popover: #ffffff;
-  --popover-foreground: #1c1917;
-  --primary: #b45309;
-  --primary-foreground: #ffffff;
-  --secondary: #fef08a;
-  --secondary-foreground: #1c1917;
-  --muted: #f3f4f6;
-  --muted-foreground: #57534e;
-  --accent: #fef08a;
-  --accent-foreground: #1c1917;
+  --background: #F5F2EA;
+  --foreground: #000000;
+  
+  --card: #FFFFFF;
+  --card-foreground: #000000;
+  
+  --popover: #FFFFFF;
+  --popover-foreground: #000000;
+  
+  --primary: #000000;
+  --primary-foreground: #F5F2EA;
+  
+  --secondary: #E8E5DA;
+  --secondary-foreground: #000000;
+  
+  --muted: #E8E5DA;
+  --muted-foreground: #555555;
+  
+  --accent: #E8E5DA;
+  --accent-foreground: #000000;
+  
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: rgba(214, 187, 114, 0.5);
-  --input: #ffffff;
-  --ring: #b45309;
+  
+  --border: rgba(0, 0, 0, 0.1);
+  --input: #FFFFFF;
+  --ring: #000000;
 }
 
-/* 4. Grey Theme (Cool dark) */
-.theme-grey {
+/* BLACK THEME (Dark Mode) */
+.dark {
   color-scheme: dark;
-  --background: #18181b;
-  --foreground: #fafafa;
-  --card: rgba(39, 39, 42, 0.75);
-  --card-foreground: #fafafa;
-  --popover: #18181b;
-  --popover-foreground: #fafafa;
-  --primary: #52525b;
-  --primary-foreground: #ffffff;
+  --background: #0B0B0C;
+  --foreground: #F5F2EA;
+  
+  --card: #161616;
+  --card-foreground: #F5F2EA;
+  
+  --popover: #161616;
+  --popover-foreground: #F5F2EA;
+  
+  --primary: #F5F2EA;
+  --primary-foreground: #000000;
+  
   --secondary: #27272a;
-  --secondary-foreground: #fafafa;
+  --secondary-foreground: #F5F2EA;
+  
   --muted: #27272a;
   --muted-foreground: #a1a1aa;
+  
   --accent: #27272a;
-  --accent-foreground: #fafafa;
+  --accent-foreground: #F5F2EA;
+  
   --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: rgba(63, 63, 70, 0.6);
-  --input: rgba(24, 24, 27, 0.9);
-  --ring: #52525b;
+  --destructive-foreground: #F5F2EA;
+  
+  --border: rgba(245, 242, 234, 0.15);
+  --input: rgba(245, 242, 234, 0.05);
+  --ring: #F5F2EA;
 }
 
 /* Shadcn Base Tailwind Utilities mapping */
 @theme inline {
   --font-heading: var(--font-sans);
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  --font-sans: 'Geist Variable', sans-serif;
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -179,6 +145,13 @@ input, select, textarea {
   color: var(--foreground) !important;
   background-color: var(--input) !important;
   border-color: var(--border) !important;
+  transition: all 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--ring) !important;
+  box-shadow: 0 0 0 1px var(--ring);
 }
 
 input::placeholder, textarea::placeholder {
