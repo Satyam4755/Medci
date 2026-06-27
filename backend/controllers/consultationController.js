@@ -60,6 +60,18 @@ export const createRequest = async (req, res) => {
       }));
     }
 
+    // Handle missing location (Fallback to Patient's Profile Location)
+    let finalLng = longitude ? Number(longitude) : 0;
+    let finalLat = latitude ? Number(latitude) : 0;
+
+    if (finalLng === 0 && finalLat === 0) {
+      const patientUser = await User.findById(req.user._id);
+      if (patientUser && patientUser.location && patientUser.location.coordinates) {
+        finalLng = patientUser.location.coordinates[0];
+        finalLat = patientUser.location.coordinates[1];
+      }
+    }
+
     // Create the request
     const newRequest = await ConsultationRequest.create({
       patient: req.user._id,
@@ -73,7 +85,7 @@ export const createRequest = async (req, res) => {
       distancePreference: distancePreference ? Number(distancePreference) : 0,
       location: {
         type: 'Point',
-        coordinates: [longitude ? Number(longitude) : 0, latitude ? Number(latitude) : 0]
+        coordinates: [finalLng, finalLat]
       }
     });
 

@@ -10,7 +10,7 @@ import { User as UserIcon, MapPin, Eye } from 'lucide-react';
 
 const PotentialPatients = () => {
   const { user, loading } = useContext(AuthContext);
-  const { socket } = useContext(SocketContext);
+  const socket = useContext(SocketContext);
   const { startLoading, stopLoading } = useGlobalLoading();
 
   const [requests, setRequests] = useState([]);
@@ -63,7 +63,7 @@ const PotentialPatients = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      setRequests(res.data);
+      console.log("API RESP:", res.data); setRequests(res.data);
     } catch (error) {
       toast.error('Failed to fetch patient requests');
     } finally {
@@ -182,7 +182,10 @@ const PotentialPatients = () => {
           {/* Patient Requests Markers */}
           {requests.map(req => {
             // Check if request itself has location, fallback to patient location
-            const reqLocation = req.location?.coordinates || req.patient?.location?.coordinates;
+            let reqLocation = req.location?.coordinates;
+            if (!reqLocation || reqLocation[0] === 0) {
+              reqLocation = req.patient?.location?.coordinates;
+            }
             if (!reqLocation || reqLocation[0] === 0) return null;
 
             return (
@@ -192,7 +195,7 @@ const PotentialPatients = () => {
                 latitude={reqLocation[1]}
                 anchor="bottom"
                 onClick={(e) => {
-                  e.originalEvent.stopPropagation();
+                  e.stopPropagation();
                   setSelectedRequest(req);
                 }}
               >

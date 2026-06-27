@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 const NearbyDoctors = () => {
   const { user, loading } = useContext(AuthContext);
-  const { socket } = useContext(SocketContext);
+  const socket = useContext(SocketContext);
   const { startLoading, stopLoading } = useGlobalLoading();
   const navigate = useNavigate();
 
@@ -175,7 +175,7 @@ const NearbyDoctors = () => {
                 latitude={docLocation[1]}
                 anchor="bottom"
                 onClick={(e) => {
-                  e.originalEvent.stopPropagation();
+                  e.stopPropagation();
                   setSelectedDoctor(doc);
                 }}
               >
