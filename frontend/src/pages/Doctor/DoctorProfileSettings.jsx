@@ -135,7 +135,9 @@ const DoctorProfileSettings = () => {
       console.log('Update Success:', data);
 
       setUser(data.user);
-      toast.success('Professional profile updated!');
+      const currentUserInfo = JSON.parse(localStorage.getItem('userInfo')) || {};
+      localStorage.setItem('userInfo', JSON.stringify({ ...currentUserInfo, ...data.user, token: currentUserInfo.token }));
+      toast.success('Profile updated successfully!');
     } catch (error) {
       console.error('Submit Error:', error);
       if (error.response) console.error('Error Response:', error.response.data);

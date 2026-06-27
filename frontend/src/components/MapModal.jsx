@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Map, MapMarker, MapControls, MarkerContent } from './ui/map';
+import { Map, MapMarker, MapControls, MarkerContent, useMap } from './ui/map';
 import { reverseGeocode, searchLocation, getCurrentLocation } from '../utils/GeoUtils';
 import { toast } from 'react-toastify';
 import { Search, MapPin, Check, ChevronLeft, Loader2, Navigation, Focus } from 'lucide-react';
@@ -59,10 +59,28 @@ const MapModal = ({ isOpen, onClose, onConfirm, initialLocation }) => {
   }, []);
 
   const handleDragEnd = useCallback((event) => {
+    const { lng, lat } = event;
+    setMarkerState({ longitude: lng, latitude: lat });
+    updateLocationDetails(lng, lat);
+  }, [updateLocationDetails]);
+
+  const handleMapClick = useCallback((event) => {
+    if (!event.lngLat) return;
     const { lng, lat } = event.lngLat;
     setMarkerState({ longitude: lng, latitude: lat });
     updateLocationDetails(lng, lat);
   }, [updateLocationDetails]);
+
+  // A tiny invisible component to bind MapLibre native click events
+  const MapClickHandler = () => {
+    const { map } = useMap();
+    useEffect(() => {
+      if (!map) return;
+      map.on('click', handleMapClick);
+      return () => map.off('click', handleMapClick);
+    }, [map]);
+    return null;
+  };
 
   const handleSearch = (e) => {
     const query = e.target.value;
@@ -101,7 +119,7 @@ const MapModal = ({ isOpen, onClose, onConfirm, initialLocation }) => {
     setAddressDetails(result);
     setSearchQuery('');
     setSearchResults([]);
-    updateLocationDetails(result.longitude, result.latitude);
+    // Do NOT reverse geocode the exact search result to prevent precision loss
   };
 
   const handleLocateMe = async () => {
@@ -150,6 +168,7 @@ const MapModal = ({ isOpen, onClose, onConfirm, initialLocation }) => {
             mapStyle={isDark ? 'dark' : 'light'}
             className="w-full h-full"
           >
+            <MapClickHandler />
             {/* Draggable Marker */}
             <MapMarker
               longitude={markerState.longitude}

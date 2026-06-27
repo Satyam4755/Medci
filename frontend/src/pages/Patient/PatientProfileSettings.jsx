@@ -122,6 +122,8 @@ const PatientProfileSettings = () => {
       });
 
       setUser(data.user);
+      const currentUserInfo = JSON.parse(localStorage.getItem('userInfo')) || {};
+      localStorage.setItem('userInfo', JSON.stringify({ ...currentUserInfo, ...data.user, token: currentUserInfo.token }));
       toast.success('Profile updated successfully!');
     } catch (error) {
       toast.error(error.response?.data?.message || 'Update failed');

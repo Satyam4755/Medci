@@ -172,6 +172,7 @@ export const registerUser = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        location: user.location,
         token: generateToken(user._id),
       });
     } else {
@@ -195,6 +196,7 @@ export const authUser = async (req, res) => {
         email: user.email,
         role: user.role,
         profileImage: user.profileImage,
+        location: user.location,
         token: generateToken(user._id),
       });
     } else {
