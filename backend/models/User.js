@@ -24,6 +24,11 @@ const userSchema = new mongoose.Schema({
     enum: ['Patient', 'Doctor', 'Admin'],
     required: true,
   },
+  verificationStatus: {
+    type: String,
+    enum: ['pending', 'verified', 'rejected'],
+    default: 'pending',
+  },
   profileImage: {
     type: String,
     default: '',

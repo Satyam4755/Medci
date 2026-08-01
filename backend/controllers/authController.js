@@ -31,14 +31,14 @@ export const sendOtp = async (req, res) => {
     }
 
     const otp = crypto.randomInt(100000, 999999).toString();
-    
+
     const salt = await bcrypt.genSalt(10);
     const hashedOtp = await bcrypt.hash(otp, salt);
 
     if (existingOtp) {
       await EmailOTP.deleteMany({ email });
     }
-    
+
     await EmailOTP.create({
       email,
       otp: hashedOtp,
@@ -104,12 +104,12 @@ export const verifyOtp = async (req, res) => {
 
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password, role, location } = req.body;
+    const { name, email, password, location } = req.body;
 
-    if (!name || !email || !password || !role) {
+    if (!name || !email || !password) {
       return res.status(400).json({ message: 'Please provide all required fields' });
     }
-    
+
     if (!location || !location.latitude || !location.longitude) {
       return res.status(400).json({ message: 'Location is required to complete registration.' });
     }
@@ -143,7 +143,8 @@ export const registerUser = async (req, res) => {
       name,
       email,
       password,
-      role,
+      role: 'Patient', // Force role to Patient regardless of payload
+      verificationStatus: 'verified', // Patients are automatically verified
       emailVerified: true,
       location: userLocation
     });
@@ -151,17 +152,7 @@ export const registerUser = async (req, res) => {
     if (user) {
       await EmailOTP.deleteOne({ email });
 
-      if (role === 'Patient') {
-        await PatientProfile.create({ user: user._id });
-      } else if (role === 'Doctor') {
-        await DoctorProfile.create({ 
-          user: user._id,
-          qualification: 'Not specified',
-          experience: 0,
-          feeRange: { min: 0, max: 0 },
-          clinicLocation: 'Not specified',
-        });
-      }
+      await PatientProfile.create({ user: user._id });
 
       res.status(201).json({
         _id: user._id,
@@ -170,6 +161,77 @@ export const registerUser = async (req, res) => {
         role: user.role,
         location: user.location,
         token: generateToken(user._id),
+      });
+    } else {
+      res.status(400).json({ message: 'Invalid user data' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const registerDoctorUser = async (req, res) => {
+  try {
+    const { name, email, password, location } = req.body;
+
+    // Validate request
+    if (!name || !email || !password || !location) {
+      return res.status(400).json({ message: 'Please provide all required fields including location.' });
+    }
+
+    const userExists = await User.findOne({ email });
+
+    if (userExists) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+    const verifiedOtp = await EmailOTP.findOne({ email, verified: true });
+    if (!verifiedOtp) {
+      return res.status(400).json({ message: 'Email not verified. Please complete OTP verification.' });
+    }
+
+    // Format location for saving
+    const userLocation = {
+      address: location.address || '',
+      city: location.city || '',
+      state: location.state || '',
+      country: location.country || '',
+      pincode: location.pincode || '',
+      formattedAddress: location.formattedAddress || '',
+      placeId: location.placeId || '',
+      lastUpdated: new Date(),
+      type: 'Point',
+      coordinates: [Number(location.longitude), Number(location.latitude)]
+    };
+
+    const user = await User.create({
+      name,
+      email,
+      password,
+      role: 'Doctor', // Force role to Doctor
+      verificationStatus: 'pending', // Doctors must be verified by admin
+      emailVerified: true,
+      location: userLocation
+    });
+
+    if (user) {
+      await EmailOTP.deleteOne({ email });
+
+      await DoctorProfile.create({
+        user: user._id,
+        qualification: 'Not specified',
+        experience: 0,
+        feeRange: { min: 0, max: 0 },
+        clinicLocation: 'Not specified',
+      });
+
+      res.status(201).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        verificationStatus: user.verificationStatus,
+        token: generateToken(user._id, user.role),
       });
     } else {
       res.status(400).json({ message: 'Invalid user data' });

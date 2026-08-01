@@ -4,6 +4,7 @@ import React from 'react';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import DoctorSignupPage from './pages/DoctorSignupPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
 import Layout from './components/Layout';
@@ -64,6 +65,7 @@ function App() {
           <Route path="/patient/map" element={<ProtectedRoute allowedRoles={['Patient']}><PageTransition><Layout><NearbyDoctors /></Layout></PageTransition></ProtectedRoute>} />
 
           {/* Doctor Routes */}
+          <Route path="/doctor/register" element={<PublicRoute><PageTransition><DoctorSignupPage /></PageTransition></PublicRoute>} />
           <Route path="/doctor" element={<ProtectedRoute allowedRoles={['Doctor']}><Navigate to="/doctor/home" replace /></ProtectedRoute>} />
           <Route path="/doctor/home" element={<ProtectedRoute allowedRoles={['Doctor']}><PageTransition><Layout><DoctorHome /></Layout></PageTransition></ProtectedRoute>} />
           <Route path="/doctor/requests" element={<ProtectedRoute allowedRoles={['Doctor']}><PageTransition><Layout><LiveRequests /></Layout></PageTransition></ProtectedRoute>} />

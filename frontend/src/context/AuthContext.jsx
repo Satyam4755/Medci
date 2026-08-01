@@ -44,10 +44,24 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (name, email, password, role, location) => {
+  const register = async (name, email, password, location) => {
     startLoading('Creating your account...');
     try {
-      const { data } = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/auth/register`, { name, email, password, role, location });
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/auth/register`, { name, email, password, location });
+      setUser(data);
+      localStorage.setItem('userInfo', JSON.stringify(data));
+      return data;
+    } catch (error) {
+      throw error.response?.data?.message || error.message;
+    } finally {
+      stopLoading();
+    }
+  };
+
+  const registerDoctor = async (name, email, password, location) => {
+    startLoading('Creating doctor account...');
+    try {
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5006'}/api/auth/register-doctor`, { name, email, password, location });
       setUser(data);
       localStorage.setItem('userInfo', JSON.stringify(data));
       return data;
@@ -118,7 +132,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, login, register, sendOtp, verifyOtp, sendDeleteOtp, verifyDeleteOtp, deleteAccount, logout, loading }}>
+    <AuthContext.Provider value={{ user, setUser, loading, login, register, registerDoctor, logout, sendOtp, verifyOtp, sendDeleteOtp, verifyDeleteOtp, deleteAccount }}>
       {children}
     </AuthContext.Provider>
   );

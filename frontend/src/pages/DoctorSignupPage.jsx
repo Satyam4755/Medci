@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import LocationPicker from '../components/LocationPicker';
 import { theme } from '../utils/theme';
 
-const SignupPage = () => {
+const DoctorSignupPage = () => {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
@@ -18,7 +18,7 @@ const SignupPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [timer, setTimer] = useState(0);
   
-  const { register, sendOtp, verifyOtp } = useContext(AuthContext);
+  const { registerDoctor, sendOtp, verifyOtp } = useContext(AuthContext);
   const { startLoading, stopLoading } = useGlobalLoading();
   const navigate = useNavigate();
   const inputRefs = useRef([]);
@@ -74,9 +74,9 @@ const SignupPage = () => {
       if (!location) {
         throw new Error('Please select your location to continue.');
       }
-      const data = await register(name, email, password, location); // role removed
-      toast.success('Patient account created successfully');
-      navigate('/patient');
+      const data = await registerDoctor(name, email, password, location); 
+      toast.success('Doctor account created. Pending verification.');
+      navigate('/doctor');
     } catch (error) {
       toast.error(error);
     } finally {
@@ -126,7 +126,7 @@ const SignupPage = () => {
         <AnimatePresence mode="wait">
           {step === 1 && (
             <motion.div key="step1" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}>
-              <h2 className="text-3xl font-bold mb-2 text-center text-foreground">Create Account</h2>
+              <h2 className="text-3xl font-bold mb-2 text-center text-foreground">Doctor Registration</h2>
               <p className="text-center text-muted-foreground mb-6">First, let's verify your email address</p>
               <form onSubmit={handleSendOtp} className="space-y-4">
                 <div>
@@ -242,8 +242,26 @@ const SignupPage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-muted-foreground mb-1">Set Your Location</label>
+                  <label className="block text-muted-foreground mb-1">Set Your Clinic Location</label>
                   <LocationPicker location={location} onLocationChange={setLocation} />
+                </div>
+
+                {/* Placeholders for Verification Documents */}
+                <div className="p-4 bg-muted/50 rounded-xl border border-dashed border-border mt-4">
+                  <h4 className="font-semibold text-foreground mb-2 text-sm">Professional Verification (Required later)</h4>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    You will need to upload your Government ID, Medical Degree, and Council Registration after creating your account to get verified.
+                  </p>
+                  <div className="flex flex-col gap-2 opacity-50">
+                    <div className="text-xs bg-background p-2 rounded flex justify-between border border-border">
+                      <span>Medical Degree (MBBS/MD)</span>
+                      <span>[Upload Pending]</span>
+                    </div>
+                    <div className="text-xs bg-background p-2 rounded flex justify-between border border-border">
+                      <span>Council Registration</span>
+                      <span>[Upload Pending]</span>
+                    </div>
+                  </div>
                 </div>
                 <button
                   type="submit"
@@ -279,4 +297,4 @@ const SignupPage = () => {
   );
 };
 
-export default SignupPage;
+export default DoctorSignupPage;
