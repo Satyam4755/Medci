@@ -42,6 +42,10 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
+app.use((req, res, next) => {
+  console.log('Incoming request:', req.method, req.originalUrl);
+  next();
+});
 app.use('/api/auth', authRoutes);
 app.use('/api/consultations', consultationRoutes);
 app.use('/api/doctors', doctorRoutes);

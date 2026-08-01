@@ -4,8 +4,15 @@ import PatientProfile from '../models/PatientProfile.js';
 
 export const getAllDoctors = async (req, res) => {
   try {
-    const doctors = await DoctorProfile.find().populate('user', 'name profileImage');
-    res.json(doctors);
+    const doctors = await DoctorProfile.find().populate({
+      path: 'user',
+      match: { verificationStatus: 'verified' },
+      select: 'name profileImage verificationStatus'
+    });
+    
+    // Filter out those where user is null because of the match condition
+    const verifiedDoctors = doctors.filter(doc => doc.user !== null);
+    res.json(verifiedDoctors);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -23,9 +30,10 @@ export const getNearbyDoctors = async (req, res) => {
 
     const radiusInRadians = parseFloat(radius) / 6371; // Earth radius in km
 
-    // Find all users who are Doctors within the radius
+    // Find all users who are verified Doctors within the radius
     const nearbyUsers = await User.find({
       role: 'Doctor',
+      verificationStatus: 'verified',
       'location.coordinates': {
         $geoWithin: {
           $centerSphere: [[parseFloat(lng), parseFloat(lat)], radiusInRadians]

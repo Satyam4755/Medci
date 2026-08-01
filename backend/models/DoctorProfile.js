@@ -58,6 +58,19 @@ const doctorProfileSchema = new mongoose.Schema({
     type: [String],
     default: ['English', 'Hindi']
   },
+  verification: {
+    submittedAt: { type: Date },
+    verifiedAt: { type: Date },
+    verifiedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    rejectionReason: { type: String },
+    documents: {
+      governmentId: { type: String }, // Cloudinary URL
+      medicalRegistration: { type: String }, // Cloudinary URL
+      qualificationCertificate: { type: String }, // Cloudinary URL
+      clinicProof: { type: String }, // Cloudinary URL (Optional)
+    },
+    ocrData: { type: mongoose.Schema.Types.Mixed }, // JSON dump from OCR
+  },
 }, { timestamps: true });
 
 const DoctorProfile = mongoose.model('DoctorProfile', doctorProfileSchema);

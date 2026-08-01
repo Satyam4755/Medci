@@ -3,6 +3,7 @@ import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
+import DoctorVerification from './pages/DoctorVerification';
 import SignupPage from './pages/SignupPage';
 import DoctorSignupPage from './pages/DoctorSignupPage';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -35,6 +36,7 @@ import DoctorAvailability from './pages/Doctor/DoctorAvailability';
 import PotentialPatients from './pages/Doctor/PotentialPatients';
 
 // Admin Pages
+import AdminVerification from './pages/Admin/AdminVerification';
 const AdminHome = () => <Layout><div className="text-foreground text-2xl">Admin Dashboard Coming Soon</div></Layout>;
 
 function App() {
@@ -66,6 +68,7 @@ function App() {
 
           {/* Doctor Routes */}
           <Route path="/doctor/register" element={<PublicRoute><PageTransition><DoctorSignupPage /></PageTransition></PublicRoute>} />
+          <Route path="/doctor/verify" element={<ProtectedRoute allowedRoles={['Doctor']}><PageTransition><DoctorVerification /></PageTransition></ProtectedRoute>} />
           <Route path="/doctor" element={<ProtectedRoute allowedRoles={['Doctor']}><Navigate to="/doctor/home" replace /></ProtectedRoute>} />
           <Route path="/doctor/home" element={<ProtectedRoute allowedRoles={['Doctor']}><PageTransition><Layout><DoctorHome /></Layout></PageTransition></ProtectedRoute>} />
           <Route path="/doctor/requests" element={<ProtectedRoute allowedRoles={['Doctor']}><PageTransition><Layout><LiveRequests /></Layout></PageTransition></ProtectedRoute>} />
@@ -76,7 +79,8 @@ function App() {
           <Route path="/doctor/map" element={<ProtectedRoute allowedRoles={['Doctor']}><PageTransition><Layout><PotentialPatients /></Layout></PageTransition></ProtectedRoute>} />
 
           {/* Admin Routes */}
-          <Route path="/admin/*" element={<ProtectedRoute allowedRoles={['Admin']}><PageTransition><AdminHome /></PageTransition></ProtectedRoute>} />
+          <Route path="/admin/verifications" element={<ProtectedRoute allowedRoles={['Admin']}><PageTransition><Layout><AdminVerification /></Layout></PageTransition></ProtectedRoute>} />
+          <Route path="/admin/*" element={<ProtectedRoute allowedRoles={['Admin']}><PageTransition><Layout><AdminHome /></Layout></PageTransition></ProtectedRoute>} />
         </Routes>
       </AnimatePresence>
     </div>

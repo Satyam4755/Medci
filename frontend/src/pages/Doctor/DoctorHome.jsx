@@ -27,6 +27,33 @@ const DoctorHome = () => {
 
   return (
     <div className="space-y-8">
+      {user?.verificationStatus === 'pending' && (
+        <div className="bg-red-500/10 border border-red-500/20 p-6 rounded-xl flex items-center justify-between">
+          <div>
+            <h3 className="text-xl font-bold text-red-500 mb-1">Verification Required</h3>
+            <p className="text-muted-foreground">You must complete your verification before accepting patients.</p>
+          </div>
+          <Link to="/doctor/verify" className="bg-red-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-600 transition">Complete Now</Link>
+        </div>
+      )}
+      {user?.verificationStatus === 'under_review' && (
+        <div className="bg-yellow-500/10 border border-yellow-500/20 p-6 rounded-xl flex items-center justify-between">
+          <div>
+            <h3 className="text-xl font-bold text-yellow-500 mb-1">Verification Under Review</h3>
+            <p className="text-muted-foreground">Your documents are being reviewed. This usually takes 24-48 hours.</p>
+          </div>
+        </div>
+      )}
+      {user?.verificationStatus === 'rejected' && (
+        <div className="bg-red-500/10 border border-red-500/20 p-6 rounded-xl flex flex-col items-start gap-4">
+          <div>
+            <h3 className="text-xl font-bold text-red-500 mb-1">Verification Rejected</h3>
+            <p className="text-muted-foreground">Please check your profile or email for the reason and resubmit.</p>
+          </div>
+          <Link to="/doctor/verify" className="bg-red-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-600 transition">Resubmit Documents</Link>
+        </div>
+      )}
+
       {/* Welcome Section */}
       <div className="glass-panel p-8 rounded-2xl">
         <div className="flex justify-between items-start">
@@ -47,8 +74,8 @@ const DoctorHome = () => {
           </div>
         </div>
         <div className="mt-6 flex gap-4 flex-wrap">
-          <Link to="/doctor/requests" className="px-6 py-3 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition shadow-lg flex items-center gap-2">
-            View Live Requests <span className="bg-primary/20 text-primary px-2 py-0.5 rounded text-sm">{stats.requests}</span>
+          <Link to="/doctor/requests" className={`px-6 py-3 rounded-xl font-semibold shadow-lg flex items-center gap-2 transition ${user?.verificationStatus === 'verified' ? 'bg-primary text-primary-foreground hover:bg-primary/90' : 'bg-muted text-muted-foreground pointer-events-none opacity-50'}`}>
+            View Live Requests <span className="bg-background/20 px-2 py-0.5 rounded text-sm">{stats.requests}</span>
           </Link>
         </div>
       </div>

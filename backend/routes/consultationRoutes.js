@@ -1,6 +1,6 @@
 import express from 'express';
 import { createRequest, getPatientRequests, getLiveRequests, acceptRequest, getPatientAppointments, getActiveRequest, getNearbyConsultations } from '../controllers/consultationController.js';
-import { protect, admin } from '../middleware/authMiddleware.js';
+import { protect, admin, verifiedDoctor } from '../middleware/authMiddleware.js';
 import { uploadRequestMedia } from '../config/cloudinary.js';
 
 const router = express.Router();
@@ -15,7 +15,7 @@ router.get('/active', protect, getActiveRequest);
 router.get('/nearby', protect, getNearbyConsultations);
 router.get('/myrequests', protect, getPatientRequests); // Patients get their requests
 router.get('/appointments', protect, getPatientAppointments); // Patients get their appointments
-router.get('/live', protect, getLiveRequests); // Doctors get live requests
-router.post('/:id/accept', protect, acceptRequest); // Doctors accept requests
+router.get('/live', protect, verifiedDoctor, getLiveRequests); // Doctors get live requests
+router.post('/:id/accept', protect, verifiedDoctor, acceptRequest); // Doctors accept requests
 
 export default router;

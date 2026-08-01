@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
   },
   verificationStatus: {
     type: String,
-    enum: ['pending', 'verified', 'rejected'],
+    enum: ['pending', 'under_review', 'verified', 'rejected'],
     default: 'pending',
   },
   profileImage: {

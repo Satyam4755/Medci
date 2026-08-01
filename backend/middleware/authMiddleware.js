@@ -34,3 +34,23 @@ export const admin = (req, res, next) => {
     res.status(401).json({ message: 'Not authorized as an admin' });
   }
 };
+
+export const doctorOnly = (req, res, next) => {
+  if (req.user && req.user.role === 'Doctor') {
+    next();
+  } else {
+    res.status(401).json({ message: 'Not authorized as a doctor' });
+  }
+};
+
+export const verifiedDoctor = (req, res, next) => {
+  if (req.user && req.user.role === 'Doctor') {
+    if (req.user.verificationStatus === 'verified') {
+      next();
+    } else {
+      res.status(403).json({ message: 'Your account is awaiting verification.' });
+    }
+  } else {
+    res.status(401).json({ message: 'Not authorized as a doctor' });
+  }
+};

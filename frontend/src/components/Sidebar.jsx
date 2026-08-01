@@ -57,6 +57,15 @@ const Sidebar = ({ onClose }) => {
             </NavLink>
           )}
         </nav>
+        
+        {user?.role === 'Doctor' && user?.verificationStatus === 'pending' && (
+          <div className="mx-4 mt-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl">
+            <p className="text-xs text-red-500 font-bold mb-2">Unverified Account</p>
+            <NavLink to="/doctor/verify" onClick={() => { if (onClose) onClose(); }} className="text-xs text-white bg-red-500 w-full text-center block py-2 rounded-lg font-bold hover:bg-red-600">
+              Verify Now
+            </NavLink>
+          </div>
+        )}
       </div>
 
       <div className="p-6 border-t border-border">

@@ -111,13 +111,18 @@ export const createRequest = async (req, res) => {
       };
     }
 
-    const matchedDoctors = await DoctorProfile.find(query);
+    const matchedDoctors = await DoctorProfile.find(query).populate({
+      path: 'user',
+      match: { verificationStatus: 'verified' }
+    });
+
+    const verifiedMatchedDoctors = matchedDoctors.filter(doc => doc.user !== null);
 
     // Notify matching online doctors via Socket.IO
     const io = req.app.get('io');
     const onlineDoctors = req.app.get('onlineDoctors');
 
-    matchedDoctors.forEach(doctor => {
+    verifiedMatchedDoctors.forEach(doctor => {
       const doctorIdString = doctor.user.toString();
       const socketId = onlineDoctors.get(doctorIdString);
       if (socketId && io) {

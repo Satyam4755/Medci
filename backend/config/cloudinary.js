@@ -42,4 +42,17 @@ const requestStorage = new CloudinaryStorage({
 
 const uploadRequestMedia = multer({ storage: requestStorage });
 
-export { cloudinary, upload, uploadRequestMedia };
+const verificationStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    return {
+      folder: 'medci_verifications',
+      resource_type: 'auto',
+      allowed_formats: ['jpg', 'jpeg', 'png', 'pdf']
+    };
+  },
+});
+
+const uploadVerification = multer({ storage: verificationStorage });
+
+export { cloudinary, upload, uploadRequestMedia, uploadVerification };
