@@ -69,7 +69,28 @@ const doctorProfileSchema = new mongoose.Schema({
       qualificationCertificate: { type: String }, // Cloudinary URL
       clinicProof: { type: String }, // Cloudinary URL (Optional)
     },
-    ocrData: { type: mongoose.Schema.Types.Mixed }, // JSON dump from OCR
+    ocrData: {
+      aadhaar: { type: mongoose.Schema.Types.Mixed },
+      medicalRegistration: { type: mongoose.Schema.Types.Mixed },
+      qualification: { type: mongoose.Schema.Types.Mixed },
+      clinicProof: { type: mongoose.Schema.Types.Mixed },
+    },
+    ocrConfidence: {
+      aadhaar: { type: Number },
+      medicalRegistration: { type: Number },
+      qualification: { type: Number },
+      clinicProof: { type: Number },
+    },
+    extractedData: {
+      doctorName: { type: String },
+      aadhaarNumber: { type: String },
+      dob: { type: String },
+      registrationNumber: { type: String },
+      university: { type: String },
+      degree: { type: String },
+    },
+    overallScore: { type: Number },
+    issues: [{ type: String }],
   },
 }, { timestamps: true });
 

@@ -33,10 +33,75 @@ export const submitVerification = async (req, res) => {
     const clinicProofUrl = files['clinicProof'] ? files['clinicProof'][0].path : undefined;
     console.log('Cloudinary upload status: SUCCESS for required documents');
 
-    // Simulate OCR Scanning on the medical registration (or any document)
-    console.log('Starting OCR scanning...');
-    const ocrData = await scanDocument(medicalRegistrationUrl, 'Medical Registration');
-    console.log('OCR status: SUCCESS');
+    // Simulate OCR Scanning for all documents
+    console.log('Starting OCR scanning pipeline...');
+    const doctorName = req.user.name || "Dr. Example Name";
+    
+    const aadhaarOCR = await scanDocument(governmentIdUrl, 'Aadhaar', doctorName);
+    const medRegOCR = await scanDocument(medicalRegistrationUrl, 'Medical Registration', doctorName);
+    const qualOCR = await scanDocument(qualificationCertificateUrl, 'Qualification', doctorName);
+    
+    let clinicOCR = null;
+    if (clinicProofUrl) {
+      clinicOCR = await scanDocument(clinicProofUrl, 'Clinic Proof', doctorName);
+    }
+    console.log('OCR status: SUCCESS for all documents');
+
+    // Calculate Overall Confidence and collect issues
+    let issues = [];
+    const confidences = [aadhaarOCR.confidenceScore, medRegOCR.confidenceScore, qualOCR.confidenceScore];
+    if (clinicOCR) confidences.push(clinicOCR.confidenceScore);
+    
+    const overallScore = Math.floor(confidences.reduce((a, b) => a + b, 0) / confidences.length);
+    console.log(`Overall OCR Score: ${overallScore}%`);
+
+    // Confidence Checks
+    if (overallScore < 70) {
+      console.log('Validation Error: Overall OCR confidence below 70%. Rejecting.');
+      return res.status(400).json({ message: 'Document quality is too low. Please upload clearer images.' });
+    } else if (overallScore < 90) {
+      issues.push('Overall document readability is low. Manual review required.');
+    }
+
+    if (aadhaarOCR.confidenceScore < 70) issues.push('Aadhaar card image is blurry or unreadable.');
+    if (medRegOCR.confidenceScore < 70) issues.push('Medical Registration image is blurry or unreadable.');
+    if (qualOCR.confidenceScore < 70) issues.push('Qualification document is blurry or unreadable.');
+
+    // Cross-Matching Engine
+    const nameAadhaar = aadhaarOCR.structured.doctorName || '';
+    const nameMedReg = medRegOCR.structured.doctorName || '';
+    const nameQual = qualOCR.structured.doctorName || '';
+    
+    // Very basic dummy check to ensure they match (since we pass expectedName, they should match exactly in our mock)
+    // But we will simulate a mismatch if any of them are wildly different.
+    if (nameAadhaar !== nameMedReg || nameMedReg !== nameQual) {
+      console.log('Validation Error: Document mismatch.');
+      return res.status(400).json({ message: 'Document mismatch. The names on the uploaded documents do not match.' });
+    }
+
+    // Build the final structured objects
+    const ocrData = {
+      aadhaar: aadhaarOCR.extractedText,
+      medicalRegistration: medRegOCR.extractedText,
+      qualification: qualOCR.extractedText,
+      clinicProof: clinicOCR ? clinicOCR.extractedText : null
+    };
+
+    const ocrConfidence = {
+      aadhaar: aadhaarOCR.confidenceScore,
+      medicalRegistration: medRegOCR.confidenceScore,
+      qualification: qualOCR.confidenceScore,
+      clinicProof: clinicOCR ? clinicOCR.confidenceScore : null
+    };
+
+    const extractedData = {
+      doctorName: nameAadhaar,
+      aadhaarNumber: aadhaarOCR.structured.aadhaarNumber,
+      dob: aadhaarOCR.structured.dob,
+      registrationNumber: medRegOCR.structured.registrationNumber,
+      university: qualOCR.structured.university,
+      degree: qualOCR.structured.degree,
+    };
 
     // Update DoctorProfile with documents and OCR data
     console.log('Updating database (DoctorProfile)...');
@@ -52,6 +117,10 @@ export const submitVerification = async (req, res) => {
             clinicProof: clinicProofUrl,
           },
           'verification.ocrData': ocrData,
+          'verification.ocrConfidence': ocrConfidence,
+          'verification.extractedData': extractedData,
+          'verification.overallScore': overallScore,
+          'verification.issues': issues,
         }
       },
       { new: true, session }

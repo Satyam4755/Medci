@@ -49,6 +49,7 @@ app.use((req, res, next) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/consultations', consultationRoutes);
 app.use('/api/doctors', doctorRoutes);
+app.use('/api/doctor', doctorRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/account', accountRoutes);
